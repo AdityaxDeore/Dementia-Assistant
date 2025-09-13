@@ -26,7 +26,7 @@ export function AIChat() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
     const userMessage: Message = {
@@ -37,35 +37,58 @@ export function AIChat() {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = input;
     setInput("");
     setIsTyping(true);
 
-    // TODO: Replace with actual OpenAI integration
-    setTimeout(() => {
+    try {
+      // Prepare conversation history for API
+      const conversationHistory = messages.map(msg => ({
+        role: msg.sender === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      }));
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: currentInput,
+          conversationHistory
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to get response');
+      }
+
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        content: getAIResponse(input),
+        content: data.response,
+        sender: 'ai',
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      
+      // Fallback response
+      const aiResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        content: "I'm having trouble connecting right now. Please try again in a moment. If you're in crisis, please contact emergency services or your campus counseling center immediately.",
         sender: 'ai',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
-
-    console.log(`User message: ${input}`);
+    }
   };
 
-  const getAIResponse = (userInput: string): string => {
-    // TODO: remove mock functionality - replace with OpenAI API
-    const responses = [
-      "I understand you're going through a tough time. It's completely normal to feel stressed, especially as a student. Would you like to try a quick breathing exercise?",
-      "Thank you for sharing that with me. Remember that seeking help is a sign of strength, not weakness. Have you considered talking to a counselor?",
-      "It sounds like you're dealing with a lot right now. Let's break this down into smaller, manageable steps. What feels most urgent to you?",
-      "I hear you. Many students experience similar feelings. Would you like me to suggest some coping strategies that have helped others?",
-      "Your feelings are valid. It's important to take care of your mental health. Have you tried journaling or creative expression to process these emotions?"
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
-  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
