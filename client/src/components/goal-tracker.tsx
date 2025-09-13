@@ -6,98 +6,111 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 interface Goal {
   id: string;
+  userId: string;
   title: string;
-  description: string;
+  description: string | null;
   category: 'wellness' | 'academic' | 'personal';
   progress: number;
-  targetDate: Date;
-  isCompleted: boolean;
-  subtasks: string[];
-  completedSubtasks: number;
+  isCompleted: number; // 0 or 1 (database format)
+  targetDate: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export function GoalTracker() {
   const [newGoal, setNewGoal] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
-  
-  // TODO: remove mock functionality
-  const [goals, setGoals] = useState<Goal[]>([
-    {
-      id: '1',
-      title: 'Daily Meditation Practice',
-      description: 'Meditate for 10 minutes every day',
-      category: 'wellness',
-      progress: 70,
-      targetDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      isCompleted: false,
-      subtasks: ['Morning meditation', 'Evening reflection', 'Track mood changes'],
-      completedSubtasks: 2
-    },
-    {
-      id: '2',
-      title: 'Complete Data Structures Course',
-      description: 'Finish all assignments and projects',
-      category: 'academic',
-      progress: 45,
-      targetDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-      isCompleted: false,
-      subtasks: ['Watch lectures', 'Complete assignments', 'Study for final'],
-      completedSubtasks: 1
-    },
-    {
-      id: '3',
-      title: 'Journal Weekly',
-      description: 'Write in journal 3 times per week',
-      category: 'wellness',
-      progress: 100,
-      targetDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-      isCompleted: true,
-      subtasks: ['Monday entry', 'Wednesday entry', 'Friday entry'],
-      completedSubtasks: 3
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // Fetch goals
+  const { data: goalsData, isLoading } = useQuery({
+    queryKey: ['/api/goals'],
+    queryFn: async () => {
+      const response = await fetch('/api/goals');
+      if (!response.ok) throw new Error('Failed to fetch goals');
+      return response.json();
     }
-  ]);
+  });
+
+  // Create goal mutation
+  const createGoalMutation = useMutation({
+    mutationFn: async (goalData: { title: string; category: string }) => {
+      const response = await fetch('/api/goals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(goalData)
+      });
+      if (!response.ok) throw new Error('Failed to create goal');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/goals'] });
+      setNewGoal("");
+      setShowAddForm(false);
+      toast({ title: "Goal created!", description: "Your new goal has been added." });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to create goal.", variant: "destructive" });
+    }
+  });
+
+  // Toggle goal completion mutation
+  const toggleGoalMutation = useMutation({
+    mutationFn: async ({ goalId, isCompleted, progress }: { goalId: string; isCompleted: number; progress: number }) => {
+      const response = await fetch(`/api/goals/${goalId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isCompleted, progress })
+      });
+      if (!response.ok) throw new Error('Failed to update goal');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/goals'] });
+    }
+  });
+
+  // Delete goal mutation
+  const deleteGoalMutation = useMutation({
+    mutationFn: async (goalId: string) => {
+      const response = await fetch(`/api/goals/${goalId}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) throw new Error('Failed to delete goal');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/goals'] });
+      toast({ title: "Goal deleted", description: "Your goal has been removed." });
+    }
+  });
 
   const handleAddGoal = () => {
     if (!newGoal.trim()) return;
-    
-    const goal: Goal = {
-      id: Date.now().toString(),
-      title: newGoal,
-      description: '',
-      category: 'personal',
-      progress: 0,
-      targetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-      isCompleted: false,
-      subtasks: [],
-      completedSubtasks: 0
-    };
-    
-    setGoals(prev => [goal, ...prev]);
-    setNewGoal("");
-    setShowAddForm(false);
-    console.log('Added new goal:', goal);
+    createGoalMutation.mutate({ title: newGoal, category: 'personal' });
   };
 
-  const handleToggleGoal = (goalId: string) => {
-    setGoals(prev => prev.map(goal => 
-      goal.id === goalId 
-        ? { 
-            ...goal, 
-            isCompleted: !goal.isCompleted,
-            progress: !goal.isCompleted ? 100 : goal.progress
-          }
-        : goal
-    ));
-    console.log(`Toggled goal completion: ${goalId}`);
+  const handleToggleGoal = (goal: Goal) => {
+    const newIsCompleted = goal.isCompleted ? 0 : 1;
+    const newProgress = newIsCompleted ? 100 : goal.progress;
+    toggleGoalMutation.mutate({ 
+      goalId: goal.id, 
+      isCompleted: newIsCompleted, 
+      progress: newProgress 
+    });
   };
 
   const handleDeleteGoal = (goalId: string) => {
-    setGoals(prev => prev.filter(goal => goal.id !== goalId));
-    console.log(`Deleted goal: ${goalId}`);
+    deleteGoalMutation.mutate(goalId);
   };
+
+  const goals = goalsData?.goals || [];
 
   const getCategoryColor = (category: Goal['category']) => {
     switch (category) {
@@ -108,21 +121,36 @@ export function GoalTracker() {
     }
   };
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', { 
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'No date set';
+    return new Date(dateString).toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric' 
     });
   };
 
-  const getDaysUntil = (date: Date) => {
-    const diffTime = date.getTime() - new Date().getTime();
+  const getDaysUntil = (dateString: string | null) => {
+    if (!dateString) return 'No deadline';
+    const targetDate = new Date(dateString);
+    const diffTime = targetDate.getTime() - new Date().getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+    return diffDays > 0 ? `${diffDays} days` : 'Overdue';
   };
 
-  const activeGoals = goals.filter(goal => !goal.isCompleted);
-  const completedGoals = goals.filter(goal => goal.isCompleted);
+  const activeGoals = goals.filter((goal: Goal) => !goal.isCompleted);
+  const completedGoals = goals.filter((goal: Goal) => goal.isCompleted);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6" data-testid="goal-tracker">
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center">Loading goals...</div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6" data-testid="goal-tracker">
@@ -154,7 +182,11 @@ export function GoalTracker() {
                 onKeyPress={(e) => e.key === 'Enter' && handleAddGoal()}
                 data-testid="input-new-goal"
               />
-              <Button onClick={handleAddGoal} data-testid="button-submit-goal">
+              <Button 
+                onClick={handleAddGoal} 
+                disabled={createGoalMutation.isPending}
+                data-testid="button-submit-goal"
+              >
                 <Check className="w-4 h-4" />
               </Button>
               <Button 
@@ -211,8 +243,8 @@ export function GoalTracker() {
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-3 flex-1">
                     <Checkbox
-                      checked={goal.isCompleted}
-                      onCheckedChange={() => handleToggleGoal(goal.id)}
+                      checked={Boolean(goal.isCompleted)}
+                      onCheckedChange={() => handleToggleGoal(goal)}
                       data-testid={`checkbox-goal-${goal.id}`}
                     />
                     <div className="flex-1">
@@ -253,11 +285,6 @@ export function GoalTracker() {
                     <span>{goal.progress}%</span>
                   </div>
                   <Progress value={goal.progress} className="h-2" />
-                  {goal.subtasks.length > 0 && (
-                    <div className="text-xs text-muted-foreground">
-                      {goal.completedSubtasks}/{goal.subtasks.length} subtasks completed
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
@@ -278,7 +305,7 @@ export function GoalTracker() {
                 <div className="flex-1">
                   <h4 className="font-medium text-green-900">{goal.title}</h4>
                   <p className="text-sm text-green-700">
-                    Completed on {formatDate(goal.targetDate)}
+                    {goal.description || 'Goal completed!'}
                   </p>
                 </div>
                 <Badge className="bg-green-100 text-green-800">Done</Badge>

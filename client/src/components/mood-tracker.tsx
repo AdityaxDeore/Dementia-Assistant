@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 const moodOptions = [
   { emoji: "😔", label: "Very Low", value: 1, color: "bg-red-100 text-red-800" },
@@ -14,22 +16,59 @@ const moodOptions = [
 
 export function MoodTracker() {
   const [selectedMood, setSelectedMood] = useState<number | null>(null);
-  const [streak, setStreak] = useState(7); // TODO: remove mock functionality
-  const [weekProgress, setWeekProgress] = useState(5); // TODO: remove mock functionality
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // Fetch mood history
+  const { data: moodData, isLoading } = useQuery({
+    queryKey: ['/api/mood/history'],
+    queryFn: async () => {
+      const response = await fetch('/api/mood/history');
+      if (!response.ok) throw new Error('Failed to fetch mood history');
+      return response.json();
+    }
+  });
+
+  // Submit mood mutation
+  const submitMoodMutation = useMutation({
+    mutationFn: async (moodValue: number) => {
+      const response = await fetch('/api/mood', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ moodValue })
+      });
+      if (!response.ok) throw new Error('Failed to submit mood');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/mood/history'] });
+      setSelectedMood(null);
+      toast({
+        title: "Mood saved!",
+        description: "Your mood check-in has been recorded.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to save mood entry. Please try again.",
+        variant: "destructive",
+      });
+    }
+  });
 
   const handleMoodSelect = (moodValue: number) => {
     setSelectedMood(moodValue);
-    console.log(`Mood selected: ${moodValue}`);
-    // TODO: In real app, save to backend
   };
 
   const handleSubmit = () => {
     if (selectedMood) {
-      console.log(`Submitting mood: ${selectedMood}`);
-      setWeekProgress(prev => Math.min(prev + 1, 7));
-      // TODO: Submit to backend
+      submitMoodMutation.mutate(selectedMood);
     }
   };
+
+  const streak = moodData?.streak || 0;
+  const weekProgress = Math.min(moodData?.entries?.length || 0, 7);
 
   return (
     <Card data-testid="card-mood-tracker">
@@ -76,9 +115,10 @@ export function MoodTracker() {
             <Button 
               onClick={handleSubmit} 
               className="w-full"
+              disabled={submitMoodMutation.isPending}
               data-testid="button-submit-mood"
             >
-              Save Check-In
+              {submitMoodMutation.isPending ? 'Saving...' : 'Save Check-In'}
             </Button>
           </div>
         )}

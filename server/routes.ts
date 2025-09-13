@@ -1,7 +1,9 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { apiMoodEntrySchema, apiCreateGoalSchema, apiUpdateGoalSchema } from "@shared/schema";
 import OpenAI from "openai";
+import { z } from "zod";
 
 // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -88,6 +90,174 @@ Remember: You're a supportive companion, not a replacement for professional ther
         error: "I'm having trouble responding right now. Please try again or contact support if this continues.",
         fallback: true
       });
+    }
+  });
+
+  // Mood tracking endpoints
+  app.post("/api/mood", async (req, res) => {
+    try {
+      // Validate request body
+      const validationResult = apiMoodEntrySchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          error: "Invalid mood entry data", 
+          details: validationResult.error.issues 
+        });
+      }
+
+      const { moodValue, notes, date } = validationResult.data;
+      
+      // For now, using a default user ID - in a real app, this would come from authentication
+      const userId = "default-user";
+      const entryDate = date || new Date().toISOString().split('T')[0];
+
+      // Use upsert to handle duplicate date entries
+      const moodEntry = await storage.upsertMoodEntry({
+        userId,
+        moodValue,
+        date: entryDate,
+        notes: notes || null
+      });
+
+      res.json({ moodEntry, success: true });
+    } catch (error: any) {
+      console.error('Mood tracking error:', error);
+      
+      // Handle database constraint errors gracefully
+      if (error?.code === '23505') { // PostgreSQL unique violation
+        return res.status(409).json({ error: "Mood entry for this date already exists" });
+      }
+      
+      res.status(500).json({ error: "Failed to save mood entry" });
+    }
+  });
+
+  app.get("/api/mood/history", async (req, res) => {
+    try {
+      const userId = "default-user";
+      
+      // Validate limit parameter
+      const limitSchema = z.number().int().positive().max(365).optional();
+      const limit = limitSchema.parse(parseInt(req.query.limit as string) || 30);
+      
+      const entries = await storage.getRecentMoodEntries(userId, limit);
+      const streak = await storage.getMoodStreak(userId);
+      
+      res.json({ entries, streak });
+    } catch (error: any) {
+      console.error('Mood history error:', error);
+      
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid limit parameter", details: error.issues });
+      }
+      
+      res.status(500).json({ error: "Failed to fetch mood history" });
+    }
+  });
+
+  // Goals endpoints
+  app.get("/api/goals", async (req, res) => {
+    try {
+      const userId = "default-user";
+      const goals = await storage.getUserGoals(userId);
+      
+      res.json({ goals });
+    } catch (error) {
+      console.error('Goals fetch error:', error);
+      res.status(500).json({ error: "Failed to fetch goals" });
+    }
+  });
+
+  app.post("/api/goals", async (req, res) => {
+    try {
+      // Validate request body
+      const validationResult = apiCreateGoalSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          error: "Invalid goal data", 
+          details: validationResult.error.issues 
+        });
+      }
+
+      const { title, description, category, targetDate } = validationResult.data;
+      const userId = "default-user";
+      
+      const goal = await storage.createGoal({
+        userId,
+        title,
+        description: description || null,
+        category,
+        progress: 0,
+        isCompleted: 0,
+        targetDate: targetDate || null
+      });
+
+      res.json({ goal, success: true });
+    } catch (error) {
+      console.error('Goal creation error:', error);
+      res.status(500).json({ error: "Failed to create goal" });
+    }
+  });
+
+  app.patch("/api/goals/:goalId", async (req, res) => {
+    try {
+      const { goalId } = req.params;
+      
+      // Validate goal ID format
+      const goalIdSchema = z.string().uuid();
+      if (!goalIdSchema.safeParse(goalId).success) {
+        return res.status(400).json({ error: "Invalid goal ID format" });
+      }
+      
+      // Validate request body with whitelisted fields only
+      const validationResult = apiUpdateGoalSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          error: "Invalid goal update data", 
+          details: validationResult.error.issues 
+        });
+      }
+
+      const userId = "default-user";
+      const updates = validationResult.data;
+      
+      // Use userId scoping to ensure authorization
+      const updatedGoal = await storage.updateGoal(goalId, userId, updates);
+      
+      if (!updatedGoal) {
+        return res.status(404).json({ error: "Goal not found or access denied" });
+      }
+
+      res.json({ goal: updatedGoal, success: true });
+    } catch (error) {
+      console.error('Goal update error:', error);
+      res.status(500).json({ error: "Failed to update goal" });
+    }
+  });
+
+  app.delete("/api/goals/:goalId", async (req, res) => {
+    try {
+      const { goalId } = req.params;
+      
+      // Validate goal ID format
+      const goalIdSchema = z.string().uuid();
+      if (!goalIdSchema.safeParse(goalId).success) {
+        return res.status(400).json({ error: "Invalid goal ID format" });
+      }
+      
+      const userId = "default-user";
+      
+      // Use userId scoping to ensure authorization
+      const deleted = await storage.deleteGoal(goalId, userId);
+      
+      if (!deleted) {
+        return res.status(404).json({ error: "Goal not found or access denied" });
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Goal deletion error:', error);
+      res.status(500).json({ error: "Failed to delete goal" });
     }
   });
 
