@@ -1,32 +1,33 @@
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
-import { drizzle as drizzleNeon } from 'drizzle-orm/neon-serverless';
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import ws from "ws";
 import * as schema from "@shared/schema";
 
-if (!process.env.DATABASE_URL) {
+// Check if we're using SQLite (for local development)
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
   throw new Error(
     "DATABASE_URL must be set. Did you forget to provision a database?",
   );
 }
 
-const databaseUrl = process.env.DATABASE_URL;
-
-let db: ReturnType<typeof drizzle> | ReturnType<typeof drizzleNeon>;
-let pool: any;
+let db: ReturnType<typeof drizzle>;
 
 if (databaseUrl.startsWith('sqlite:')) {
   // SQLite configuration for local development
   const dbPath = databaseUrl.replace('sqlite:', '');
   const sqlite = new Database(dbPath);
   db = drizzle(sqlite, { schema });
-  pool = db; // For backward compatibility
 } else {
   // PostgreSQL configuration for production (Neon)
-  neonConfig.webSocketConstructor = ws;
-  pool = new Pool({ connectionString: databaseUrl });
+  const { Pool, neonConfig } = await import('@neondatabase/serverless');
+  const { drizzle: drizzleNeon } = await import('drizzle-orm/neon-serverless');
+  const ws = await import("ws");
+
+  neonConfig.webSocketConstructor = ws.default;
+  const pool = new Pool({ connectionString: databaseUrl });
   db = drizzleNeon({ client: pool, schema });
 }
 
-export { db, pool };
+export { db };
+export const pool = db; // For backward compatibility
