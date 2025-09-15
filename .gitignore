@@ -47,9 +47,3 @@ Thumbs.db
 
 # Archives
 *.tar.gz
-
-# Replit specific
-.replit
-.upm
-.breakpoints
-.config/
