@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERN Stack API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .result {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 MERN Stack API Test Dashboard</h1>
+        <p>Test the StudentMindscape MERN stack backend APIs</p>
+        
+        <div id="status" class="error">
+            <strong>MongoDB Status:</strong> Not connected (running without database)
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🔐 Authentication</h2>
+        
+        <div class="form-group">
+            <h3>Register New User</h3>
+            <label>Username:</label>
+            <input type="text" id="regUsername" placeholder="Enter username" value="testuser">
+            
+            <label>Email:</label>
+            <input type="email" id="regEmail" placeholder="Enter email" value="test@example.com">
+            
+            <label>Password:</label>
+            <input type="password" id="regPassword" placeholder="Enter password" value="password123">
+            
+            <button onclick="registerUser()">Register User</button>
+        </div>
+
+        <div class="form-group">
+            <h3>Login User</h3>
+            <label>Username/Email:</label>
+            <input type="text" id="loginUsername" placeholder="Username or email" value="testuser">
+            
+            <label>Password:</label>
+            <input type="password" id="loginPassword" placeholder="Password" value="password123">
+            
+            <button onclick="loginUser()">Login</button>
+        </div>
+
+        <div id="authResult" class="result"></div>
+    </div>
+
+    <div class="container">
+        <h2>💭 AI Chat (requires login)</h2>
+        <div class="form-group">
+            <label>Message:</label>
+            <textarea id="chatMessage" placeholder="Ask the AI wellness buddy something..." rows="3">I'm feeling stressed about my upcoming exams. Can you help?</textarea>
+            <button onclick="sendChatMessage()">Send Message</button>
+        </div>
+        <div id="chatResult" class="result"></div>
+    </div>
+
+    <div class="container">
+        <h2>😊 Mood Tracking (requires login)</h2>
+        <div class="form-group">
+            <label>Mood Value (1-5):</label>
+            <input type="number" id="moodValue" min="1" max="5" value="4">
+            
+            <label>Notes:</label>
+            <textarea id="moodNotes" placeholder="How are you feeling?" rows="2">Feeling good today after studying!</textarea>
+            
+            <button onclick="submitMood()">Submit Mood</button>
+            <button onclick="getMoodHistory()">Get Mood History</button>
+        </div>
+        <div id="moodResult" class="result"></div>
+    </div>
+
+    <div class="container">
+        <h2>🎯 Goals (requires login)</h2>
+        <div class="form-group">
+            <label>Goal Title:</label>
+            <input type="text" id="goalTitle" placeholder="Enter goal title" value="Complete project documentation">
+            
+            <label>Description:</label>
+            <textarea id="goalDescription" placeholder="Goal description" rows="2">Finish writing comprehensive documentation for the project</textarea>
+            
+            <label>Category:</label>
+            <select id="goalCategory">
+                <option value="academic">Academic</option>
+                <option value="wellness">Wellness</option>
+                <option value="personal">Personal</option>
+                <option value="social">Social</option>
+                <option value="career">Career</option>
+            </select>
+            
+            <button onclick="createGoal()">Create Goal</button>
+            <button onclick="getGoals()">Get Goals</button>
+        </div>
+        <div id="goalResult" class="result"></div>
+    </div>
+
+    <script>
+        let authToken = localStorage.getItem('authToken') || '';
+        
+        function updateAuthToken(token) {
+            authToken = token;
+            localStorage.setItem('authToken', token);
+            document.getElementById('authResult').innerHTML += `\n🔑 Auth token saved: ${token.substring(0, 20)}...`;
+        }
+
+        async function apiCall(endpoint, method = 'GET', body = null, requireAuth = false) {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (requireAuth && authToken) {
+                headers['Authorization'] = `Bearer ${authToken}`;
+            }
+            
+            const options = {
+                method,
+                headers
+            };
+            
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+            
+            try {
+                const response = await fetch(endpoint, options);
+                const data = await response.json();
+                
+                return {
+                    success: response.ok,
+                    status: response.status,
+                    data
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }
+
+        async function registerUser() {
+            const result = await apiCall('/api/auth/register', 'POST', {
+                username: document.getElementById('regUsername').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value
+            });
+            
+            document.getElementById('authResult').textContent = JSON.stringify(result, null, 2);
+            
+            if (result.success && result.data.token) {
+                updateAuthToken(result.data.token);
+            }
+        }
+
+        async function loginUser() {
+            const result = await apiCall('/api/auth/login', 'POST', {
+                username: document.getElementById('loginUsername').value,
+                password: document.getElementById('loginPassword').value
+            });
+            
+            document.getElementById('authResult').textContent = JSON.stringify(result, null, 2);
+            
+            if (result.success && result.data.token) {
+                updateAuthToken(result.data.token);
+            }
+        }
+
+        async function sendChatMessage() {
+            const result = await apiCall('/api/chat', 'POST', {
+                message: document.getElementById('chatMessage').value
+            }, true);
+            
+            document.getElementById('chatResult').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function submitMood() {
+            const result = await apiCall('/api/mood', 'POST', {
+                moodValue: parseInt(document.getElementById('moodValue').value),
+                notes: document.getElementById('moodNotes').value
+            }, true);
+            
+            document.getElementById('moodResult').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function getMoodHistory() {
+            const result = await apiCall('/api/mood/history', 'GET', null, true);
+            document.getElementById('moodResult').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function createGoal() {
+            const result = await apiCall('/api/goals', 'POST', {
+                title: document.getElementById('goalTitle').value,
+                description: document.getElementById('goalDescription').value,
+                category: document.getElementById('goalCategory').value
+            }, true);
+            
+            document.getElementById('goalResult').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function getGoals() {
+            const result = await apiCall('/api/goals', 'GET', null, true);
+            document.getElementById('goalResult').textContent = JSON.stringify(result, null, 2);
+        }
+
+        // Show auth token if available
+        if (authToken) {
+            document.getElementById('authResult').textContent = `🔑 Stored auth token: ${authToken.substring(0, 20)}...`;
+        }
+    </script>
+</body>
+</html>
