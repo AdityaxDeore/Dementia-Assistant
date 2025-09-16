@@ -69,35 +69,60 @@ A comprehensive digital mental health platform designed specifically for student
    cd Clarity
    ```
 
-2. **Install dependencies**
+2. **Quick Setup (Recommended)**
    ```bash
-   npm install
+   # Linux/Mac
+   chmod +x setup.sh && ./setup.sh
+   
+   # Windows
+   setup.bat
+   
+   # Or manually:
+   npm run setup
    ```
 
-3. **Set up environment variables**
+3. **Manual Setup**
    ```bash
-   cp .env.example .env
-   ```
+   # Install dependencies
+   npm install
    
-   Edit `.env` with your configuration:
-   ```env
-   # For local development (SQLite)
-   DATABASE_URL=sqlite:./local.db
-   
-   # Optional: OpenAI API key for enhanced AI features
-   OPENAI_API_KEY=your_openai_api_key_here
-   
-   # Session secret
-   SESSION_SECRET=your_random_session_secret
+   # Create environment file
+   cp .env.example .env    # Linux/Mac
+   copy .env.example .env  # Windows
    ```
 
 4. **Start the development server**
    ```bash
    npm run dev
    ```
+   
+   The app will be available at `http://localhost:5000`
 
-5. **Open your browser**
-   Navigate to `http://localhost:5000`
+### Production Deployment
+
+1. **Build the application**
+   ```bash
+   npm run build
+   ```
+
+2. **Start the production server**
+   ```bash
+   npm start
+   ```
+
+### Troubleshooting
+
+**Error: "DATABASE_URL must be set"**
+- Make sure you've copied `.env.example` to `.env`
+- Check that the `.env` file contains `DATABASE_URL=sqlite:./local.db`
+
+**Error: "Cannot find module dist/index.js"**
+- Run `npm run build` before `npm start`
+- Use `npm run dev` for development instead
+
+**App not loading on other devices:**
+- Ensure all dependencies are installed: `npm install`
+- Make sure the `.env` file exists and is configured properly
 
 ## 🏗️ Project Structure
 

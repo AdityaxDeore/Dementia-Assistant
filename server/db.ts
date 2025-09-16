@@ -6,6 +6,11 @@ import ws from "ws";
 import * as schema from "@shared/schema";
 
 if (!process.env.DATABASE_URL) {
+  console.error("❌ DATABASE_URL environment variable is not set!");
+  console.error("📝 Please create a .env file by copying .env.example:");
+  console.error("   cp .env.example .env    (Linux/Mac)");
+  console.error("   copy .env.example .env  (Windows)");
+  console.error("🔧 Or run: npm run setup");
   throw new Error(
     "DATABASE_URL must be set. Did you forget to provision a database?",
   );

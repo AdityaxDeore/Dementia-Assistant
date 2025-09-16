@@ -102,7 +102,7 @@ export function PeerSupportForum() {
     }
   ];
   
-  // TODO: remove mock functionality
+  // Mock posts with enhanced community support
   const [posts, setPosts] = useState<ForumPost[]>([
     {
       id: '1',
@@ -216,8 +216,75 @@ export function PeerSupportForum() {
     return `${Math.floor(diffInSeconds / 86400)}d ago`;
   };
 
+  // Filter posts based on active tab
+  const filteredPosts = posts.filter(post => {
+    if (activeTab === "all") return true;
+    return post.community === activeTab;
+  });
+
+  const getCommunityInfo = (communityId: string) => {
+    return communities.find(c => c.id === communityId) || communities[0];
+  };
+
   return (
     <div className="space-y-6" data-testid="peer-support-forum">
+      {/* Community Tabs */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="w-5 h-5 text-primary" />
+            Specialized Communities
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Connect with communities that understand your unique experiences and challenges
+          </p>
+        </CardHeader>
+        <CardContent>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+              <TabsTrigger value="all">All Posts</TabsTrigger>
+              {communities.map((community) => (
+                <TabsTrigger key={community.id} value={community.id} className="text-xs">
+                  <community.icon className={`w-4 h-4 mr-1 ${community.color}`} />
+                  {community.name.split(' ')[0]}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            
+            {/* Community Info Cards */}
+            <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {communities.filter(c => c.isSpecialized).map((community) => (
+                <Card key={community.id} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <community.icon className={`w-6 h-6 ${community.color} mt-1`} />
+                      <div className="space-y-1">
+                        <h4 className="font-medium text-sm">{community.name}</h4>
+                        <p className="text-xs text-muted-foreground">{community.description}</p>
+                        {community.accessibilitySupport && (
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {community.accessibilitySupport.slice(0, 2).map((support) => (
+                              <Badge key={support} variant="secondary" className="text-xs">
+                                {support}
+                              </Badge>
+                            ))}
+                            {community.accessibilitySupport.length > 2 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{community.accessibilitySupport.length - 2} more
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </Tabs>
+        </CardContent>
+      </Card>
+
       {/* Create New Post */}
       <Card>
         <CardHeader>
@@ -227,6 +294,38 @@ export function PeerSupportForum() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <Select value={selectedCommunity} onValueChange={setSelectedCommunity}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select community" />
+              </SelectTrigger>
+              <SelectContent>
+                {communities.map((community) => (
+                  <SelectItem key={community.id} value={community.id}>
+                    <div className="flex items-center gap-2">
+                      <community.icon className={`w-4 h-4 ${community.color}`} />
+                      {community.name}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="General">General</SelectItem>
+                <SelectItem value="Academic Stress">Academic Stress</SelectItem>
+                <SelectItem value="Study Tips">Study Tips</SelectItem>
+                <SelectItem value="Campus Info">Campus Info</SelectItem>
+                <SelectItem value="Wellness Tips">Wellness Tips</SelectItem>
+                <SelectItem value="Study Groups">Study Groups</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
           <Textarea
             placeholder="Share your thoughts, ask for support, or offer encouragement to fellow students..."
             value={newPost}
@@ -263,68 +362,83 @@ export function PeerSupportForum() {
       {/* Forum Posts */}
       <Card>
         <CardHeader>
-          <CardTitle>Community Discussions</CardTitle>
+          <CardTitle>
+            {activeTab === "all" ? "All Community Discussions" : 
+             `${getCommunityInfo(activeTab).name} Discussions`}
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {posts.map((post, index) => (
-            <div key={post.id}>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <Avatar className="w-10 h-10">
-                    <AvatarFallback className="bg-secondary text-secondary-foreground">
-                      {post.isAnonymous ? '?' : post.author[0]}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-sm">{post.author}</span>
-                      <Badge variant="outline" className="text-xs">
-                        {post.category}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {formatTimeAgo(post.timestamp)}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="font-medium mb-1">{post.title}</h4>
-                      <p className="text-sm text-muted-foreground">{post.content}</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleLike(post.id)}
-                        className={`text-xs ${post.isLiked ? 'text-primary' : ''}`}
-                        data-testid={`button-like-${post.id}`}
-                      >
-                        <ThumbsUp className={`w-4 h-4 mr-1 ${post.isLiked ? 'fill-current' : ''}`} />
-                        {post.likes}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-xs"
-                        data-testid={`button-reply-${post.id}`}
-                      >
-                        <Reply className="w-4 h-4 mr-1" />
-                        {post.replies} replies
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-xs"
-                        data-testid={`button-more-${post.id}`}
-                      >
-                        <MoreHorizontal className="w-4 h-4" />
-                      </Button>
+          {filteredPosts.map((post, index) => {
+            const communityInfo = getCommunityInfo(post.community);
+            return (
+              <div key={post.id}>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <Avatar className="w-10 h-10">
+                      <AvatarFallback className="bg-secondary text-secondary-foreground">
+                        {post.isAnonymous ? '?' : post.author[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-medium text-sm">{post.author}</span>
+                        <Badge variant="outline" className="text-xs">
+                          {post.category}
+                        </Badge>
+                        <div className="flex items-center gap-1">
+                          <communityInfo.icon className={`w-3 h-3 ${communityInfo.color}`} />
+                          <span className="text-xs text-muted-foreground">{communityInfo.name}</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {formatTimeAgo(post.timestamp)}
+                        </span>
+                        {post.accessibility?.isScreenReaderFriendly && (
+                          <Badge variant="secondary" className="text-xs">
+                            Screen Reader Friendly
+                          </Badge>
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="font-medium mb-1">{post.title}</h4>
+                        <p className="text-sm text-muted-foreground">{post.content}</p>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleLike(post.id)}
+                          className={`text-xs ${post.isLiked ? 'text-primary' : ''}`}
+                          data-testid={`button-like-${post.id}`}
+                        >
+                          <ThumbsUp className={`w-4 h-4 mr-1 ${post.isLiked ? 'fill-current' : ''}`} />
+                          {post.likes}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs"
+                          data-testid={`button-reply-${post.id}`}
+                        >
+                          <Reply className="w-4 h-4 mr-1" />
+                          {post.replies} replies
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs"
+                          data-testid={`button-more-${post.id}`}
+                        >
+                          <MoreHorizontal className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
+                {index < filteredPosts.length - 1 && <Separator className="mt-4" />}
               </div>
-              {index < posts.length - 1 && <Separator className="mt-4" />}
-            </div>
-          ))}
+            );
+          })}
         </CardContent>
       </Card>
     </div>

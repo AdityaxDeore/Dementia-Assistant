@@ -9,7 +9,9 @@ import {
   Settings,
   Shield,
   Phone,
-  User
+  User,
+  Brain,
+  PenTool
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
@@ -31,9 +33,19 @@ const mainItems = [
     icon: Home,
   },
   {
+    title: "Assessment",
+    url: "/onboarding",
+    icon: Brain,
+  },
+  {
     title: "AI Buddy",
     url: "/ai-buddy",
     icon: MessageCircle,
+  },
+  {
+    title: "Personal Diary",
+    url: "/diary",
+    icon: PenTool,
   },
   {
     title: "Wellness",
@@ -48,6 +60,11 @@ const mainItems = [
 ];
 
 const supportItems = [
+  {
+    title: "Anonymous Chat",
+    url: "/anonymous-chat",
+    icon: Shield,
+  },
   {
     title: "Peer Support",
     url: "/peer-support",

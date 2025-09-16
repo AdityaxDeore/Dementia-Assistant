@@ -5,27 +5,56 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
+import { Sparkles, MessageCircle } from "lucide-react";
+
+// Motivating quotes for positive moods
+const motivatingQuotes = [
+  "✨ Your positive energy is contagious! Keep shining and inspiring others around you.",
+  "🌟 You're doing amazing! Your resilience and strength are truly remarkable.",
+  "🚀 Great mindset leads to great achievements! You're on the right path to success.",
+  "💖 Your happiness radiates joy! Thank you for being such a positive force.",
+  "🌈 Keep this beautiful energy flowing! You're creating ripples of positivity.",
+  "⭐ Your optimism is your superpower! Use it to conquer any challenge today.",
+  "🦋 You're blooming beautifully! Your growth and positivity inspire everyone.",
+  "🎯 Fantastic mood, fantastic you! Your positive attitude is your greatest asset.",
+  "🌺 Your joy is a gift to the world! Keep spreading those good vibes.",
+  "💫 Stellar mood today! Your enthusiasm and energy light up every room."
+];
 
 const moodOptions = [
-  { emoji: "😔", label: "Very Low", value: 1, color: "bg-red-100 text-red-800" },
-  { emoji: "🙁", label: "Low", value: 2, color: "bg-orange-100 text-orange-800" },
-  { emoji: "😐", label: "Neutral", value: 3, color: "bg-yellow-100 text-yellow-800" },
-  { emoji: "🙂", label: "Good", value: 4, color: "bg-green-100 text-green-800" },
-  { emoji: "😊", label: "Great", value: 5, color: "bg-emerald-100 text-emerald-800" },
+  { emoji: "😊", label: "Great", value: 5, color: "bg-emerald-100 text-emerald-800", bgGradient: "from-emerald-100 to-green-100" },
+  { emoji: "🙂", label: "Good", value: 4, color: "bg-green-100 text-green-800", bgGradient: "from-green-100 to-lime-100" },
+  { emoji: "😐", label: "Neutral", value: 3, color: "bg-yellow-100 text-yellow-800", bgGradient: "from-yellow-100 to-amber-100" },
+  { emoji: "🙁", label: "Low", value: 2, color: "bg-orange-100 text-orange-800", bgGradient: "from-orange-100 to-yellow-100" },
+  { emoji: "😔", label: "Very Low", value: 1, color: "bg-red-100 text-red-800", bgGradient: "from-red-100 to-pink-100" },
 ];
+
+// Reverse the order for left-to-right display (Great → Very Low)
+const displayMoodOptions = [...moodOptions].reverse();
 
 export function MoodTracker() {
   const [selectedMood, setSelectedMood] = useState<number | null>(null);
+  const [showQuote, setShowQuote] = useState(false);
+  const [currentQuote, setCurrentQuote] = useState("");
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [, navigate] = useLocation();
 
   // Fetch mood history
   const { data: moodData, isLoading } = useQuery({
     queryKey: ['/api/mood/history'],
     queryFn: async () => {
-      const response = await fetch('/api/mood/history');
-      if (!response.ok) throw new Error('Failed to fetch mood history');
-      return response.json();
+      // Return mock data for now since database tables don't exist yet
+      return {
+        entries: [
+          { id: '1', moodValue: 4, date: '2024-01-15', notes: 'Feeling good today!' },
+          { id: '2', moodValue: 3, date: '2024-01-14', notes: 'Neutral day' },
+          { id: '3', moodValue: 5, date: '2024-01-13', notes: 'Great mood!' }
+        ],
+        streak: 3,
+        weekProgress: 5
+      };
     }
   });
 
@@ -59,11 +88,39 @@ export function MoodTracker() {
 
   const handleMoodSelect = (moodValue: number) => {
     setSelectedMood(moodValue);
+    
+    // If "Great" mood (value 5) is selected, show motivating quote
+    if (moodValue === 5) {
+      const randomQuote = motivatingQuotes[Math.floor(Math.random() * motivatingQuotes.length)];
+      setCurrentQuote(randomQuote);
+      setShowQuote(true);
+    } else {
+      // For other moods, clear quote state
+      setShowQuote(false);
+      setCurrentQuote("");
+    }
+  };
+  
+  const handleAIChatRedirect = () => {
+    navigate("/ai-buddy");
   };
 
   const handleSubmit = () => {
     if (selectedMood) {
-      submitMoodMutation.mutate(selectedMood);
+      if (selectedMood === 5) {
+        // For "Great" mood, just save without redirect
+        submitMoodMutation.mutate(selectedMood);
+      } else {
+        // For other moods, save and redirect to AI chat
+        submitMoodMutation.mutate(selectedMood);
+        setTimeout(() => {
+          toast({
+            title: "Let's talk! 💬",
+            description: "I'm here to support you. Let's have a conversation to help you feel better.",
+          });
+          handleAIChatRedirect();
+        }, 1500);
+      }
     }
   };
 
@@ -71,54 +128,158 @@ export function MoodTracker() {
   const weekProgress = Math.min(moodData?.entries?.length || 0, 7);
 
   return (
-    <Card data-testid="card-mood-tracker">
-      <CardHeader>
-        <CardTitle className="text-lg font-medium">Daily Mood Check-In</CardTitle>
+    <Card data-testid="card-mood-tracker" className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Daily Mood Check-In
+        </CardTitle>
         <div className="flex items-center gap-4">
-          <Badge variant="secondary" data-testid="text-mood-streak">
+          <Badge variant="secondary" className="bg-orange-100 text-orange-800 font-medium" data-testid="text-mood-streak">
             🔥 {streak} day streak
           </Badge>
           <div className="flex-1">
-            <div className="flex justify-between text-sm text-muted-foreground mb-1">
-              <span>This week</span>
-              <span>{weekProgress}/7</span>
+            <div className="flex justify-between text-sm text-muted-foreground mb-2">
+              <span className="font-medium">This week</span>
+              <span className="font-medium">{weekProgress}/7</span>
             </div>
-            <Progress value={(weekProgress / 7) * 100} className="h-2" />
+            <Progress value={(weekProgress / 7) * 100} className="h-3 bg-gray-200" />
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="text-sm text-muted-foreground">
-          How are you feeling today?
+      <CardContent className="space-y-6">
+        <div className="text-center">
+          <p className="text-lg font-medium text-gray-700 mb-2">How are you feeling today?</p>
+          <p className="text-sm text-muted-foreground">Select the emoji that best represents your mood</p>
         </div>
         
-        <div className="grid grid-cols-5 gap-2">
-          {moodOptions.map((mood) => (
+        <div className="flex justify-center gap-3 px-2">
+          {displayMoodOptions.map((mood, index) => (
             <Button
               key={mood.value}
-              variant={selectedMood === mood.value ? "default" : "outline"}
-              className="flex flex-col items-center p-4 h-auto"
+              variant={selectedMood === mood.value ? "default" : "ghost"}
+              className={`
+                relative flex flex-col items-center p-4 h-auto min-h-[100px] w-full max-w-[80px]
+                transition-all duration-500 ease-out transform
+                hover:scale-125 hover:-translate-y-3 hover:shadow-2xl hover:rotate-3
+                active:scale-95 active:rotate-0
+                ${
+                  selectedMood === mood.value 
+                    ? `bg-gradient-to-br ${mood.bgGradient} border-2 border-current shadow-2xl scale-110 -translate-y-2 animate-pulse` 
+                    : 'hover:bg-gradient-to-br hover:from-white hover:to-gray-50 border border-gray-200 hover:border-blue-300'
+                }
+                group rounded-2xl backdrop-blur-sm mood-emoji-stagger-${index + 1}
+              `}
               onClick={() => handleMoodSelect(mood.value)}
               data-testid={`button-mood-${mood.value}`}
+              style={{
+                animationDelay: `${index * 150}ms`,
+                animation: 'slideInBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                '--bounce-delay': `${index * 150}ms`
+              } as React.CSSProperties}
             >
-              <span className="text-2xl mb-1">{mood.emoji}</span>
-              <span className="text-xs">{mood.label}</span>
+              <div className="relative">
+                <span 
+                  className={`text-5xl mb-2 block transition-all duration-500 group-hover:scale-150 group-hover:rotate-[360deg] group-active:scale-125 ${
+                    selectedMood === mood.value ? 'emoji-selected' : ''
+                  }`}
+                  style={{
+                    filter: selectedMood === mood.value ? 'drop-shadow(0 6px 12px rgba(0,0,0,0.15))' : 'drop-shadow(0 2px 4px rgba(0,0,0,0.05))',
+                    textShadow: selectedMood === mood.value ? '0 4px 8px rgba(0,0,0,0.15)' : '0 1px 2px rgba(0,0,0,0.05)'
+                  }}
+                >
+                  {mood.emoji}
+                </span>
+                {selectedMood === mood.value && (
+                  <>
+                    <div className="absolute -inset-3 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-full opacity-30 animate-ping" />
+                    <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20 animate-pulse" />
+                    <div className="absolute -inset-1 bg-gradient-to-r from-white to-blue-100 rounded-full opacity-40" style={{
+                      animation: 'spin 3s linear infinite'
+                    }} />
+                  </>
+                )}
+              </div>
+              <span className={`text-xs font-medium transition-all duration-200 ${
+                selectedMood === mood.value ? 'text-gray-800' : 'text-gray-600'
+              }`}>
+                {mood.label}
+              </span>
             </Button>
           ))}
         </div>
 
         {selectedMood && (
-          <div className="space-y-3">
-            <Badge className={moodOptions[selectedMood - 1].color}>
-              Today: {moodOptions[selectedMood - 1].label}
-            </Badge>
+          <div 
+            className="space-y-4 animate-in slide-in-from-bottom-4 duration-500"
+            style={{
+              animation: 'slideInFadeIn 0.5s ease-out forwards'
+            }}
+          >
+            <div className="text-center">
+              <Badge className={`${moodOptions.find(m => m.value === selectedMood)?.color} text-lg py-2 px-4 font-semibold`}>
+                Today: {moodOptions.find(m => m.value === selectedMood)?.label} {moodOptions.find(m => m.value === selectedMood)?.emoji}
+              </Badge>
+            </div>
+            
+            {/* Show motivating quote for "Great" mood */}
+            {showQuote && selectedMood === 5 && (
+              <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-2xl border-2 border-emerald-200 animate-in slide-in-from-bottom-4 duration-700">
+                <div className="flex items-start gap-3">
+                  <Sparkles className="w-6 h-6 text-emerald-600 mt-1 animate-pulse" />
+                  <div>
+                    <h4 className="font-bold text-emerald-800 mb-2">Daily Motivation 🌟</h4>
+                    <p className="text-emerald-700 leading-relaxed font-medium">
+                      {currentQuote}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Show AI chat suggestion for other moods */}
+            {selectedMood && selectedMood < 5 && (
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-2xl border-2 border-blue-200 animate-in slide-in-from-bottom-4 duration-700">
+                <div className="flex items-start gap-3">
+                  <MessageCircle className="w-6 h-6 text-blue-600 mt-1 animate-bounce" />
+                  <div>
+                    <h4 className="font-bold text-blue-800 mb-2">I'm Here for You 💙</h4>
+                    <p className="text-blue-700 leading-relaxed font-medium mb-3">
+                      It's okay to feel this way. Let's have a supportive conversation to help you process these emotions.
+                    </p>
+                    <p className="text-sm text-blue-600 font-medium">
+                      ✨ After saving your mood, I'll take you to our AI buddy for a caring chat.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <Button 
               onClick={handleSubmit} 
-              className="w-full"
+              className={`w-full h-12 text-lg font-semibold transform transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg ${
+                selectedMood === 5 
+                  ? 'bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700'
+                  : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700'
+              }`}
               disabled={submitMoodMutation.isPending}
               data-testid="button-submit-mood"
             >
-              {submitMoodMutation.isPending ? 'Saving...' : 'Save Check-In'}
+              {submitMoodMutation.isPending ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Saving...
+                </>
+              ) : selectedMood === 5 ? (
+                <>
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Save & Keep Shining!
+                </>
+              ) : (
+                <>
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Save & Talk to AI Buddy
+                </>
+              )}
             </Button>
           </div>
         )}
