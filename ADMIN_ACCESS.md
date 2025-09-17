@@ -9,7 +9,7 @@ The admin panel has been secured and removed from the main navigation. Only auth
 1. Navigate to: `http://localhost:3000/admin-login`
 2. Use the following credentials:
    - **Username:** `admin`
-   - **Password:** `mindwell@admin2024`
+   - **Password:** `clarity@admin2024`
 
 ### Security Features:
 - ✅ Admin panel removed from main sidebar navigation

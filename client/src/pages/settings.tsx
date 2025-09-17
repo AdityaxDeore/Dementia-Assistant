@@ -10,7 +10,7 @@ export default function SettingsPage() {
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground">
           Customize your experience with accessibility options, themes, and preferences to make 
-          MindWell work best for your needs.
+          Clarity work best for your needs.
         </p>
       </div>
 

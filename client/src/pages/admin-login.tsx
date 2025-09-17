@@ -19,7 +19,7 @@ export default function AdminLogin() {
   // Hardcoded admin credentials (in production, this should be server-side validated)
   const ADMIN_CREDENTIALS = {
     username: "admin",
-    password: "mindwell@admin2024"
+    password: "clarity@admin2024"
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,7 +72,7 @@ export default function AdminLogin() {
             Admin Access
           </CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-300">
-            Secure login for MindWell administrators
+            Secure login for Clarity administrators
           </CardDescription>
         </CardHeader>
         

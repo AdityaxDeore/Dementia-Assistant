@@ -91,7 +91,7 @@ function App() {
                 <div className="flex items-center gap-4">
                   <SidebarTrigger data-testid="button-sidebar-toggle" />
                   <div className="hidden md:block">
-                    <h2 className="font-semibold text-lg text-primary">MindWell</h2>
+                    <h2 className="font-semibold text-lg text-primary">Clarity</h2>
                     <p className="text-xs text-muted-foreground">Student Mental Health Support</p>
                   </div>
                 </div>

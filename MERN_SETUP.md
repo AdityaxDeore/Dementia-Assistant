@@ -16,7 +16,7 @@
 3. Get your connection string from the cluster dashboard
 4. Update your `.env` file:
    ```
-   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/studentmindscape?retryWrites=true&w=majority
+   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/clarity?retryWrites=true&w=majority
    ```
 
 ### Option 3: Docker MongoDB (Alternative)
@@ -56,7 +56,7 @@ docker run --name mongodb -d -p 27017:27017 mongo:latest
 
 ## Environment Variables Required
 ```
-MONGODB_URI=mongodb://localhost:27017/studentmindscape
+MONGODB_URI=mongodb://localhost:27017/clarity
 JWT_SECRET=your_jwt_secret_key_here
 OPENAI_API_KEY=your_openai_api_key_here
 PORT=5000

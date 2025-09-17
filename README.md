@@ -36,24 +36,24 @@ A comprehensive digital mental health platform designed specifically for student
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **React 18** with TypeScript
-- **Tailwind CSS** + **Shadcn/UI** components
-- **Framer Motion** for smooth animations
-- **TanStack Query** for data management
-- **Vite** for fast development
+For a **complete and detailed technical documentation** of our entire stack, see **[TECH-STACK.md](./TECH-STACK.md)**.
 
-### Backend
-- **Node.js** + **Express** server
-- **TypeScript** for type safety
-- **Drizzle ORM** for database operations
-- **Express Sessions** for authentication
-- **WebSocket** for real-time features
+### Quick Overview
 
-### Database
-- **PostgreSQL** (production)
-- **SQLite** (local development)
-- **Neon Database** (cloud hosting)
+**Frontend:**
+- React 18 + TypeScript + Vite
+- Tailwind CSS + Shadcn/UI + Radix UI
+- TanStack Query + Framer Motion + Wouter
+
+**Backend:**
+- Node.js + Express + TypeScript
+- Drizzle ORM + PostgreSQL/SQLite
+- WebSocket + Express Sessions + Passport.js
+
+**Build & Dev:**
+- Vite + ESBuild + PostCSS
+- Cross-platform setup scripts
+- Hot reload + TypeScript strict mode
 
 ## 🚀 Getting Started
 

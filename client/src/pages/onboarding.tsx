@@ -18,7 +18,7 @@ export default function OnboardingPage() {
     <div className="space-y-6" data-testid="page-onboarding">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">
-          {hasCompletedBefore ? 'Retake Assessment' : 'Welcome to MindWell'}
+          {hasCompletedBefore ? 'Retake Assessment' : 'Welcome to Clarity'}
         </h1>
         <p className="text-muted-foreground">
           {hasCompletedBefore 
