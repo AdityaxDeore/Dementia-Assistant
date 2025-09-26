@@ -1,11 +1,13 @@
 import { AccessibilityControls } from "@/components/accessibility-controls";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Settings, Palette, Eye } from "lucide-react";
 
 export default function SettingsPage() {
   return (
     <div className="space-y-6" data-testid="page-settings">
+      <BackButton to="/dashboard" />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground">

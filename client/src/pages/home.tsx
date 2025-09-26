@@ -1,0 +1,265 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { BackgroundPaths } from "@/components/ui/background-paths";
+import { useLocation } from "wouter";
+import { Heart, Brain, Users, Shield, ArrowRight, Sparkles } from "lucide-react";
+import { motion, Transition } from 'framer-motion';
+import { useEffect, useRef, useState, useMemo } from 'react';
+
+type BlurTextProps = {
+  text?: string;
+  delay?: number;
+  className?: string;
+  animateBy?: 'words' | 'letters';
+  direction?: 'top' | 'bottom';
+  threshold?: number;
+  rootMargin?: string;
+  animationFrom?: Record<string, string | number>;
+  animationTo?: Array<Record<string, string | number>>;
+  easing?: (t: number) => number;
+  onAnimationComplete?: () => void;
+  stepDuration?: number;
+  initialDelay?: number;
+};
+
+const buildKeyframes = (
+  from: Record<string, string | number>,
+  steps: Array<Record<string, string | number>>
+): Record<string, Array<string | number>> => {
+  const keys = new Set<string>([...Object.keys(from), ...steps.flatMap(s => Object.keys(s))]);
+
+  const keyframes: Record<string, Array<string | number>> = {};
+  keys.forEach(k => {
+    keyframes[k] = [from[k], ...steps.map(s => s[k])];
+  });
+  return keyframes;
+};
+
+const BlurText: React.FC<BlurTextProps> = ({
+  text = '',
+  delay = 200,
+  className = '',
+  animateBy = 'words',
+  direction = 'top',
+  threshold = 0.1,
+  rootMargin = '0px',
+  animationFrom,
+  animationTo,
+  easing = (t: number) => t,
+  onAnimationComplete,
+  stepDuration = 0.35,
+  initialDelay = 0
+}) => {
+  const elements = animateBy === 'words' ? text.split(' ') : text.split('');
+  const [inView, setInView] = useState(false);
+  const [startAnimation, setStartAnimation] = useState(false);
+  const ref = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          if (initialDelay > 0) {
+            setTimeout(() => {
+              setStartAnimation(true);
+            }, initialDelay);
+          } else {
+            setStartAnimation(true);
+          }
+          observer.unobserve(ref.current as Element);
+        }
+      },
+      { threshold, rootMargin }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [threshold, rootMargin, initialDelay]);
+
+  const defaultFrom = useMemo(
+    () =>
+      direction === 'top' ? { filter: 'blur(10px)', opacity: 0, y: -50 } : { filter: 'blur(10px)', opacity: 0, y: 50 },
+    [direction]
+  );
+
+  const defaultTo = useMemo(
+    () => [
+      {
+        filter: 'blur(5px)',
+        opacity: 0.5,
+        y: direction === 'top' ? 5 : -5
+      },
+      { filter: 'blur(0px)', opacity: 1, y: 0 }
+    ],
+    [direction]
+  );
+
+  const fromSnapshot = animationFrom ?? defaultFrom;
+  const toSnapshots = animationTo ?? defaultTo;
+
+  const stepCount = toSnapshots.length + 1;
+  const totalDuration = stepDuration * (stepCount - 1);
+  const times = Array.from({ length: stepCount }, (_, i) => (stepCount === 1 ? 0 : i / (stepCount - 1)));
+
+  return (
+    <p ref={ref} className={`${className} flex flex-wrap`}>
+      {elements.map((segment, index) => {
+        const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
+
+        const spanTransition: Transition = {
+          duration: totalDuration,
+          times,
+          delay: (index * delay) / 1000,
+          ease: easing
+        };
+
+        return (
+          <motion.span
+            key={index}
+            initial={fromSnapshot}
+            animate={startAnimation ? animateKeyframes : fromSnapshot}
+            transition={spanTransition}
+            onAnimationComplete={index === elements.length - 1 ? onAnimationComplete : undefined}
+            className="inline-block"
+          >
+            {segment === ' ' ? '\u00A0' : segment}
+            {animateBy === 'words' && index < elements.length - 1 && '\u00A0'}
+          </motion.span>
+        );
+      })}
+    </p>
+  );
+};
+
+export function DemoBackgroundPaths() {
+    return <BackgroundPaths title="Welcome to Clarity" />
+}
+
+export default function HomePage() {
+  const [, setLocation] = useLocation();
+
+  const handleEnterApp = () => {
+    setLocation("/dashboard");
+  };
+
+  return (
+    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 dark:from-emerald-950 dark:via-blue-950 dark:to-purple-950">
+      {/* Animated Background Paths */}
+      <div className="absolute inset-0">
+        <BackgroundPaths title="" />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-20 flex flex-col min-h-screen">
+        <div className="flex-1 flex items-center justify-center px-3 sm:px-4 md:px-6 py-6 sm:py-8">
+          <div className="w-full max-w-4xl mx-auto text-center space-y-4 sm:space-y-6 md:space-y-8">
+            {/* Logo */}
+            <div className="flex justify-center mb-4 sm:mb-6 md:mb-8">
+              <img 
+                src="/src/assets/clarity-logo.png" 
+                alt="Clarity Logo" 
+                className="h-16 w-auto xs:h-20 sm:h-24 md:h-28 lg:h-32 drop-shadow-lg max-w-full"
+              />
+            </div>
+
+            {/* Main Heading */}
+            <div className="space-y-3 sm:space-y-4 md:space-y-6">
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 dark:from-emerald-400 dark:via-blue-400 dark:to-purple-400 leading-tight px-2">
+                Welcome to Clarity
+              </h1>
+              <div className="space-y-2">
+                <BlurText 
+                  text="Mental wellbeing begins with clarity,"
+                  className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 dark:text-gray-200 max-w-5xl mx-auto px-4 leading-snug text-center justify-center tracking-wide"
+                  delay={150}
+                  animateBy="words"
+                  direction="bottom"
+                  stepDuration={0.5}
+                />
+                <BlurText 
+                  text="when the mind is clear, the heart is at peace"
+                  className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 dark:text-gray-200 max-w-5xl mx-auto px-4 leading-snug text-center justify-center tracking-wide"
+                  delay={150}
+                  animateBy="words"
+                  direction="bottom"
+                  stepDuration={0.5}
+                  initialDelay={2500}
+                />
+              </div>
+            </div>
+
+            {/* Features Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-5xl mx-auto mt-6 sm:mt-8 md:mt-12 px-2">
+              <Card className="p-2 sm:p-3 md:p-4 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-md border-emerald-200 dark:bg-black/80 dark:border-emerald-800 hover:bg-white/90 dark:hover:bg-black/90">
+                <CardContent className="p-0">
+                  <Heart className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 mx-auto mb-1 sm:mb-2 text-rose-500" />
+                  <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-tight">Wellness Tracking</p>
+                </CardContent>
+              </Card>
+              <Card className="p-2 sm:p-3 md:p-4 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-md border-blue-200 dark:bg-black/80 dark:border-blue-800 hover:bg-white/90 dark:hover:bg-black/90">
+                <CardContent className="p-0">
+                  <Brain className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 mx-auto mb-1 sm:mb-2 text-blue-500" />
+                  <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-tight">AI Support</p>
+                </CardContent>
+              </Card>
+              <Card className="p-2 sm:p-3 md:p-4 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-md border-emerald-200 dark:bg-black/80 dark:border-emerald-800 hover:bg-white/90 dark:hover:bg-black/90">
+                <CardContent className="p-0">
+                  <Users className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 mx-auto mb-1 sm:mb-2 text-emerald-500" />
+                  <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-tight">Peer Community</p>
+                </CardContent>
+              </Card>
+              <Card className="p-2 sm:p-3 md:p-4 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-md border-purple-200 dark:bg-black/80 dark:border-purple-800 hover:bg-white/90 dark:hover:bg-black/90">
+                <CardContent className="p-0">
+                  <Shield className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 mx-auto mb-1 sm:mb-2 text-purple-500" />
+                  <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-tight">Safe Space</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* CTA Section */}
+            <div className="mt-6 sm:mt-8 md:mt-12 space-y-3 sm:space-y-4 md:space-y-6 px-4">
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400">
+                Ready to start your mental wellness journey?
+              </p>
+              <div className="inline-block group relative bg-gradient-to-b from-emerald-500/10 via-blue-500/10 to-purple-500/10 dark:from-emerald-400/10 dark:via-blue-400/10 dark:to-purple-400/10 p-px rounded-xl sm:rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <Button
+                  onClick={handleEnterApp}
+                  variant="ghost"
+                  className="rounded-[0.9rem] sm:rounded-[1.15rem] px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-sm sm:text-base md:text-lg font-semibold backdrop-blur-md bg-white/95 hover:bg-white/100 dark:bg-black/95 dark:hover:bg-black/100 text-emerald-700 dark:text-emerald-300 transition-all duration-300 group-hover:-translate-y-0.5 border border-emerald-200 dark:border-emerald-800 hover:shadow-md hover:shadow-emerald-200/50 dark:hover:shadow-emerald-800/50"
+                >
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                  <span className="opacity-90 group-hover:opacity-100 transition-opacity">
+                    Enter Clarity
+                  </span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-8 mt-8 sm:mt-12 md:mt-16 max-w-sm sm:max-w-md mx-auto px-4">
+              <div className="text-center">
+                <div className="text-lg sm:text-xl md:text-2xl font-bold text-emerald-600 dark:text-emerald-400">24/7</div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Support</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 dark:text-blue-400">Safe</div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Environment</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg sm:text-xl md:text-2xl font-bold text-purple-600 dark:text-purple-400">Free</div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Always</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="flex-shrink-0 text-center py-3 sm:py-4 md:py-6 text-xs sm:text-sm text-gray-500 dark:text-gray-400 bg-white/50 dark:bg-black/50 backdrop-blur-sm border-t border-gray-200 dark:border-gray-800 px-4">
+          <p className="leading-relaxed">© 2025 Clarity. Supporting student mental health with compassion and innovation.</p>
+        </footer>
+      </div>
+    </div>
+  );
+}

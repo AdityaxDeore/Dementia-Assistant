@@ -1,4 +1,5 @@
 import { OnboardingQuiz } from "@/components/onboarding-quiz";
+import { BackButton } from "@/components/ui/back-button";
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
@@ -16,6 +17,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="space-y-6" data-testid="page-onboarding">
+      <BackButton to="/dashboard" />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">
           {hasCompletedBefore ? 'Retake Assessment' : 'Welcome to Clarity'}

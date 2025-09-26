@@ -2,6 +2,7 @@ import { WellnessDashboard } from "@/components/wellness-dashboard";
 import { MoodTracker } from "@/components/mood-tracker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/ui/back-button";
 import { MessageCircle, Users, BookOpen, Palette, PenTool, Headphones } from "lucide-react";
 import { Link } from "wouter";
 
@@ -16,13 +17,14 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-8" data-testid="page-dashboard">
-      {/* Welcome Header */}
+    <div className="space-y-4 pb-safe" data-testid="page-dashboard">
+      <BackButton to="/" />
+      {/* Welcome Header - Optimized for mobile */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           Welcome to Clarity
         </h1>
-        <p className="text-muted-foreground text-lg">
+        <p className="text-muted-foreground text-sm sm:text-lg">
           Your personal mental health and wellbeing companion. Take a moment to check in with yourself.
         </p>
       </div>
@@ -32,8 +34,8 @@ export default function Dashboard() {
         <MoodTracker />
       </div>
 
-      {/* Quick Actions Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {/* Quick Actions Grid - Optimized for mobile */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {quickActions.map((action, index) => (
           <Card 
             key={action.title} 
@@ -43,14 +45,14 @@ export default function Dashboard() {
               animation: 'fadeInUp 0.6s ease-out forwards'
             }}
           >
-            <CardContent className="p-6">
+            <CardContent className="p-3 sm:p-6">
               <Link href={action.href}>
-                <div className="text-center space-y-3 cursor-pointer">
+                <div className="text-center space-y-2 cursor-pointer">
                   <div className="relative">
-                    <action.icon className={`w-10 h-10 mx-auto ${action.color} transition-all duration-300 group-hover:scale-125 group-hover:rotate-6`} />
+                    <action.icon className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto ${action.color} transition-all duration-300 group-hover:scale-125 group-hover:rotate-6`} />
                     <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
                   </div>
-                  <p className="text-sm font-semibold group-hover:text-primary transition-colors">{action.title}</p>
+                  <p className="text-xs sm:text-sm font-semibold group-hover:text-primary transition-colors leading-tight">{action.title}</p>
                 </div>
               </Link>
             </CardContent>
@@ -58,7 +60,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Wellness Dashboard - Full Width */}
+      {/* Wellness Dashboard - Compact for mobile */}
       <div className="w-full">
         <WellnessDashboard />
       </div>
@@ -73,6 +75,10 @@ export default function Dashboard() {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+        
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 1rem);
         }
       `}</style>
     </div>

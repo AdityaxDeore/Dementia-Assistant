@@ -7,7 +7,9 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SOSButton } from "@/components/sos-button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { MainNavigation } from "@/components/main-navigation";
 import NotFound from "@/pages/not-found";
+import HomePage from "@/pages/home";
 import Dashboard from "@/pages/dashboard";
 import AIBuddyPage from "@/pages/ai-buddy";
 import WellnessPage from "@/pages/wellness";
@@ -25,24 +27,35 @@ import ReportPage from "@/pages/report";
 import CommunityRoute from "@/pages/community";
 import AudioSessionsPage from "@/pages/audio-sessions";
 import DiaryPage from "@/pages/diary";
+import MentorshipPage from "@/pages/mentorship";
+import AssessmentPage from "@/pages/assessment";
+import InteractiveMenuDemo from "@/pages/interactive-menu-demo";
+import GamesPage from "@/pages/games";
+import PetCareGamePage from "@/pages/petcare-game";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Dashboard} />
+      <Route path="/" component={HomePage} />
+      <Route path="/dashboard" component={Dashboard} />
       <Route path="/onboarding" component={OnboardingPage} />
       <Route path="/ai-buddy" component={AIBuddyPage} />
       <Route path="/anonymous-chat" component={AnonymousChatPage} />
       <Route path="/wellness" component={WellnessPage} />
+      <Route path="/assessment" component={AssessmentPage} />
       <Route path="/audio-sessions" component={AudioSessionsPage} />
       <Route path="/diary" component={DiaryPage} />
       <Route path="/goals" component={GoalsPage} />
+      <Route path="/mentorship" component={MentorshipPage} />
       <Route path="/peer-support" component={PeerSupportPage} />
       <Route path="/community/:id" component={CommunityRoute} />
       <Route path="/resources" component={ResourcesPage} />
       <Route path="/creative" component={CreativePage} />
       <Route path="/crisis" component={CrisisPage} />
       <Route path="/report" component={ReportPage} />
+      <Route path="/games" component={GamesPage} />
+      <Route path="/petcare-game" component={PetCareGamePage} />
+      <Route path="/menu-demo" component={InteractiveMenuDemo} />
       <Route path="/admin-login" component={AdminLogin} />
       <Route path="/admin" component={AdminPage} />
       <Route path="/settings" component={SettingsPage} />
@@ -52,13 +65,18 @@ function Router() {
 }
 
 function App() {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   
   // Show SOS button only on dashboard page
-  const showSOSButton = location === "/" || location === "/dashboard";
+  const showSOSButton = location === "/dashboard";
   
-  // Admin routes should not show the normal app layout
-  const isAdminRoute = location === "/admin-login" || location === "/admin";
+  // Routes that should not show the normal app layout
+  const isSpecialRoute = location === "/" || location === "/admin-login" || location === "/admin";
+  
+  // Navigation handler
+  const handleNavigation = (path: string) => {
+    setLocation(path);
+  };
   
   // Custom sidebar width for mental health application
   const style = {
@@ -66,8 +84,8 @@ function App() {
     "--sidebar-width-icon": "3rem",
   };
 
-  // If it's an admin route, render without the normal app layout
-  if (isAdminRoute) {
+  // If it's a special route (home, admin), render without the normal app layout
+  if (isSpecialRoute) {
     return (
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
@@ -87,26 +105,37 @@ function App() {
           <div className="flex h-screen w-full">
             <AppSidebar />
             <div className="flex flex-col flex-1">
-              <header className="flex items-center justify-between p-4 border-b bg-background">
-                <div className="flex items-center gap-4">
-                  <SidebarTrigger data-testid="button-sidebar-toggle" />
-                  <div className="hidden md:block">
-                    <h2 className="font-semibold text-lg text-primary">Clarity</h2>
-                    <p className="text-xs text-muted-foreground">Student Mental Health Support</p>
-                  </div>
+              <header className="flex items-center justify-between p-2 sm:p-3 md:p-4 border-b bg-background safe-area-top">
+                <div className="flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0">
+                  <SidebarTrigger data-testid="button-sidebar-toggle" className="flex-shrink-0" />
+                  <img 
+                    src="/src/assets/clarity-logo.png" 
+                    alt="Clarity Logo" 
+                    className="h-8 w-auto sm:h-10 md:h-12 lg:h-16 cursor-pointer transition-all duration-300 hover:scale-110 hover:drop-shadow-lg hover:brightness-110 max-w-full flex-shrink-0"
+                  />
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 sm:gap-2 md:gap-3 flex-shrink-0">
                   {showSOSButton && <SOSButton />}
                   <ThemeToggle />
                 </div>
               </header>
-              <main className="flex-1 overflow-auto p-6">
+              <main className="flex-1 overflow-auto p-2 sm:p-3 md:p-4 lg:p-6 pb-safe-area-bottom">
                 <Router />
               </main>
             </div>
           </div>
+        {/* Interactive Navigation Menu */}
+        <MainNavigation 
+          currentPath={location} 
+          onNavigate={handleNavigation}
+        />
         </SidebarProvider>
         <Toaster />
+        <style>{`
+          .pb-safe-area {
+            padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+          }
+        `}</style>
       </TooltipProvider>
     </QueryClientProvider>
   );

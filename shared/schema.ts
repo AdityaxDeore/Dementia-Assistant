@@ -33,6 +33,60 @@ export const goals = pgTable("goals", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const mentors = pgTable("mentors", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  name: text("name").notNull(),
+  year: integer("year").notNull(), // 2, 3, 4
+  region: text("region").notNull(),
+  domains: text("domains").notNull(), // JSON array of expertise domains
+  bio: text("bio"),
+  maxMentees: integer("max_mentees").default(3).notNull(),
+  currentMentees: integer("current_mentees").default(0).notNull(),
+  isActive: integer("is_active").default(1).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const mentees = pgTable("mentees", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  name: text("name").notNull(),
+  year: integer("year").default(1).notNull(), // typically 1 for freshers
+  region: text("region").notNull(),
+  interests: text("interests").notNull(), // JSON array of learning interests
+  goals: text("goals"), // what they want to achieve
+  hasActiveMentor: integer("has_active_mentor").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const mentorships = pgTable("mentorships", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  mentorId: varchar("mentor_id").notNull(),
+  menteeId: varchar("mentee_id").notNull(),
+  status: text("status").notNull(), // 'pending', 'active', 'completed', 'cancelled'
+  startDate: date("start_date"),
+  endDate: date("end_date"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  uniqueMentorship: unique().on(table.mentorId, table.menteeId),
+}));
+
+export const mentorTasks = pgTable("mentor_tasks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  mentorshipId: varchar("mentorship_id").notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  dueDate: date("due_date"),
+  status: text("status").default("pending").notNull(), // 'pending', 'in_progress', 'completed'
+  priority: text("priority").default("medium").notNull(), // 'low', 'medium', 'high'
+  feedback: text("feedback"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -61,6 +115,45 @@ export const apiUpdateGoalSchema = z.object({
   targetDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable(),
 });
 
+// Mentor-Mentee API schemas
+export const apiMentorRegistrationSchema = z.object({
+  name: z.string().min(1).max(100),
+  year: z.number().int().min(2).max(4),
+  region: z.string().min(1).max(50),
+  domains: z.array(z.string()).min(1).max(5),
+  bio: z.string().max(500).optional(),
+  maxMentees: z.number().int().min(1).max(10).default(3),
+});
+
+export const apiMenteeRegistrationSchema = z.object({
+  name: z.string().min(1).max(100),
+  year: z.number().int().min(1).max(2).default(1),
+  region: z.string().min(1).max(50),
+  interests: z.array(z.string()).min(1).max(5),
+  goals: z.string().max(1000).optional(),
+});
+
+export const apiMentorshipRequestSchema = z.object({
+  mentorId: z.string(),
+  menteeId: z.string(),
+});
+
+export const apiTaskCreationSchema = z.object({
+  title: z.string().min(1).max(200),
+  description: z.string().max(1000).optional(),
+  dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  priority: z.enum(["low", "medium", "high"]).default("medium"),
+});
+
+export const apiTaskUpdateSchema = z.object({
+  title: z.string().min(1).max(200).optional(),
+  description: z.string().max(1000).optional(),
+  dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  status: z.enum(["pending", "in_progress", "completed"]).optional(),
+  priority: z.enum(["low", "medium", "high"]).optional(),
+  feedback: z.string().max(500).optional(),
+});
+
 // Database insert schemas (keeping existing for storage layer)
 export const insertMoodEntrySchema = createInsertSchema(moodEntries).pick({
   userId: true,
@@ -79,10 +172,49 @@ export const insertGoalSchema = createInsertSchema(goals).pick({
   targetDate: true,
 });
 
+export const insertMentorSchema = createInsertSchema(mentors).pick({
+  userId: true,
+  name: true,
+  year: true,
+  region: true,
+  domains: true,
+  bio: true,
+  maxMentees: true,
+});
+
+export const insertMenteeSchema = createInsertSchema(mentees).pick({
+  userId: true,
+  name: true,
+  year: true,
+  region: true,
+  interests: true,
+  goals: true,
+});
+
+export const insertMentorshipSchema = createInsertSchema(mentorships).pick({
+  mentorId: true,
+  menteeId: true,
+  status: true,
+  startDate: true,
+});
+
+export const insertMentorTaskSchema = createInsertSchema(mentorTasks).pick({
+  mentorshipId: true,
+  title: true,
+  description: true,
+  dueDate: true,
+  priority: true,
+});
+
 // API types
 export type ApiMoodEntry = z.infer<typeof apiMoodEntrySchema>;
 export type ApiCreateGoal = z.infer<typeof apiCreateGoalSchema>;
 export type ApiUpdateGoal = z.infer<typeof apiUpdateGoalSchema>;
+export type ApiMentorRegistration = z.infer<typeof apiMentorRegistrationSchema>;
+export type ApiMenteeRegistration = z.infer<typeof apiMenteeRegistrationSchema>;
+export type ApiMentorshipRequest = z.infer<typeof apiMentorshipRequestSchema>;
+export type ApiTaskCreation = z.infer<typeof apiTaskCreationSchema>;
+export type ApiTaskUpdate = z.infer<typeof apiTaskUpdateSchema>;
 
 // Database types
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -91,3 +223,11 @@ export type InsertMoodEntry = z.infer<typeof insertMoodEntrySchema>;
 export type MoodEntry = typeof moodEntries.$inferSelect;
 export type InsertGoal = z.infer<typeof insertGoalSchema>;
 export type Goal = typeof goals.$inferSelect;
+export type InsertMentor = z.infer<typeof insertMentorSchema>;
+export type Mentor = typeof mentors.$inferSelect;
+export type InsertMentee = z.infer<typeof insertMenteeSchema>;
+export type Mentee = typeof mentees.$inferSelect;
+export type InsertMentorship = z.infer<typeof insertMentorshipSchema>;
+export type Mentorship = typeof mentorships.$inferSelect;
+export type InsertMentorTask = z.infer<typeof insertMentorTaskSchema>;
+export type MentorTask = typeof mentorTasks.$inferSelect;

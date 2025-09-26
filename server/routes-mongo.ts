@@ -219,33 +219,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // AI Chat endpoint
   app.post("/api/chat", authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
     try {
-      const { message, conversationHistory = [] } = req.body;
+      const { message, conversationHistory = [], personalityId = 'alex' } = req.body;
       
       if (!message || typeof message !== 'string') {
         return res.status(400).json({ error: "Message is required" });
       }
 
+      // Import personality system prompts
+      const { getPersonalitySystemPrompt } = await import("@shared/ai-personalities");
+      const systemPrompt = getPersonalitySystemPrompt(personalityId);
+
       const messages = [
         {
           role: "system",
-          content: `You are a compassionate AI wellness buddy designed specifically to support students with mental health challenges. Your role is to:
-
-1. Provide emotional support and validation
-2. Offer evidence-based coping strategies for stress, anxiety, and depression
-3. Suggest wellness practices like mindfulness, breathing exercises, and self-care
-4. Help students recognize when to seek professional help
-5. Be trauma-informed and avoid triggering language
-6. Encourage connection with campus resources when appropriate
-
-Guidelines:
-- Always be empathetic, non-judgmental, and supportive
-- Keep responses concise but meaningful (2-3 sentences typically)
-- If someone expresses suicidal thoughts or crisis, immediately encourage them to contact emergency services (988 in the US) or campus counseling
-- Focus on student-specific stressors: exams, social pressures, academic performance, financial concerns, homesickness
-- Suggest concrete, actionable steps when appropriate
-- Avoid being overly clinical or robotic - be warm and genuine
-
-Remember: You're a supportive companion, not a replacement for professional therapy.`
+          content: systemPrompt
         },
         ...conversationHistory.slice(-10),
         { role: "user", content: message }
@@ -262,25 +249,59 @@ Remember: You're a supportive companion, not a replacement for professional ther
       
       res.json({ 
         response: aiResponse,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        personalityId
       });
 
     } catch (error: any) {
       console.error('Chat API error:', error);
       
       if (error?.status === 401 || error?.message?.includes('API key')) {
-        let fallbackResponse = "I understand you're reaching out for support. While I'm experiencing some technical difficulties right now, I want you to know that your feelings are valid.";
-        
+        // Provide personality-specific fallback responses
+        const { personalityId = 'alex' } = req.body;
         const userMessage = req.body.message || '';
         const lowerMessage = userMessage.toLowerCase();
-        if (lowerMessage.includes('stress') || lowerMessage.includes('exam')) {
-          fallbackResponse = "I hear that you're feeling stressed about exams. That's completely normal - many students experience exam anxiety. Here are some quick strategies: try the 4-7-8 breathing technique (breathe in for 4, hold for 7, breathe out for 8), break your study into smaller chunks, and remember that one exam doesn't define your worth.";
+        
+        let fallbackResponse = "I understand you're reaching out for support. While I'm experiencing some technical difficulties right now, I want you to know that your feelings are valid.";
+        
+        // Personality-specific fallback responses
+        if (personalityId === 'alex') {
+          if (lowerMessage.includes('stress') || lowerMessage.includes('anxiety')) {
+            fallbackResponse = "I hear that you're feeling stressed. That's completely normal - many students experience this. Try taking three deep breaths with me: in for 4, hold for 4, out for 6. You're stronger than you think. 💙";
+          } else if (lowerMessage.includes('breathing')) {
+            fallbackResponse = "For anxiety, try the 4-7-8 breathing technique: breathe in for 4, hold for 7, breathe out for 8. This activates your body's relaxation response. You're in a safe space here.";
+          }
+        } else if (personalityId === 'maya') {
+          if (lowerMessage.includes('goal') || lowerMessage.includes('motivation')) {
+            fallbackResponse = "You've got this! 🌟 Every big goal starts with a single step. What's one small thing you can do today to move forward? I believe in your potential!";
+          } else {
+            fallbackResponse = "Hey superstar! ✨ I know I'm having some tech troubles, but your determination is stronger than any obstacle! Keep pushing forward - you're amazing!";
+          }
+        } else if (personalityId === 'sage') {
+          if (lowerMessage.includes('problem') || lowerMessage.includes('decision')) {
+            fallbackResponse = "Let's approach this systematically. First, can you identify the core issue? Then we can break it down into manageable components and evaluate your options logically.";
+          } else {
+            fallbackResponse = "I'm experiencing a technical issue, but let's think through this step by step. What's the main challenge you're facing? We can work through it together methodically.";
+          }
+        } else if (personalityId === 'luna') {
+          if (lowerMessage.includes('sleep') || lowerMessage.includes('tired')) {
+            fallbackResponse = "Rest is so important for your wellbeing... 🌙 Try creating a calming bedtime routine: dim lights, gentle stretches, maybe some journaling. You deserve peaceful sleep.";
+          } else {
+            fallbackResponse = "I'm having some connection troubles, but I want you to know you're not alone in this quiet moment... Take time to breathe and be gentle with yourself. 🌙";
+          }
+        } else if (personalityId === 'rio') {
+          if (lowerMessage.includes('friend') || lowerMessage.includes('social')) {
+            fallbackResponse = "Social connections are so important! 😊 Remember, authentic relationships start with being yourself. What's one small way you could reach out to someone today?";
+          } else {
+            fallbackResponse = "Hey friend! 😊 I'm having some tech hiccups, but I'm still here for you in spirit! Remember, you're worthy of great friendships and connections!";
+          }
         }
         
         return res.json({ 
           response: fallbackResponse,
           timestamp: new Date().toISOString(),
-          fallback: true
+          fallback: true,
+          personalityId
         });
       }
       

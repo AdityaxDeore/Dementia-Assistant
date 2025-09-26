@@ -109,117 +109,117 @@ export function WellnessDashboard() {
   }
 
   return (
-    <div className="space-y-6" data-testid="wellness-dashboard">
-      {/* Weekly Progress Overview */}
+    <div className="space-y-4 sm:space-y-6" data-testid="wellness-dashboard">
+      {/* Weekly Progress Overview - Compact for mobile */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Heart className="w-5 h-5 text-primary" />
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             This Week's Wellness
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
+        <CardContent className="pt-0">
+          <div className="space-y-3 sm:space-y-4">
             <div>
               <div className="flex justify-between text-sm mb-2">
                 <span>Overall Progress</span>
                 <span className="font-medium">{weeklyProgress}%</span>
               </div>
-              <Progress value={weeklyProgress} className="h-3" />
+              <Progress value={weeklyProgress} className="h-2 sm:h-3" />
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{moodStreak}</div>
-                <div className="text-sm text-muted-foreground">Day Streak</div>
+                <div className="text-xl sm:text-2xl font-bold text-primary">{moodStreak}</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Day Streak</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-accent">{recentMoodEntries}</div>
-                <div className="text-sm text-muted-foreground">Mood Entries</div>
+                <div className="text-xl sm:text-2xl font-bold text-accent">{recentMoodEntries}</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Mood Entries</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-secondary">{totalGoals}</div>
-                <div className="text-sm text-muted-foreground">Total Goals</div>
+                <div className="text-xl sm:text-2xl font-bold text-secondary">{totalGoals}</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Total Goals</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-600">{goalsCompleted}/{totalGoals}</div>
-                <div className="text-sm text-muted-foreground">Goals Complete</div>
+                <div className="text-xl sm:text-2xl font-bold text-emerald-600">{goalsCompleted}/{totalGoals}</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Goals Complete</div>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Quick Actions */}
+      {/* Quick Actions - Mobile optimized */}
       <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="text-base sm:text-lg">Quick Actions</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <CardContent className="pt-0">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
             <Button 
               variant="outline" 
-              className="h-auto p-4 flex flex-col items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
+              className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
               onClick={() => handleQuickAction('mood-checkin')}
               data-testid="button-quick-mood"
             >
-              <Heart className="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-red-500" />
-              <span className="text-sm transition-colors group-hover:text-primary">Mood Check-In</span>
+              <Heart className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-red-500" />
+              <span className="text-xs sm:text-sm transition-colors group-hover:text-primary">Mood Check-In</span>
             </Button>
             <Button 
               variant="outline" 
-              className="h-auto p-4 flex flex-col items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
+              className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
               onClick={() => handleQuickAction('journal')}
               data-testid="button-quick-journal"
             >
-              <BookOpen className="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-blue-500" />
-              <span className="text-sm transition-colors group-hover:text-primary">Write Journal</span>
+              <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-blue-500" />
+              <span className="text-xs sm:text-sm transition-colors group-hover:text-primary">Write Journal</span>
             </Button>
             <Button 
               variant="outline" 
-              className="h-auto p-4 flex flex-col items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
+              className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
               onClick={() => handleQuickAction('meditation')}
               data-testid="button-quick-meditation"
             >
-              <Calendar className="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-500" />
-              <span className="text-sm transition-colors group-hover:text-primary">Meditate</span>
+              <Calendar className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-500" />
+              <span className="text-xs sm:text-sm transition-colors group-hover:text-primary">Meditate</span>
             </Button>
             <Button 
               variant="outline" 
-              className="h-auto p-4 flex flex-col items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
+              className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
               onClick={() => handleQuickAction('creative')}
               data-testid="button-quick-creative"
             >
-              <Palette className="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-orange-500" />
-              <span className="text-sm transition-colors group-hover:text-primary">Create Art</span>
+              <Palette className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-orange-500" />
+              <span className="text-xs sm:text-sm transition-colors group-hover:text-primary">Create Art</span>
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Badges & Achievements */}
+      {/* Badges & Achievements - Mobile optimized */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="w-5 h-5 text-primary" />
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Target className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             Your Achievements
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <CardContent className="pt-0">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
             {badges.map((badge, index) => (
               <div 
                 key={index}
-                className={`p-3 rounded-lg border text-center transition-all duration-300 hover:scale-105 hover:shadow-lg group cursor-pointer ${
+                className={`p-2 sm:p-3 rounded-lg border text-center transition-all duration-300 hover:scale-105 hover:shadow-lg group cursor-pointer ${
                   badge.earned 
                     ? 'bg-accent/10 border-accent hover:bg-accent/20' 
                     : 'bg-muted/50 border-muted opacity-50 hover:opacity-70'
                 }`}
                 data-testid={`badge-${badge.name.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                <div className="text-2xl mb-1 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12">{badge.icon}</div>
-                <div className="text-sm font-medium mb-1 transition-colors group-hover:text-primary">{badge.name}</div>
-                <div className="text-xs text-muted-foreground">{badge.description}</div>
+                <div className="text-xl sm:text-2xl mb-1 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12">{badge.icon}</div>
+                <div className="text-xs sm:text-sm font-medium mb-1 transition-colors group-hover:text-primary">{badge.name}</div>
+                <div className="text-xs text-muted-foreground hidden sm:block">{badge.description}</div>
                 {badge.earned && (
                   <Badge variant="secondary" className="mt-1 text-xs transition-all duration-300 group-hover:scale-110">
                     Earned

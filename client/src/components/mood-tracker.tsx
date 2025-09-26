@@ -129,45 +129,45 @@ export function MoodTracker() {
 
   return (
     <Card data-testid="card-mood-tracker" className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50">
-      <CardHeader className="pb-4">
-        <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      <CardHeader className="pb-3 xs:pb-4">
+        <CardTitle className="text-lg xs:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           Daily Mood Check-In
         </CardTitle>
-        <div className="flex items-center gap-4">
-          <Badge variant="secondary" className="bg-orange-100 text-orange-800 font-medium" data-testid="text-mood-streak">
+        <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
+          <Badge variant="secondary" className="bg-orange-100 text-orange-800 font-medium text-xs xs:text-sm" data-testid="text-mood-streak">
             🔥 {streak} day streak
           </Badge>
-          <div className="flex-1">
-            <div className="flex justify-between text-sm text-muted-foreground mb-2">
+          <div className="flex-1 w-full xs:w-auto">
+            <div className="flex justify-between text-xs xs:text-sm text-muted-foreground mb-1 xs:mb-2">
               <span className="font-medium">This week</span>
               <span className="font-medium">{weekProgress}/7</span>
             </div>
-            <Progress value={(weekProgress / 7) * 100} className="h-3 bg-gray-200" />
+            <Progress value={(weekProgress / 7) * 100} className="h-2 xs:h-3 bg-gray-200" />
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4 xs:space-y-6">
         <div className="text-center">
-          <p className="text-lg font-medium text-gray-700 mb-2">How are you feeling today?</p>
-          <p className="text-sm text-muted-foreground">Select the emoji that best represents your mood</p>
+          <p className="text-base xs:text-lg font-medium text-gray-700 mb-1 xs:mb-2">How are you feeling today?</p>
+          <p className="text-xs xs:text-sm text-muted-foreground">Select the emoji that best represents your mood</p>
         </div>
         
-        <div className="flex justify-center gap-3 px-2">
+        <div className="flex justify-center gap-1 xs:gap-2 sm:gap-3 px-1 xs:px-2">
           {displayMoodOptions.map((mood, index) => (
             <Button
               key={mood.value}
               variant={selectedMood === mood.value ? "default" : "ghost"}
               className={`
-                relative flex flex-col items-center p-4 h-auto min-h-[100px] w-full max-w-[80px]
+                relative flex flex-col items-center p-1 xs:p-2 sm:p-4 h-auto min-h-[70px] xs:min-h-[80px] sm:min-h-[100px] w-full max-w-[55px] xs:max-w-[65px] sm:max-w-[80px]
                 transition-all duration-500 ease-out transform
-                hover:scale-125 hover:-translate-y-3 hover:shadow-2xl hover:rotate-3
+                hover:scale-110 sm:hover:scale-125 hover:-translate-y-1 sm:hover:-translate-y-3 hover:shadow-lg sm:hover:shadow-2xl hover:rotate-1 sm:hover:rotate-3
                 active:scale-95 active:rotate-0
                 ${
                   selectedMood === mood.value 
-                    ? `bg-gradient-to-br ${mood.bgGradient} border-2 border-current shadow-2xl scale-110 -translate-y-2 animate-pulse` 
+                    ? `bg-gradient-to-br ${mood.bgGradient} border-2 border-current shadow-lg sm:shadow-2xl scale-105 sm:scale-110 -translate-y-1 sm:-translate-y-2 animate-pulse` 
                     : 'hover:bg-gradient-to-br hover:from-white hover:to-gray-50 border border-gray-200 hover:border-blue-300'
                 }
-                group rounded-2xl backdrop-blur-sm mood-emoji-stagger-${index + 1}
+                group rounded-xl xs:rounded-2xl backdrop-blur-sm mood-emoji-stagger-${index + 1}
               `}
               onClick={() => handleMoodSelect(mood.value)}
               data-testid={`button-mood-${mood.value}`}
@@ -179,27 +179,27 @@ export function MoodTracker() {
             >
               <div className="relative">
                 <span 
-                  className={`text-5xl mb-2 block transition-all duration-500 group-hover:scale-150 group-hover:rotate-[360deg] group-active:scale-125 ${
+                  className={`text-2xl xs:text-3xl sm:text-5xl mb-1 xs:mb-2 block transition-all duration-500 group-hover:scale-125 sm:group-hover:scale-150 group-hover:rotate-[180deg] sm:group-hover:rotate-[360deg] group-active:scale-110 sm:group-active:scale-125 ${
                     selectedMood === mood.value ? 'emoji-selected' : ''
                   }`}
                   style={{
-                    filter: selectedMood === mood.value ? 'drop-shadow(0 6px 12px rgba(0,0,0,0.15))' : 'drop-shadow(0 2px 4px rgba(0,0,0,0.05))',
-                    textShadow: selectedMood === mood.value ? '0 4px 8px rgba(0,0,0,0.15)' : '0 1px 2px rgba(0,0,0,0.05)'
+                    filter: selectedMood === mood.value ? 'drop-shadow(0 3px 6px rgba(0,0,0,0.15))' : 'drop-shadow(0 1px 2px rgba(0,0,0,0.05))',
+                    textShadow: selectedMood === mood.value ? '0 2px 4px rgba(0,0,0,0.15)' : '0 1px 2px rgba(0,0,0,0.05)'
                   }}
                 >
                   {mood.emoji}
                 </span>
                 {selectedMood === mood.value && (
                   <>
-                    <div className="absolute -inset-3 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-full opacity-30 animate-ping" />
-                    <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20 animate-pulse" />
-                    <div className="absolute -inset-1 bg-gradient-to-r from-white to-blue-100 rounded-full opacity-40" style={{
+                    <div className="absolute -inset-2 xs:-inset-3 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-full opacity-30 animate-ping" />
+                    <div className="absolute -inset-1 xs:-inset-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20 animate-pulse" />
+                    <div className="absolute -inset-0.5 xs:-inset-1 bg-gradient-to-r from-white to-blue-100 rounded-full opacity-40" style={{
                       animation: 'spin 3s linear infinite'
                     }} />
                   </>
                 )}
               </div>
-              <span className={`text-xs font-medium transition-all duration-200 ${
+              <span className={`text-xs xs:text-xs sm:text-sm font-medium transition-all duration-200 text-center leading-tight ${
                 selectedMood === mood.value ? 'text-gray-800' : 'text-gray-600'
               }`}>
                 {mood.label}
@@ -223,12 +223,12 @@ export function MoodTracker() {
             
             {/* Show motivating quote for "Great" mood */}
             {showQuote && selectedMood === 5 && (
-              <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-2xl border-2 border-emerald-200 animate-in slide-in-from-bottom-4 duration-700">
-                <div className="flex items-start gap-3">
-                  <Sparkles className="w-6 h-6 text-emerald-600 mt-1 animate-pulse" />
+              <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-3 xs:p-4 sm:p-6 rounded-xl xs:rounded-2xl border-2 border-emerald-200 animate-in slide-in-from-bottom-4 duration-700">
+                <div className="flex items-start gap-2 xs:gap-3">
+                  <Sparkles className="w-5 h-5 xs:w-6 xs:h-6 text-emerald-600 mt-0.5 xs:mt-1 animate-pulse flex-shrink-0" />
                   <div>
-                    <h4 className="font-bold text-emerald-800 mb-2">Daily Motivation 🌟</h4>
-                    <p className="text-emerald-700 leading-relaxed font-medium">
+                    <h4 className="font-bold text-emerald-800 mb-1 xs:mb-2 text-sm xs:text-base">Daily Motivation 🌟</h4>
+                    <p className="text-emerald-700 leading-relaxed font-medium text-xs xs:text-sm">
                       {currentQuote}
                     </p>
                   </div>
@@ -238,15 +238,15 @@ export function MoodTracker() {
             
             {/* Show AI chat suggestion for other moods */}
             {selectedMood && selectedMood < 5 && (
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-2xl border-2 border-blue-200 animate-in slide-in-from-bottom-4 duration-700">
-                <div className="flex items-start gap-3">
-                  <MessageCircle className="w-6 h-6 text-blue-600 mt-1 animate-bounce" />
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-3 xs:p-4 sm:p-6 rounded-xl xs:rounded-2xl border-2 border-blue-200 animate-in slide-in-from-bottom-4 duration-700">
+                <div className="flex items-start gap-2 xs:gap-3">
+                  <MessageCircle className="w-5 h-5 xs:w-6 xs:h-6 text-blue-600 mt-0.5 xs:mt-1 animate-bounce flex-shrink-0" />
                   <div>
-                    <h4 className="font-bold text-blue-800 mb-2">I'm Here for You 💙</h4>
-                    <p className="text-blue-700 leading-relaxed font-medium mb-3">
+                    <h4 className="font-bold text-blue-800 mb-1 xs:mb-2 text-sm xs:text-base">I'm Here for You 💙</h4>
+                    <p className="text-blue-700 leading-relaxed font-medium mb-2 xs:mb-3 text-xs xs:text-sm">
                       It's okay to feel this way. Let's have a supportive conversation to help you process these emotions.
                     </p>
-                    <p className="text-sm text-blue-600 font-medium">
+                    <p className="text-xs xs:text-sm text-blue-600 font-medium">
                       ✨ After saving your mood, I'll take you to our AI buddy for a caring chat.
                     </p>
                   </div>

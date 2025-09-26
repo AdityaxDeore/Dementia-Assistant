@@ -1,5 +1,6 @@
 import { MoodTracker } from "@/components/mood-tracker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BackButton } from "@/components/ui/back-button";
 import { Calendar, Clock, Heart, Brain, Headphones, Play, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -17,6 +18,7 @@ export default function WellnessPage() {
 
   return (
     <div className="space-y-6" data-testid="page-wellness">
+      <BackButton to="/dashboard" />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Wellness Center</h1>
         <p className="text-muted-foreground">

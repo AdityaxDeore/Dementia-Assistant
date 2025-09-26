@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { Users, TrendingUp, MessageSquare, Star, Shield, Eye, Volume2, Accessibility, BookOpen, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -120,6 +121,7 @@ export default function PeerSupportPage() {
 
   return (
     <div className="space-y-6">
+      <BackButton to="/dashboard" />
       <div className="space-y-4">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Student Support Communities</h1>

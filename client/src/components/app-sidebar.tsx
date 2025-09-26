@@ -11,7 +11,9 @@ import {
   Phone,
   User,
   Brain,
-  PenTool
+  PenTool,
+  UserCheck,
+  Gamepad2
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
@@ -29,12 +31,12 @@ import {
 const mainItems = [
   {
     title: "Dashboard",
-    url: "/",
+    url: "/dashboard",
     icon: Home,
   },
   {
-    title: "Assessment",
-    url: "/onboarding",
+    title: "Mental Health Assessment",
+    url: "/assessment",
     icon: Brain,
   },
   {
@@ -57,9 +59,19 @@ const mainItems = [
     url: "/goals",
     icon: Target,
   },
+  {
+    title: "Pet Care Game",
+    url: "/petcare-game",
+    icon: Gamepad2,
+  },
 ];
 
 const supportItems = [
+  {
+    title: "Savangadi",
+    url: "/mentorship",
+    icon: UserCheck,
+  },
   {
     title: "Anonymous Chat",
     url: "/anonymous-chat",
@@ -109,8 +121,8 @@ export function AppSidebar() {
   const [location] = useLocation();
 
   const isActive = (url: string) => {
-    if (url === "/" && location === "/") return true;
-    if (url !== "/" && location.startsWith(url)) return true;
+    if (url === "/dashboard" && location === "/dashboard") return true;
+    if (url !== "/dashboard" && location.startsWith(url)) return true;
     return false;
   };
 
