@@ -109,121 +109,168 @@ export function WellnessDashboard() {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6" data-testid="wellness-dashboard">
-      {/* Weekly Progress Overview - Compact for mobile */}
-      <Card>
-        <CardHeader className="pb-3 sm:pb-6">
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-            <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-            This Week's Wellness
+    <div className="space-y-6" data-testid="wellness-dashboard">
+      {/* Weekly Progress Overview - Modern glass card */}
+      <Card className="modern-card border-0 shadow-lg">
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center gap-3 text-lg">
+            <div className="p-2 rounded-xl bg-red-100 dark:bg-red-900/20">
+              <Heart className="w-5 h-5 text-red-500" />
+            </div>
+            <div>
+              <span className="text-red-500">Weekly Progress</span>
+              <p className="text-xs text-muted-foreground font-normal">Your wellness journey</p>
+            </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="pt-0">
-          <div className="space-y-3 sm:space-y-4">
+        <CardContent>
+          <div className="space-y-4">
             <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span>Overall Progress</span>
-                <span className="font-medium">{weeklyProgress}%</span>
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-sm font-medium">Overall Progress</span>
+                <span className="text-lg font-bold text-primary">{weeklyProgress}%</span>
               </div>
-              <Progress value={weeklyProgress} className="h-2 sm:h-3" />
+              <Progress value={weeklyProgress} className="h-3 rounded-full" />
             </div>
             
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-              <div className="text-center">
-                <div className="text-xl sm:text-2xl font-bold text-primary">{moodStreak}</div>
-                <div className="text-xs sm:text-sm text-muted-foreground">Day Streak</div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="text-center p-3 rounded-xl bg-blue-100 dark:bg-blue-900/20">
+                <div className="text-2xl font-bold text-blue-600">{moodStreak}</div>
+                <div className="text-xs text-blue-600/70">Streak</div>
               </div>
-              <div className="text-center">
-                <div className="text-xl sm:text-2xl font-bold text-accent">{recentMoodEntries}</div>
-                <div className="text-xs sm:text-sm text-muted-foreground">Mood Entries</div>
+              <div className="text-center p-3 rounded-xl bg-green-100 dark:bg-green-900/20">
+                <div className="text-2xl font-bold text-green-600">{recentMoodEntries}</div>
+                <div className="text-xs text-green-600/70">Entries</div>
               </div>
-              <div className="text-center">
-                <div className="text-xl sm:text-2xl font-bold text-secondary">{totalGoals}</div>
-                <div className="text-xs sm:text-sm text-muted-foreground">Total Goals</div>
+              <div className="text-center p-3 rounded-xl bg-purple-100 dark:bg-purple-900/20">
+                <div className="text-2xl font-bold text-purple-600">{totalGoals}</div>
+                <div className="text-xs text-purple-600/70">Goals</div>
               </div>
-              <div className="text-center">
-                <div className="text-xl sm:text-2xl font-bold text-emerald-600">{goalsCompleted}/{totalGoals}</div>
-                <div className="text-xs sm:text-sm text-muted-foreground">Goals Complete</div>
+              <div className="text-center p-3 rounded-xl bg-emerald-100 dark:bg-emerald-900/20">
+                <div className="text-2xl font-bold text-emerald-600">{goalsCompleted}/{totalGoals}</div>
+                <div className="text-xs text-emerald-600/70">Complete</div>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Quick Actions - Mobile optimized */}
-      <Card>
-        <CardHeader className="pb-3 sm:pb-6">
-          <CardTitle className="text-base sm:text-lg">Quick Actions</CardTitle>
+      {/* Quick Actions - Enhanced modern buttons */}
+      <Card className="modern-card border-0 shadow-lg" style={{ borderRadius: '16px' }}>
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg">Quick Actions</CardTitle>
         </CardHeader>
-        <CardContent className="pt-0">
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+        <CardContent>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <Button 
               variant="outline" 
-              className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
+              className="group relative h-auto p-0 border-0 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden"
               onClick={() => handleQuickAction('mood-checkin')}
               data-testid="button-quick-mood"
+              style={{ borderRadius: '16px' }}
             >
-              <Heart className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-red-500" />
-              <span className="text-xs sm:text-sm transition-colors group-hover:text-primary">Mood Check-In</span>
+              <div className="relative w-full p-4 bg-gradient-to-br from-rose-300 to-pink-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
+                <div className="absolute top-0 right-0 w-12 h-12 bg-white/10 rounded-full -translate-y-6 translate-x-6 group-hover:scale-150 transition-transform duration-700" />
+                <Heart className="relative z-10 w-6 h-6 text-white icon-interactive group-hover:scale-110 transition-transform duration-300" />
+                <span className="relative z-10 text-xs font-bold">Mood</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+              </div>
             </Button>
+            
             <Button 
               variant="outline" 
-              className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
+              className="group relative h-auto p-0 border-0 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden"
               onClick={() => handleQuickAction('journal')}
               data-testid="button-quick-journal"
+              style={{ borderRadius: '16px' }}
             >
-              <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-blue-500" />
-              <span className="text-xs sm:text-sm transition-colors group-hover:text-primary">Write Journal</span>
+              <div className="relative w-full p-4 bg-gradient-to-br from-sky-300 to-blue-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
+                <div className="absolute top-0 right-0 w-12 h-12 bg-white/10 rounded-full -translate-y-6 translate-x-6 group-hover:scale-150 transition-transform duration-700" />
+                <BookOpen className="relative z-10 w-6 h-6 text-white icon-interactive group-hover:scale-110 transition-transform duration-300" />
+                <span className="relative z-10 text-xs font-bold">Journal</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+              </div>
             </Button>
+            
             <Button 
               variant="outline" 
-              className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
+              className="group relative h-auto p-0 border-0 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden"
               onClick={() => handleQuickAction('meditation')}
               data-testid="button-quick-meditation"
+              style={{ borderRadius: '16px' }}
             >
-              <Calendar className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-500" />
-              <span className="text-xs sm:text-sm transition-colors group-hover:text-primary">Meditate</span>
+              <div className="relative w-full p-4 bg-gradient-to-br from-violet-300 to-purple-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
+                <div className="absolute top-0 right-0 w-12 h-12 bg-white/10 rounded-full -translate-y-6 translate-x-6 group-hover:scale-150 transition-transform duration-700" />
+                <Calendar className="relative z-10 w-6 h-6 text-white icon-interactive group-hover:scale-110 transition-transform duration-300" />
+                <span className="relative z-10 text-xs font-bold">Meditate</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+              </div>
             </Button>
+            
             <Button 
               variant="outline" 
-              className="h-auto p-3 sm:p-4 flex flex-col items-center gap-1 sm:gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
+              className="group relative h-auto p-0 border-0 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden"
               onClick={() => handleQuickAction('creative')}
               data-testid="button-quick-creative"
+              style={{ borderRadius: '16px' }}
             >
-              <Palette className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110 group-hover:text-orange-500" />
-              <span className="text-xs sm:text-sm transition-colors group-hover:text-primary">Create Art</span>
+              <div className="relative w-full p-4 bg-gradient-to-br from-amber-300 to-orange-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
+                <div className="absolute top-0 right-0 w-12 h-12 bg-white/10 rounded-full -translate-y-6 translate-x-6 group-hover:scale-150 transition-transform duration-700" />
+                <Palette className="relative z-10 w-6 h-6 text-white icon-interactive group-hover:scale-110 transition-transform duration-300" />
+                <span className="relative z-10 text-xs font-bold">Create</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+              </div>
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Badges & Achievements - Mobile optimized */}
-      <Card>
-        <CardHeader className="pb-3 sm:pb-6">
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-            <Target className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-            Your Achievements
+      {/* Achievements - Enhanced modern badge system */}
+      <Card className="modern-card border-0 shadow-lg" style={{ borderRadius: '16px' }}>
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center gap-3 text-lg">
+            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-300 to-amber-400">
+              <Target className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <span className="text-amber-500 dark:text-amber-400">Achievements</span>
+              <p className="text-xs text-muted-foreground font-normal">Your progress badges</p>
+            </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="pt-0">
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+        <CardContent>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {badges.map((badge, index) => (
               <div 
                 key={index}
-                className={`p-2 sm:p-3 rounded-lg border text-center transition-all duration-300 hover:scale-105 hover:shadow-lg group cursor-pointer ${
+                className={`group relative overflow-hidden transition-all duration-500 hover:scale-105 cursor-pointer ${
                   badge.earned 
-                    ? 'bg-accent/10 border-accent hover:bg-accent/20' 
-                    : 'bg-muted/50 border-muted opacity-50 hover:opacity-70'
+                    ? 'bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 shadow-lg hover:shadow-xl' 
+                    : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 opacity-60 hover:opacity-80'
                 }`}
+                style={{ borderRadius: '16px', padding: '1rem' }}
                 data-testid={`badge-${badge.name.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                <div className="text-xl sm:text-2xl mb-1 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12">{badge.icon}</div>
-                <div className="text-xs sm:text-sm font-medium mb-1 transition-colors group-hover:text-primary">{badge.name}</div>
-                <div className="text-xs text-muted-foreground hidden sm:block">{badge.description}</div>
                 {badge.earned && (
-                  <Badge variant="secondary" className="mt-1 text-xs transition-all duration-300 group-hover:scale-110">
-                    Earned
-                  </Badge>
+                  <div className="absolute top-0 right-0 w-8 h-8 bg-emerald-500/20 rounded-full -translate-y-4 translate-x-4 group-hover:scale-150 transition-transform duration-700" />
+                )}
+                <div className="relative z-10 text-center space-y-3">
+                  <div className="text-4xl transition-transform duration-300 group-hover:scale-125">{badge.icon}</div>
+                  <div className="space-y-1">
+                    <div className="text-sm font-bold">{badge.name}</div>
+                    {badge.earned && (
+                      <Badge 
+                        variant="secondary" 
+                        className="text-xs px-3 py-1 bg-emerald-500 text-white border-0 font-semibold"
+                        style={{ borderRadius: '12px' }}
+                      >
+                        ✨ Earned
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                {badge.earned && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                 )}
               </div>
             ))}

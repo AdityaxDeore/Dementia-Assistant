@@ -101,25 +101,32 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <SidebarProvider style={style as React.CSSProperties}>
-          <div className="flex h-screen w-full">
+        <div className="responsive-container">
+          <SidebarProvider style={style as React.CSSProperties}>
+          {/* Fixed Header */}
+          <header className="fixed-header">
+            <div className="header-left">
+              <SidebarTrigger 
+                data-testid="button-sidebar-toggle" 
+                className="flex-shrink-0 icon-interactive modern-button rounded-xl p-2 hover:bg-accent/50" 
+              />
+              <img 
+                src="/src/assets/clarity-logo.png" 
+                alt="Clarity" 
+                className="h-6 w-auto sm:h-7 md:h-8 cursor-pointer transition-all duration-300 hover:scale-105 hover:drop-shadow-lg hover:brightness-110 max-w-full flex-shrink-0 rounded-lg"
+              />
+            </div>
+            <div className="header-right">
+              {showSOSButton && <SOSButton />}
+              <ThemeToggle />
+            </div>
+          </header>
+          
+          {/* Main Layout */}
+          <div className="flex h-screen w-full main-content">
             <AppSidebar />
             <div className="flex flex-col flex-1">
-              <header className="flex items-center justify-between p-2 sm:p-3 md:p-4 border-b bg-background safe-area-top">
-                <div className="flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0">
-                  <SidebarTrigger data-testid="button-sidebar-toggle" className="flex-shrink-0" />
-                  <img 
-                    src="/src/assets/clarity-logo.png" 
-                    alt="Clarity Logo" 
-                    className="h-8 w-auto sm:h-10 md:h-12 lg:h-16 cursor-pointer transition-all duration-300 hover:scale-110 hover:drop-shadow-lg hover:brightness-110 max-w-full flex-shrink-0"
-                  />
-                </div>
-                <div className="flex items-center gap-1 sm:gap-2 md:gap-3 flex-shrink-0">
-                  {showSOSButton && <SOSButton />}
-                  <ThemeToggle />
-                </div>
-              </header>
-              <main className="flex-1 overflow-auto p-2 sm:p-3 md:p-4 lg:p-6 pb-safe-area-bottom">
+              <main className="flex-1 overflow-auto p-2 sm:p-3 md:p-4 lg:p-6 pb-safe-area-bottom android-scroll">
                 <Router />
               </main>
             </div>
@@ -130,6 +137,7 @@ function App() {
           onNavigate={handleNavigation}
         />
         </SidebarProvider>
+        </div>
         <Toaster />
         <style>{`
           .pb-safe-area {

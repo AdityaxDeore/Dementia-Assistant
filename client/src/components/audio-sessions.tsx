@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from "react";
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Clock, Heart, Moon, Music, Wind, Timer, Star, Headphones } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Play, Pause, RotateCcw, Volume2, VolumeX, Clock, Heart, Moon, Music, Wind, Timer, Star, Headphones, SkipBack, SkipForward, Shuffle, Repeat, Plus, Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 interface AudioSession {
   id: string;
@@ -21,6 +21,8 @@ interface AudioSession {
   backgroundSound?: string;
   isPopular?: boolean;
   isFavorite?: boolean;
+  plays?: number;
+  coverImage?: string;
 }
 
 const AUDIO_SESSIONS: AudioSession[] = [
@@ -35,7 +37,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     instructor: "Dr. Sarah Chen",
     tags: ["insomnia", "relaxation", "bedtime"],
     backgroundSound: "rain",
-    isPopular: true
+    isPopular: true,
+    plays: 12450,
+    coverImage: "🌙"
   },
   {
     id: "sleep-2", 
@@ -46,7 +50,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     difficulty: "beginner",
     instructor: "Mark Williams",
     tags: ["body scan", "tension relief", "peaceful"],
-    backgroundSound: "ocean"
+    backgroundSound: "ocean",
+    plays: 8920,
+    coverImage: "🏖️"
   },
   {
     id: "sleep-3",
@@ -57,7 +63,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     difficulty: "beginner",
     instructor: "Luna Hayes",
     tags: ["story", "nature", "visualization"],
-    backgroundSound: "forest"
+    backgroundSound: "forest",
+    plays: 15630,
+    coverImage: "🌲"
   },
 
   // Meditation Sessions
@@ -70,7 +78,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     difficulty: "beginner",
     instructor: "Prof. Michael Davis",
     tags: ["mindfulness", "stress", "academic"],
-    isPopular: true
+    isPopular: true,
+    plays: 9870,
+    coverImage: "🧘‍♂️"
   },
   {
     id: "med-2",
@@ -81,7 +91,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     difficulty: "intermediate",
     instructor: "Dr. Emily Rodriguez",
     tags: ["anxiety", "calm", "breathing"],
-    backgroundSound: "bells"
+    backgroundSound: "bells",
+    plays: 7450,
+    coverImage: "🕉️"
   },
   {
     id: "med-3",
@@ -91,7 +103,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     category: "meditation",
     difficulty: "intermediate", 
     instructor: "Dr. Sarah Chen",
-    tags: ["self-love", "compassion", "healing"]
+    tags: ["self-love", "compassion", "healing"],
+    plays: 6780,
+    coverImage: "💝"
   },
 
   // Focus Sessions
@@ -104,7 +118,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     difficulty: "beginner",
     tags: ["study", "concentration", "productivity"],
     backgroundSound: "white-noise",
-    isPopular: true
+    isPopular: true,
+    plays: 23450,
+    coverImage: "📚"
   },
   {
     id: "focus-2",
@@ -114,7 +130,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     category: "focus",
     difficulty: "beginner",
     instructor: "Alex Thompson",
-    tags: ["pomodoro", "productivity", "time-management"]
+    tags: ["pomodoro", "productivity", "time-management"],
+    plays: 11200,
+    coverImage: "⏰"
   },
   {
     id: "focus-3",
@@ -124,7 +142,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     category: "focus",
     difficulty: "advanced",
     tags: ["deep-work", "extended", "ambient"],
-    backgroundSound: "cafe"
+    backgroundSound: "cafe",
+    plays: 5670,
+    coverImage: "☕"
   },
 
   // Breathing Sessions
@@ -137,7 +157,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     difficulty: "beginner",
     instructor: "Dr. James Wilson",
     tags: ["anxiety", "quick", "calming"],
-    isPopular: true
+    isPopular: true,
+    plays: 14520,
+    coverImage: "🌬️"
   },
   {
     id: "breath-2",
@@ -147,7 +169,9 @@ const AUDIO_SESSIONS: AudioSession[] = [
     category: "breathing",
     difficulty: "intermediate",
     instructor: "Captain Sarah Miller",
-    tags: ["focus", "discipline", "clarity"]
+    tags: ["focus", "discipline", "clarity"],
+    plays: 8930,
+    coverImage: "⭐"
   },
   {
     id: "breath-3",
@@ -157,12 +181,14 @@ const AUDIO_SESSIONS: AudioSession[] = [
     category: "breathing",
     difficulty: "advanced",
     instructor: "David Kumar",
-    tags: ["energy", "advanced", "resilience"]
+    tags: ["energy", "advanced", "resilience"],
+    plays: 6120,
+    coverImage: "❄️"
   }
 ];
 
 export function AudioSessions() {
-  const [activeTab, setActiveTab] = useState("sleep");
+  const [activeTab, setActiveTab] = useState("all");
   const [currentSession, setCurrentSession] = useState<AudioSession | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -170,6 +196,10 @@ export function AudioSessions() {
   const [isMuted, setIsMuted] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [selectedDuration, setSelectedDuration] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [repeatMode, setRepeatMode] = useState<'none' | 'all' | 'one'>('none');
+  const [favorites, setFavorites] = useState<string[]>([]);
   
   const audioRef = useRef<HTMLAudioElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -209,6 +239,12 @@ export function AudioSessions() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const formatPlays = (plays: number) => {
+    if (plays >= 1000000) return `${(plays / 1000000).toFixed(1)}M`;
+    if (plays >= 1000) return `${(plays / 1000).toFixed(1)}K`;
+    return plays.toString();
+  };
+
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
@@ -221,7 +257,7 @@ export function AudioSessions() {
   const handleSessionSelect = (session: AudioSession) => {
     setCurrentSession(session);
     setCurrentTime(0);
-    setIsPlaying(false);
+    setIsPlaying(true);
     setSelectedDuration(null);
   };
 
@@ -232,6 +268,14 @@ export function AudioSessions() {
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
+  };
+
+  const toggleFavorite = (sessionId: string) => {
+    setFavorites(prev => 
+      prev.includes(sessionId) 
+        ? prev.filter(id => id !== sessionId)
+        : [...prev, sessionId]
+    );
   };
 
   const getCategoryIcon = (category: string) => {
@@ -246,327 +290,290 @@ export function AudioSessions() {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case "sleep": return "text-indigo-600 bg-indigo-50";
-      case "meditation": return "text-purple-600 bg-purple-50";
-      case "focus": return "text-blue-600 bg-blue-50"; 
-      case "breathing": return "text-green-600 bg-green-50";
-      default: return "text-gray-600 bg-gray-50";
+      case "sleep": return "text-indigo-600 bg-indigo-100 border border-indigo-200";
+      case "meditation": return "text-purple-600 bg-purple-100 border border-purple-200";
+      case "focus": return "text-blue-600 bg-blue-100 border border-blue-200"; 
+      case "breathing": return "text-green-600 bg-green-100 border border-green-200";
+      default: return "text-gray-600 bg-gray-100 border border-gray-200";
     }
   };
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case "beginner": return "text-green-600 bg-green-50";
-      case "intermediate": return "text-yellow-600 bg-yellow-50";
-      case "advanced": return "text-red-600 bg-red-50";
-      default: return "text-gray-600 bg-gray-50";
+      case "beginner": return "text-green-400 bg-green-900/50";
+      case "intermediate": return "text-yellow-400 bg-yellow-900/50";
+      case "advanced": return "text-red-400 bg-red-900/50";
+      default: return "text-gray-400 bg-gray-900/50";
     }
   };
 
-  const filteredSessions = AUDIO_SESSIONS.filter(session => session.category === activeTab);
+  const filteredSessions = AUDIO_SESSIONS.filter(session => {
+    const matchesCategory = activeTab === "all" || session.category === activeTab;
+    const matchesSearch = searchTerm === "" || 
+      session.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      session.instructor?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      session.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
   const totalDuration = selectedDuration || (currentSession?.duration ?? 0);
   const progress = totalDuration > 0 ? (currentTime / (totalDuration * 60)) * 100 : 0;
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-          <Headphones className="w-8 h-8 text-primary" />
-          Guided Audio Sessions
-        </h1>
-        <p className="text-muted-foreground">
-          Professional audio sessions for sleep, meditation, focus, and breathing exercises. 
-          Developed by certified instructors to support your mental wellness journey.
-        </p>
+    <div className="min-h-screen text-gray-800 px-4 pb-6">
+      {/* Clean Header */}
+      <div className="mb-8">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="p-4 bg-white rounded-2xl shadow-lg border border-gray-100">
+            <Headphones className="w-12 h-12 text-blue-600" />
+          </div>
+          <div>
+            <h1 className="text-5xl font-light text-gray-800 mb-2">
+              Wellness Audio
+            </h1>
+            <p className="text-gray-600 text-lg">
+              {AUDIO_SESSIONS.length} sessions • By certified instructors • Made for you
+            </p>
+          </div>
+        </div>
+        
+        {/* Play All Button */}
+        <div className="flex items-center gap-4">
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            onClick={() => filteredSessions.length > 0 && handleSessionSelect(filteredSessions[0])}
+          >
+            <Play className="w-6 h-6 mr-2 fill-current" />
+            Play All
+          </Button>
+          <Button 
+            variant="ghost" 
+            className="text-gray-600 hover:text-gray-800 p-3 rounded-full hover:bg-gray-100"
+            onClick={() => setIsShuffled(!isShuffled)}
+          >
+            <Shuffle className={`w-6 h-6 ${isShuffled ? 'text-blue-600' : ''}`} />
+          </Button>
+          <Button 
+            variant="ghost" 
+            className="text-gray-600 hover:text-gray-800 p-3 rounded-full hover:bg-gray-100"
+            onClick={() => setRepeatMode(repeatMode === 'none' ? 'all' : repeatMode === 'all' ? 'one' : 'none')}
+          >
+            <Repeat className={`w-6 h-6 ${repeatMode !== 'none' ? 'text-blue-600' : ''}`} />
+          </Button>
+        </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="sleep" className="flex items-center gap-2">
-            <Moon className="w-4 h-4" />
-            Sleep
-          </TabsTrigger>
-          <TabsTrigger value="meditation" className="flex items-center gap-2">
-            <Heart className="w-4 h-4" />
-            Meditation
-          </TabsTrigger>
-          <TabsTrigger value="focus" className="flex items-center gap-2">
-            <Music className="w-4 h-4" />
-            Focus
-          </TabsTrigger>
-          <TabsTrigger value="breathing" className="flex items-center gap-2">
-            <Wind className="w-4 h-4" />
-            Breathing
-          </TabsTrigger>
-        </TabsList>
+      {/* Search and Filter */}
+      <div className="flex items-center gap-4 mb-6">
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Input 
+            placeholder="Search sessions, instructors, or tags..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-12 bg-white border-gray-200 text-gray-800 placeholder-gray-400 rounded-full h-12 focus:ring-2 focus:ring-blue-500 shadow-sm"
+          />
+        </div>
+        <Select value={activeTab} onValueChange={setActiveTab}>
+          <SelectTrigger className="w-40 bg-white border-gray-200 text-gray-800 rounded-full shadow-sm">
+            <Filter className="w-4 h-4 mr-2" />
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent className="bg-white border-gray-200">
+            <SelectItem value="all">All Categories</SelectItem>
+            <SelectItem value="sleep">Sleep</SelectItem>
+            <SelectItem value="meditation">Meditation</SelectItem>
+            <SelectItem value="focus">Focus</SelectItem>
+            <SelectItem value="breathing">Breathing</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-        <TabsContent value={activeTab} className="space-y-6 mt-6">
-          {/* Audio Player */}
-          {currentSession && (
-            <Card className="border-primary/20 bg-gradient-to-r from-blue-50 to-purple-50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  {React.createElement(getCategoryIcon(currentSession.category), {
-                    className: `w-6 h-6 ${getCategoryColor(currentSession.category).split(' ')[0]}`
-                  })}
-                  Now Playing: {currentSession.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <p className="text-sm text-muted-foreground">{currentSession.description}</p>
-                    {currentSession.instructor && (
-                      <p className="text-xs text-muted-foreground">
-                        Instructor: {currentSession.instructor}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {selectedDuration && (
-                      <Badge variant="outline">
-                        Custom: {selectedDuration}min
-                      </Badge>
-                    )}
-                    <Badge className={getDifficultyColor(currentSession.difficulty)}>
-                      {currentSession.difficulty}
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Progress Bar */}
-                <div className="space-y-2">
-                  <Progress value={progress} className="h-2" />
-                  <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>{formatTime(currentTime)}</span>
-                    <span>{formatTime(totalDuration * 60)}</span>
-                  </div>
-                </div>
-
-                {/* Controls */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Button
-                      onClick={handleRestart}
-                      variant="outline"
-                      size="sm"
-                      disabled={currentTime === 0}
-                    >
-                      <RotateCcw className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={handlePlayPause}
-                      size="lg"
-                      className="h-12 w-12 rounded-full"
-                    >
-                      {isPlaying ? (
-                        <Pause className="w-6 h-6" />
-                      ) : (
-                        <Play className="w-6 h-6 ml-1" />
-                      )}
-                    </Button>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    {/* Volume Control */}
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={toggleMute}
-                      >
-                        {isMuted || volume === 0 ? (
-                          <VolumeX className="w-4 h-4" />
-                        ) : (
-                          <Volume2 className="w-4 h-4" />
-                        )}
-                      </Button>
-                      <Slider
-                        value={[isMuted ? 0 : volume]}
-                        onValueChange={handleVolumeChange}
-                        max={100}
-                        step={1}
-                        className="w-20"
-                      />
-                    </div>
-
-                    {/* Speed Control */}
-                    <Select value={playbackSpeed.toString()} onValueChange={(value) => setPlaybackSpeed(parseFloat(value))}>
-                      <SelectTrigger className="w-20">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="0.5">0.5x</SelectItem>
-                        <SelectItem value="0.75">0.75x</SelectItem>
-                        <SelectItem value="1">1x</SelectItem>
-                        <SelectItem value="1.25">1.25x</SelectItem>
-                        <SelectItem value="1.5">1.5x</SelectItem>
-                      </SelectContent>
-                    </Select>
-
-                    {/* Custom Duration */}
-                    {currentSession.category === "focus" && (
-                      <Select value={selectedDuration?.toString() || ""} onValueChange={(value) => setSelectedDuration(value ? parseInt(value) : null)}>
-                        <SelectTrigger className="w-24">
-                          <SelectValue placeholder="Duration" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="">Default</SelectItem>
-                          <SelectItem value="15">15min</SelectItem>
-                          <SelectItem value="30">30min</SelectItem>
-                          <SelectItem value="45">45min</SelectItem>
-                          <SelectItem value="60">60min</SelectItem>
-                          <SelectItem value="90">90min</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    )}
-                  </div>
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2">
-                  {currentSession.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="text-xs">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Session List */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredSessions.map((session) => {
-              const CategoryIcon = getCategoryIcon(session.category);
-              return (
-                <Card
-                  key={session.id}
-                  className={`hover:shadow-lg transition-all duration-300 cursor-pointer ${
-                    currentSession?.id === session.id ? 'ring-2 ring-primary' : ''
-                  }`}
-                  onClick={() => handleSessionSelect(session)}
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg ${getCategoryColor(session.category)}`}>
-                          <CategoryIcon className="w-5 h-5" />
-                        </div>
-                        <div className="space-y-1">
-                          <CardTitle className="text-lg font-semibold line-clamp-1">
-                            {session.title}
-                          </CardTitle>
-                          <div className="flex items-center gap-2">
-                            <Badge className={getDifficultyColor(session.difficulty)} >
-                              {session.difficulty}
-                            </Badge>
-                            {session.isPopular && (
-                              <Badge className="bg-orange-100 text-orange-800">
-                                <Star className="w-3 h-3 mr-1" />
-                                Popular
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {session.description}
-                    </p>
-                    
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Clock className="w-4 h-4" />
-                        <span>{session.duration} min</span>
-                      </div>
-                      {session.instructor && (
-                        <span className="text-xs text-muted-foreground">
-                          {session.instructor}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex flex-wrap gap-1">
-                      {session.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                      {session.tags.length > 3 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{session.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-
-                    <Button 
-                      className="w-full"
-                      variant={currentSession?.id === session.id ? "secondary" : "default"}
-                    >
-                      {currentSession?.id === session.id ? (
-                        <>
-                          <Pause className="w-4 h-4 mr-2" />
-                          Playing
-                        </>
-                      ) : (
-                        <>
-                          <Play className="w-4 h-4 mr-2" />
-                          Play Session
-                        </>
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
+      {/* Clean Track List */}
+      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 mb-6 shadow-lg border border-gray-100">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-light text-gray-800">Sessions</h2>
+          <div className="text-sm text-gray-500">
+            {filteredSessions.length} session{filteredSessions.length !== 1 ? 's' : ''}
           </div>
+        </div>
+        
+        {/* Track List Header */}
+        <div className="grid grid-cols-12 gap-4 items-center text-sm text-gray-500 border-b border-gray-200 pb-2 mb-4">
+          <div className="col-span-1">#</div>
+          <div className="col-span-6">Title</div>
+          <div className="col-span-2">Category</div>
+          <div className="col-span-2">Plays</div>
+          <div className="col-span-1 text-center">
+            <Heart className="w-4 h-4 mx-auto" />
+          </div>
+        </div>
+        
+        {/* Track List */}
+        <div className="space-y-1">
+          {filteredSessions.map((session, index) => {
+            const isCurrentSession = currentSession?.id === session.id;
+            const isFavorited = favorites.includes(session.id);
+            
+            return (
+              <div 
+                key={session.id}
+                className={`grid grid-cols-12 gap-4 items-center p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer group ${
+                  isCurrentSession ? 'bg-blue-50' : ''
+                }`}
+                onClick={() => handleSessionSelect(session)}
+              >
+                {/* Track Number / Play Button */}
+                <div className="col-span-1">
+                  <div className="relative">
+                    <span className={`text-sm ${
+                      isCurrentSession ? 'text-blue-600' : 'text-gray-500 group-hover:hidden'
+                    }`}>
+                      {isCurrentSession && isPlaying ? '♪' : index + 1}
+                    </span>
+                    <Play className="w-4 h-4 text-blue-600 hidden group-hover:block absolute top-0 left-0" />
+                  </div>
+                </div>
+                
+                {/* Title and Artist */}
+                <div className="col-span-6 flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-md flex items-center justify-center text-lg">
+                    {session.coverImage}
+                  </div>
+                  <div>
+                    <div className={`font-medium ${
+                      isCurrentSession ? 'text-blue-600' : 'text-gray-800'
+                    }`}>
+                      {session.title}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {session.instructor || 'Various Artists'}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Category */}
+                <div className="col-span-2">
+                  <Badge className={`${getCategoryColor(session.category)} border-0`}>
+                    {session.category}
+                  </Badge>
+                </div>
+                
+                {/* Plays */}
+                <div className="col-span-2 text-gray-500 text-sm">
+                  {formatPlays(session.plays || 0)}
+                </div>
+                
+                {/* Favorite Button */}
+                <div className="col-span-1 text-center">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="p-1 h-auto w-auto hover:bg-transparent"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(session.id);
+                    }}
+                  >
+                    <Heart 
+                      className={`w-4 h-4 ${
+                        isFavorited 
+                          ? 'text-red-500 fill-red-500' 
+                          : 'text-gray-400 hover:text-red-500'
+                      }`} 
+                    />
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
-          {/* Category-specific info */}
-          <Card className="bg-gradient-to-r from-gray-50 to-blue-50 border-none">
-            <CardContent className="p-6">
-              {activeTab === "sleep" && (
-                <div className="text-center space-y-2">
-                  <Moon className="w-8 h-8 mx-auto text-indigo-600" />
-                  <h3 className="text-lg font-semibold">Sleep Better Tonight</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Our sleep sessions use proven techniques to help you fall asleep faster and enjoy deeper, more restful sleep.
-                  </p>
+      {/* Fixed Bottom Player - Above Navigation */}
+      {currentSession && (
+        <div className="fixed bottom-16 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-4 z-[1001] shadow-xl">
+          <div className="max-w-screen-xl mx-auto">
+            <div className="flex items-center justify-between">
+              {/* Current Track Info */}
+              <div className="flex items-center gap-4 min-w-0 w-1/4">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
+                  {currentSession.coverImage}
                 </div>
-              )}
-              {activeTab === "meditation" && (
-                <div className="text-center space-y-2">
-                  <Heart className="w-8 h-8 mx-auto text-purple-600" />
-                  <h3 className="text-lg font-semibold">Mindful Moments</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Develop mindfulness skills to manage stress, improve focus, and cultivate inner peace through regular practice.
-                  </p>
+                <div className="min-w-0">
+                  <div className="text-gray-800 font-medium truncate">{currentSession.title}</div>
+                  <div className="text-gray-500 text-sm truncate">{currentSession.instructor || 'Various Artists'}</div>
                 </div>
-              )}
-              {activeTab === "focus" && (
-                <div className="text-center space-y-2">
-                  <Music className="w-8 h-8 mx-auto text-blue-600" />
-                  <h3 className="text-lg font-semibold">Enhanced Productivity</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Scientifically designed soundscapes and focus sessions to boost concentration and academic performance.
-                  </p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="p-1 h-auto w-auto hover:bg-transparent flex-shrink-0"
+                  onClick={() => toggleFavorite(currentSession.id)}
+                >
+                  <Heart 
+                    className={`w-4 h-4 ${
+                      favorites.includes(currentSession.id) 
+                        ? 'text-red-500 fill-red-500' 
+                        : 'text-gray-400 hover:text-red-500'
+                    }`} 
+                  />
+                </Button>
+              </div>
+
+              {/* Player Controls */}
+              <div className="flex flex-col items-center gap-2 w-2/4 max-w-lg">
+                <div className="flex items-center gap-4">
+                  <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-800">
+                    <SkipBack className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    onClick={handlePlayPause}
+                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-full w-10 h-10 p-0"
+                  >
+                    {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
+                  </Button>
+                  <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-800">
+                    <SkipForward className="w-4 h-4" />
+                  </Button>
                 </div>
-              )}
-              {activeTab === "breathing" && (
-                <div className="text-center space-y-2">
-                  <Wind className="w-8 h-8 mx-auto text-green-600" />
-                  <h3 className="text-lg font-semibold">Breathe & Reset</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Powerful breathing techniques to quickly reduce anxiety, increase energy, and improve mental clarity.
-                  </p>
+                
+                {/* Progress Bar */}
+                <div className="flex items-center gap-2 w-full">
+                  <span className="text-xs text-gray-500 w-10 text-right">{formatTime(currentTime)}</span>
+                  <div className="flex-1">
+                    <Progress value={progress} className="h-1 bg-gray-200" />
+                  </div>
+                  <span className="text-xs text-gray-500 w-10">{formatTime(totalDuration * 60)}</span>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              </div>
+
+              {/* Volume and Options */}
+              <div className="flex items-center gap-4 w-1/4 justify-end">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-500 hover:text-gray-800"
+                  onClick={toggleMute}
+                >
+                  {isMuted || volume === 0 ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                </Button>
+                <div className="w-24">
+                  <Slider
+                    value={[isMuted ? 0 : volume]}
+                    onValueChange={handleVolumeChange}
+                    max={100}
+                    step={1}
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Bottom Padding for Fixed Player - accounts for both player and navigation */}
+      {currentSession && <div className="h-32" />}
     </div>
   );
 }

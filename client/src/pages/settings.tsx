@@ -18,11 +18,13 @@ export default function SettingsPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Theme Settings */}
-        <Card>
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-sky-400/10 via-blue-400/10 to-cyan-400/10 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Palette className="w-5 h-5 text-primary" />
-              Appearance
+              <div className="p-2 bg-gradient-to-br from-sky-400 to-blue-500 rounded-lg shadow-md">
+                <Palette className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-slate-800 font-bold">Appearance</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -39,11 +41,13 @@ export default function SettingsPage() {
         </Card>
 
         {/* General Settings */}
-        <Card>
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-violet-400/10 via-purple-400/10 to-indigo-400/10 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Settings className="w-5 h-5 text-primary" />
-              General
+              <div className="p-2 bg-gradient-to-br from-violet-400 to-purple-500 rounded-lg shadow-md">
+                <Settings className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-slate-800 font-bold">General</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">

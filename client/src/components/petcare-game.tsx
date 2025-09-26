@@ -16,7 +16,10 @@ import {
   Sparkles,
   PawPrint,
   MessageCircle,
-  Send
+  Send,
+  Bone,
+  Music,
+  Moon
 } from 'lucide-react';
 
 interface Pet {
@@ -30,6 +33,9 @@ interface Pet {
   thirst: number;
   experience: number;
   maxExperience: number;
+  mood: 'happy' | 'sad' | 'tired' | 'hungry' | 'playful' | 'sleeping';
+  lastFed: number;
+  lastPlayed: number;
 }
 
 interface Activity {
@@ -46,6 +52,7 @@ interface Activity {
   cooldown: number;
   description: string;
   color: string;
+  animation: 'eating' | 'playing' | 'sleeping' | 'drinking';
 }
 
 export const PetCareDashboard: React.FC = () => {
@@ -59,8 +66,14 @@ export const PetCareDashboard: React.FC = () => {
     hunger: 60,
     thirst: 50,
     experience: 150,
-    maxExperience: 200
+    maxExperience: 200,
+    mood: 'happy',
+    lastFed: Date.now(),
+    lastPlayed: Date.now()
   });
+
+  const [currentAnimation, setCurrentAnimation] = useState<'idle' | 'eating' | 'playing' | 'sleeping' | 'drinking'>('idle');
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const [cooldowns, setCooldowns] = useState<Record<string, number>>({});
   const [achievements, setAchievements] = useState<string[]>([]);
@@ -83,7 +96,8 @@ export const PetCareDashboard: React.FC = () => {
       effect: { hunger: 30, health: 5, experience: 10 },
       cooldown: 5000,
       description: 'Give your pet a nutritious meal',
-      color: 'text-green-600'
+      color: 'text-green-600',
+      animation: 'eating'
     },
     {
       id: 'water',
@@ -92,7 +106,8 @@ export const PetCareDashboard: React.FC = () => {
       effect: { thirst: 40, health: 5, experience: 8 },
       cooldown: 4000,
       description: 'Provide fresh water',
-      color: 'text-blue-600'
+      color: 'text-blue-600',
+      animation: 'drinking'
     },
     {
       id: 'play',
@@ -101,7 +116,8 @@ export const PetCareDashboard: React.FC = () => {
       effect: { happiness: 25, hunger: -10, thirst: -5, experience: 15 },
       cooldown: 8000,
       description: 'Play games and have fun',
-      color: 'text-purple-600'
+      color: 'text-purple-600',
+      animation: 'playing'
     },
     {
       id: 'rest',
@@ -110,20 +126,42 @@ export const PetCareDashboard: React.FC = () => {
       effect: { health: 20, happiness: 10, experience: 5 },
       cooldown: 10000,
       description: 'Let your pet rest and recover',
-      color: 'text-red-600'
+      color: 'text-red-600',
+      animation: 'sleeping'
     }
   ];
 
-  // Auto-decrease stats over time
+  // Auto-decrease stats over time and update mood
   useEffect(() => {
     const interval = setInterval(() => {
-      setPet(prev => ({
-        ...prev,
-        health: Math.max(0, prev.health - 1),
-        happiness: Math.max(0, prev.happiness - 1),
-        hunger: Math.max(0, prev.hunger - 2),
-        thirst: Math.max(0, prev.thirst - 1.5)
-      }));
+      setPet(prev => {
+        const newPet = {
+          ...prev,
+          health: Math.max(0, prev.health - 1),
+          happiness: Math.max(0, prev.happiness - 1),
+          hunger: Math.max(0, prev.hunger - 2), 
+          thirst: Math.max(0, prev.thirst - 1.5)
+        };
+        
+        // Update mood based on stats and time
+        let newMood: Pet['mood'] = 'happy';
+        const timeSinceLastFed = Date.now() - prev.lastFed;
+        const timeSinceLastPlayed = Date.now() - prev.lastPlayed;
+        
+        if (newPet.hunger < 20) {
+          newMood = 'hungry';
+        } else if (newPet.health < 30) {
+          newMood = 'tired';
+        } else if (newPet.happiness < 30) {
+          newMood = 'sad';
+        } else if (timeSinceLastPlayed > 60000) { // 1 minute
+          newMood = 'playful';
+        } else if (newPet.health < 50 && Math.random() < 0.3) {
+          newMood = 'sleeping';
+        }
+        
+        return { ...newPet, mood: newMood };
+      });
       
       setPlayTime(prev => prev + 1);
     }, 3000);
@@ -262,19 +300,32 @@ export const PetCareDashboard: React.FC = () => {
   const performActivity = (activity: Activity) => {
     if (cooldowns[activity.id] && cooldowns[activity.id] > 0) return;
 
+    // Trigger animation
+    setCurrentAnimation(activity.animation);
+    setIsAnimating(true);
+
+    // Update pet stats
     setPet(prev => ({
       ...prev,
       health: Math.min(100, prev.health + (activity.effect.health || 0)),
       happiness: Math.min(100, prev.happiness + (activity.effect.happiness || 0)),
       hunger: Math.min(100, prev.hunger + (activity.effect.hunger || 0)),
       thirst: Math.min(100, prev.thirst + (activity.effect.thirst || 0)),
-      experience: prev.experience + activity.effect.experience
+      experience: prev.experience + activity.effect.experience,
+      lastFed: activity.id === 'feed' ? Date.now() : prev.lastFed,
+      lastPlayed: activity.id === 'play' ? Date.now() : prev.lastPlayed
     }));
 
     setCooldowns(prev => ({
       ...prev,
       [activity.id]: activity.cooldown
     }));
+
+    // Reset animation after 3 seconds
+    setTimeout(() => {
+      setCurrentAnimation('idle');
+      setIsAnimating(false);
+    }, 3000);
   };
 
   const getStatColor = (value: number) => {
@@ -295,6 +346,89 @@ export const PetCareDashboard: React.FC = () => {
     if (pet.happiness >= 40) return '😐';
     if (pet.happiness >= 20) return '😔';
     return '😢';
+  };
+
+  // Animated Dog Component
+  const AnimatedDog = () => {
+    const getDogState = () => {
+      if (pet.health < 30) return { emoji: '🐕‍🦺', animation: 'tired', color: 'text-red-500' };
+      if (pet.hunger < 20) return { emoji: '🐕', animation: 'hungry', color: 'text-orange-500' };
+      if (pet.happiness < 30) return { emoji: '🐕', animation: 'sad', color: 'text-gray-500' };
+      if (currentAnimation === 'eating') return { emoji: '🍖', animation: 'eating', color: 'text-green-500' };
+      if (currentAnimation === 'drinking') return { emoji: '💧', animation: 'drinking', color: 'text-blue-500' };
+      if (currentAnimation === 'playing') return { emoji: '🎾', animation: 'playing', color: 'text-purple-500' };
+      if (currentAnimation === 'sleeping') return { emoji: '😴', animation: 'sleeping', color: 'text-indigo-500' };
+      if (pet.happiness >= 80) return { emoji: '🐕', animation: 'happy', color: 'text-green-500' };
+      return { emoji: '🐕', animation: 'idle', color: 'text-blue-500' };
+    };
+
+    const dogState = getDogState();
+
+    return (
+      <div className="relative flex items-center justify-center p-8">
+        {/* Background effects based on mood */}
+        <div className={`absolute inset-0 rounded-full ${
+          pet.health < 30 ? 'bg-red-100 animate-pulse' :
+          pet.hunger < 20 ? 'bg-orange-100 animate-bounce' :
+          pet.happiness < 30 ? 'bg-gray-100' :
+          currentAnimation === 'playing' ? 'bg-purple-100 animate-spin' :
+          'bg-blue-100'
+        } opacity-30`} style={{animationDuration: currentAnimation === 'playing' ? '2s' : '3s'}} />
+        
+        {/* Main dog */}
+        <div className={`relative z-10 transition-all duration-500 ${
+          currentAnimation === 'eating' ? 'animate-bounce' :
+          currentAnimation === 'drinking' ? 'animate-pulse' :
+          currentAnimation === 'playing' ? 'animate-spin' :
+          currentAnimation === 'sleeping' ? 'opacity-70' :
+          pet.health < 30 ? 'animate-pulse opacity-50' :
+          pet.hunger < 20 ? 'animate-bounce' :
+          'animate-pulse'
+        }`} style={{animationDuration: 
+          currentAnimation === 'eating' ? '0.5s' :
+          currentAnimation === 'drinking' ? '1s' :
+          currentAnimation === 'playing' ? '1s' :
+          '3s'
+        }}>
+          <div className="text-8xl mb-2">{dogState.emoji}</div>
+          
+          {/* Activity indicators */}
+          {currentAnimation === 'eating' && (
+            <div className="absolute -top-2 -right-2 animate-bounce">
+              <div className="text-2xl">🍖</div>
+            </div>
+          )}
+          {currentAnimation === 'drinking' && (
+            <div className="absolute -top-2 -right-2 animate-pulse">
+              <div className="text-2xl">💧</div>
+            </div>
+          )}
+          {currentAnimation === 'playing' && (
+            <div className="absolute -top-2 -right-2 animate-spin">
+              <div className="text-2xl">🎾</div>
+            </div>
+          )}
+          {currentAnimation === 'sleeping' && (
+            <div className="absolute -top-2 -right-2 animate-pulse">
+              <div className="text-2xl">💤</div>
+            </div>
+          )}
+        </div>
+        
+        {/* Status indicators */}
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+          {pet.health < 30 && (
+            <Badge className="bg-red-100 text-red-800 animate-pulse">Needs Rest</Badge>
+          )}
+          {pet.hunger < 20 && (
+            <Badge className="bg-orange-100 text-orange-800 animate-bounce">Very Hungry</Badge>
+          )}
+          {pet.happiness < 30 && (
+            <Badge className="bg-gray-100 text-gray-800">Feeling Sad</Badge>
+          )}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -319,19 +453,26 @@ export const PetCareDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Pet Status */}
+      {/* Pet Status with Animated Dog */}
       <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50">
         <CardHeader className="text-center pb-4">
-          <div className="flex items-center justify-center gap-3">
-            <div className="text-6xl">{pet.type === 'dog' ? '🐕' : pet.type === 'cat' ? '🐱' : '🐰'}</div>
-            <div className="text-4xl">{getPetEmoji()}</div>
-          </div>
+          <AnimatedDog />
           <CardTitle className="text-2xl text-gray-800">
             {pet.name} - Level {pet.level}
           </CardTitle>
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-2">
             <Badge variant="outline" className="bg-white/50">
               {pet.experience}/{pet.maxExperience} XP
+            </Badge>
+            <Badge className={`${
+              pet.mood === 'happy' ? 'bg-green-100 text-green-800' :
+              pet.mood === 'sad' ? 'bg-gray-100 text-gray-800' :
+              pet.mood === 'tired' ? 'bg-red-100 text-red-800' :
+              pet.mood === 'hungry' ? 'bg-orange-100 text-orange-800' :
+              pet.mood === 'playful' ? 'bg-purple-100 text-purple-800' :
+              'bg-blue-100 text-blue-800'
+            }`}>
+              {pet.mood.charAt(0).toUpperCase() + pet.mood.slice(1)}
             </Badge>
           </div>
         </CardHeader>
@@ -406,7 +547,7 @@ export const PetCareDashboard: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {activities.map((activity) => {
               const IconComponent = activity.icon;
-              const isOnCooldown = cooldowns[activity.id] && cooldowns[activity.id] > 0;
+              const isOnCooldown = !!(cooldowns[activity.id] && cooldowns[activity.id] > 0);
               const cooldownPercent = isOnCooldown ? (cooldowns[activity.id] / activity.cooldown) * 100 : 0;
 
               return (

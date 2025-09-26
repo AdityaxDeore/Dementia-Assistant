@@ -2,14 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Bottom Navigation Padding */
+/* Navigation Padding - Updated for Fixed Header and Music Player */
 body {
-  padding-bottom: 80px !important;
+  padding-bottom: 60px !important; /* Bottom nav */
+  padding-top: 0 !important; /* No top padding needed with fixed header */
+  margin: 0;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Additional padding when music player is active */
+.has-music-player {
+  padding-bottom: 140px !important; /* Space for both music player and navigation */
 }
 
 @media (max-width: 640px) {
   body {
-    padding-bottom: 70px !important;
+    padding-bottom: 55px !important;
+  }
+  .has-music-player {
+    padding-bottom: 130px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding-bottom: 50px !important;
+  }
+  .has-music-player {
+    padding-bottom: 120px !important;
   }
 }
 
@@ -143,7 +164,7 @@ body {
   --font-sans: Inter, system-ui, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Menlo, monospace;
-  --radius: .5rem; /* 8px */
+  --radius: 1rem; /* 16px - More modern rounded corners */
   --shadow-2xs: 0px 2px 0px 0px hsl(210 15% 25% / 0.00);
   --shadow-xs: 0px 2px 0px 0px hsl(210 15% 25% / 0.00);
   --shadow-sm: 0px 2px 0px 0px hsl(210 15% 25% / 0.00), 0px 1px 2px -1px hsl(210 15% 25% / 0.00);
@@ -549,7 +570,7 @@ body {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
 }
 
-/* Enhanced Mood Tracker Animations */
+/* Enhanced Modern UI Animations */
 @keyframes slideInBounce {
   0% {
     opacity: 0;
@@ -562,6 +583,47 @@ body {
   100% {
     opacity: 1;
     transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+/* Modern Glass Card Effect */
+@keyframes glassCardAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* Floating action button animation */
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Icon hover effects */
+@keyframes iconPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
@@ -613,3 +675,664 @@ body {
 .mood-emoji-stagger-3 { animation-delay: 300ms; }
 .mood-emoji-stagger-4 { animation-delay: 450ms; }
 .mood-emoji-stagger-5 { animation-delay: 600ms; }
+
+/* Modern UI Utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: glassCardAppear 0.6s ease-out;
+}
+
+.dark .glass-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modern-card {
+  @apply rounded-2xl border-0 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02];
+  background: rgba(255,255,255,0.9);
+}
+
+.dark .modern-card {
+  background: rgba(30,41,59,0.9);
+}
+
+.floating-button {
+  @apply rounded-full shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-110;
+  animation: floatUp 0.6s ease-out;
+}
+
+.icon-interactive {
+  @apply transition-all duration-200 hover:scale-110 active:scale-95;
+}
+
+.icon-interactive:hover {
+  animation: iconPulse 0.3s ease-in-out;
+}
+
+.modern-button {
+  @apply rounded-xl transition-all duration-200 hover:shadow-lg active:scale-95;
+}
+
+.gradient-border {
+  position: relative;
+  background: transparent;
+  border-radius: 1rem;
+  border: 2px solid hsl(var(--border));
+}
+
+.gradient-border::before {
+  display: none;
+}
+
+.text-minimal {
+  @apply text-xs text-muted-foreground leading-tight;
+}
+
+.card-stack {
+  position: relative;
+}
+
+.card-stack::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: -4px;
+  bottom: -4px;
+  background: rgba(0,0,0,0.05);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.dark .card-stack::before {
+  background: rgba(255,255,255,0.05);
+}
+
+/* Fixed Header Layout */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3rem; /* 48px - Reduced from 64px */
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.75rem;
+}
+
+.dark .fixed-header {
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive header heights */
+@media (min-width: 640px) {
+  .fixed-header {
+    height: 3.25rem; /* 52px - Reduced from 72px */
+    padding: 0 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .fixed-header {
+    height: 3.5rem; /* 56px - Reduced from 80px */
+    padding: 0 1.5rem;
+  }
+}
+
+/* Header content layout */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .header-left {
+    gap: 1rem;
+  }
+  .header-right {
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .header-right {
+    gap: 1rem;
+  }
+}
+
+/* Comprehensive Responsive Design */
+/* Small phones: 320px - 480px */
+@media (max-width: 480px) {
+  .fixed-header {
+    height: 2.75rem; /* 44px - Reduced from 56px */
+    padding: 0 0.5rem;
+  }
+  .main-content {
+    padding-top: 2.75rem;
+  }
+  .header-left {
+    gap: 0.5rem;
+  }
+  .header-right {
+    gap: 0.25rem;
+  }
+}
+
+/* Large phones: 481px - 640px */
+@media (min-width: 481px) and (max-width: 640px) {
+  .fixed-header {
+    height: 3rem;
+    padding: 0 0.75rem;
+  }
+  .main-content {
+    padding-top: 3rem;
+  }
+}
+
+/* Tablets: 641px - 1024px */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .fixed-header {
+    height: 3.25rem;
+    padding: 0 1rem;
+  }
+  .main-content {
+    padding-top: 3.25rem;
+  }
+}
+
+/* Desktop: 1025px+ */
+@media (min-width: 1025px) {
+  .fixed-header {
+    height: 3.5rem;
+    padding: 0 1.5rem;
+  }
+  .main-content {
+    padding-top: 3.5rem;
+  }
+}
+
+/* Ultra-wide screens: 1920px+ */
+@media (min-width: 1920px) {
+  .fixed-header {
+    height: 3.75rem;
+    padding: 0 2rem;
+  }
+  .main-content {
+    padding-top: 3.75rem;
+  }
+}
+
+/* Landscape orientation optimizations */
+@media (orientation: landscape) and (max-height: 500px) {
+  .fixed-header {
+    height: 2.5rem; /* Smaller header for landscape */
+  }
+  .main-content {
+    padding-top: 2.5rem;
+  }
+}
+
+/* High DPI / Retina displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .fixed-header {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Flexible layout for all screen sizes */
+.responsive-container {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Ensure proper scaling on all devices */
+.scale-content {
+  transform-origin: top left;
+  width: 100%;
+}
+
+/* Viewport units fallback for older browsers */
+@supports not (height: 100dvh) {
+  .main-content {
+    min-height: 100vh;
+  }
+}
+
+@supports (height: 100dvh) {
+  .main-content {
+    min-height: 100dvh; /* Dynamic viewport height */
+  }
+}
+.android-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Horizontal scroll styling for mood tracker */
+.mood-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.mood-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+.mood-scroll > * {
+  scroll-snap-align: center;
+}
+
+/* Android-style fixed header */
+.android-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Safe area handling */
+@supports (padding: env(safe-area-inset-top)) {
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Enhanced Sidebar Transitions */
+.group\/sidebar-wrapper {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth sidebar sliding animations */
+[data-slot="sidebar-container"] {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              left 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              right 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Enhanced mobile sidebar sheet transitions */
+[data-mobile="true"] {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* Improved sidebar menu button transitions */
+[data-sidebar="menu-button"] {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-sidebar="menu-button"]:hover {
+  transform: translateX(4px);
+}
+
+/* Faster sidebar gap transition */
+[data-slot="sidebar-gap"] {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Fix sidebar content top spacing to avoid header overlap */
+[data-sidebar="sidebar"] {
+  padding-top: 1rem;
+}
+
+/* Responsive sidebar top padding for different header heights */
+@media (max-width: 480px) {
+  [data-sidebar="sidebar"] {
+    padding-top: 0.75rem;
+  }
+}
+
+/* Pet Care Game Animations */
+@keyframes petWiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-2deg) scale(1.02); }
+  75% { transform: rotate(2deg) scale(1.02); }
+}
+
+@keyframes petHappyBounce {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-8px) scale(1.05); }
+}
+
+@keyframes petEating {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-1deg); }
+  50% { transform: scale(1.05) rotate(1deg); }
+  75% { transform: scale(1.1) rotate(-1deg); }
+}
+
+@keyframes petSleepy {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.98); }
+}
+
+@keyframes petPlayful {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-5deg) scale(1.1); }
+  50% { transform: rotate(5deg) scale(1.1); }
+  75% { transform: rotate(-5deg) scale(1.1); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+@keyframes petHungry {
+  0%, 100% { transform: translateX(0px); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+@keyframes petTired {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(0.95); opacity: 0.5; }
+}
+
+@keyframes petDrinking {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.1); }
+}
+
+/* Pet Animation Classes */
+.pet-wiggle {
+  animation: petWiggle 2s ease-in-out infinite;
+}
+
+.pet-happy-bounce {
+  animation: petHappyBounce 1.5s ease-in-out infinite;
+}
+
+.pet-eating {
+  animation: petEating 0.8s ease-in-out infinite;
+}
+
+.pet-sleepy {
+  animation: petSleepy 3s ease-in-out infinite;
+}
+
+.pet-playful {
+  animation: petPlayful 1s ease-in-out infinite;
+}
+
+.pet-hungry {
+  animation: petHungry 0.5s ease-in-out infinite;
+}
+
+.pet-tired {
+  animation: petTired 2s ease-in-out infinite;
+}
+
+.pet-drinking {
+  animation: petDrinking 1s ease-in-out infinite;
+}
+
+/* Pet Status Indicator Animations */
+@keyframes statusAlert {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.status-alert {
+  animation: statusAlert 1s ease-in-out infinite;
+}
+
+/* Floating hearts for happy pet */
+@keyframes floatingHeart {
+  0% {
+    opacity: 0;
+    transform: translateY(0px) scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-20px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.5);
+  }
+}
+
+.floating-heart {
+  animation: floatingHeart 2s ease-in-out infinite;
+}
+
+/* Notebook style for diary textarea - Theme-aware */
+.notebook-paper {
+  background-color: hsl(var(--card));
+  background-image: 
+    linear-gradient(to right, #ff6b6b 78px, transparent 78px),
+    linear-gradient(to right, hsl(var(--border)) 78px, hsl(var(--border)) 79px, transparent 79px),
+    linear-gradient(to bottom, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px, transparent 32px);
+  background-size: 100% 32px;
+  line-height: 32px;
+  padding: 16px 16px 16px 88px;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-size: 16px;
+  border: 2px solid hsl(var(--card-border));
+  border-radius: 8px;
+  box-shadow: 0 4px 12px hsl(var(--border) / 0.1);
+  resize: none;
+  min-height: 320px;
+  color: hsl(var(--card-foreground));
+}
+
+.notebook-paper:focus {
+  outline: none;
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1), 0 4px 12px hsl(var(--border) / 0.15);
+}
+
+.notebook-paper::placeholder {
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+  line-height: 32px;
+}
+
+/* Notebook header styling - Theme-aware */
+.notebook-header {
+  background: hsl(var(--card));
+  border: 2px solid hsl(var(--card-border));
+  border-bottom: 3px solid hsl(var(--primary));
+  margin-bottom: 2px;
+  padding: 12px 16px 12px 88px;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 8px 8px 0 0;
+  color: hsl(var(--card-foreground));
+}
+
+/* Notebook container - Theme-aware */
+.notebook-container {
+  position: relative;
+  background: hsl(var(--muted));
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px hsl(var(--border) / 0.15);
+}
+
+/* Three-hole punch effect - Theme-aware */
+.notebook-holes {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.notebook-hole {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: hsl(var(--background));
+  border: 2px solid hsl(var(--border));
+  box-shadow: inset 0 2px 4px hsl(var(--border) / 0.1);
+}
+
+/* High contrast theme adjustments */
+.high-contrast .notebook-paper {
+  background-color: white;
+  border-color: black;
+  color: black;
+  background-image: 
+    linear-gradient(to right, #ff0000 78px, transparent 78px),
+    linear-gradient(to right, black 78px, black 79px, transparent 79px),
+    linear-gradient(to bottom, transparent 31px, black 31px, black 32px, transparent 32px);
+}
+
+.high-contrast .notebook-paper:focus {
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.3), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.high-contrast .notebook-header {
+  background: white;
+  border-color: black;
+  border-bottom-color: #0066cc;
+  color: black;
+}
+
+.high-contrast .notebook-container {
+  background: #f0f0f0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.high-contrast .notebook-hole {
+  background-color: white;
+  border-color: black;
+}
+
+/* Sepia theme adjustments */
+.sepia .notebook-paper {
+  background-image: 
+    linear-gradient(to right, #cc6600 78px, transparent 78px),
+    linear-gradient(to right, hsl(var(--border)) 78px, hsl(var(--border)) 79px, transparent 79px),
+    linear-gradient(to bottom, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px, transparent 32px);
+}
+
+/* Purple theme adjustments */
+.purple .notebook-paper {
+  background-image: 
+    linear-gradient(to right, #9333ea 78px, transparent 78px),
+    linear-gradient(to right, hsl(var(--border)) 78px, hsl(var(--border)) 79px, transparent 79px),
+    linear-gradient(to bottom, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px, transparent 32px);
+}
+
+/* Dark mode specific adjustments */
+.dark .notebook-paper {
+  background-image: 
+    linear-gradient(to right, #ef4444 78px, transparent 78px),
+    linear-gradient(to right, hsl(var(--border)) 78px, hsl(var(--border)) 79px, transparent 79px),
+    linear-gradient(to bottom, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px, transparent 32px);
+}
+
+/* Reduce motion support */
+.reduce-motion .notebook-container {
+  box-shadow: 0 4px 12px hsl(var(--border) / 0.1);
+}
+
+.reduce-motion .notebook-paper:focus {
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1), 0 4px 12px hsl(var(--border) / 0.1);
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  [data-sidebar="sidebar"] {
+    padding-top: 1rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  [data-sidebar="sidebar"] {
+    padding-top: 1.25rem;
+  }
+}
+
+/* Instagram-like AI Buddy Chat Styles */
+/* Modern scrollbar styles for Instagram-like UI */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Hide scrollbar for chat areas on mobile */
+@media (max-width: 768px) {
+  .scrollbar-thin {
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Instagram-like message animations */
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-animate {
+  animation: messageSlideIn 0.3s ease-out;
+}
+
+/* Improved focus states for accessibility */
+.focus\:ring-indigo-500:focus {
+  --tw-ring-color: rgb(99 102 241 / 0.5);
+}
+
+/* Smooth transitions for interactive elements */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}

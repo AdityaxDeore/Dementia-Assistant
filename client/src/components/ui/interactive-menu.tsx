@@ -42,7 +42,7 @@ const defaultItems: InteractiveMenuItem[] = [
     { label: 'Community', icon: UsersIcon, path: '/peer-support' },
     { label: 'Resources', icon: AppsIcon, path: '/resources' },
     { label: 'Creative', icon: CreativeIcon, path: '/creative' },
-    { label: 'Games', icon: GamepadIcon, path: '/games' },
+    { label: 'Games', icon: GamepadIcon, path: '/petcare-game' },
 ];
 
 const defaultAccentColor = 'blue';

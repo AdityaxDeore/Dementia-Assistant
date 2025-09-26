@@ -87,11 +87,13 @@ export function CreativeZone() {
   };
 
   return (
-    <Card data-testid="card-creative-zone">
+    <Card data-testid="card-creative-zone" className="border-0 shadow-lg bg-gradient-to-br from-violet-400/10 via-purple-400/10 to-indigo-400/10 backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Palette className="w-5 h-5 text-primary" />
-          Creative Expression Space
+          <div className="p-2 bg-gradient-to-br from-violet-400 to-purple-500 rounded-lg shadow-lg">
+            <Palette className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-slate-800 font-bold">Creative Expression Space</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -104,12 +106,12 @@ export function CreativeZone() {
           />
           
           <Tabs defaultValue="draw" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="draw" data-testid="tab-draw">
+            <TabsList className="grid w-full grid-cols-2 bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
+              <TabsTrigger value="draw" data-testid="tab-draw" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-sky-400 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg">
                 <PenTool className="w-4 h-4 mr-2" />
                 Draw
               </TabsTrigger>
-              <TabsTrigger value="write" data-testid="tab-write">
+              <TabsTrigger value="write" data-testid="tab-write" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-400 data-[state=active]:to-green-500 data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg">
                 <Type className="w-4 h-4 mr-2" />
                 Write
               </TabsTrigger>
@@ -123,6 +125,8 @@ export function CreativeZone() {
                     {colors.map((color) => (
                       <button
                         key={color}
+                        title={`Select color ${color}`}
+                        aria-label={`Select color ${color}`}
                         className={`w-6 h-6 rounded border-2 ${
                           selectedColor === color ? 'border-primary' : 'border-gray-300'
                         }`}
@@ -185,7 +189,7 @@ export function CreativeZone() {
           
           <Button 
             onClick={saveCreation} 
-            className="w-full"
+            className="w-full bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             disabled={!title && !writingText}
             data-testid="button-save-creation"
           >

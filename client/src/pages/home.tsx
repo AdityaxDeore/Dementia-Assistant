@@ -190,29 +190,92 @@ export default function HomePage() {
             </div>
 
             {/* Features Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-5xl mx-auto mt-6 sm:mt-8 md:mt-12 px-2">
-              <Card className="p-2 sm:p-3 md:p-4 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-md border-emerald-200 dark:bg-black/80 dark:border-emerald-800 hover:bg-white/90 dark:hover:bg-black/90">
-                <CardContent className="p-0">
-                  <Heart className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 mx-auto mb-1 sm:mb-2 text-rose-500" />
-                  <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-tight">Wellness Tracking</p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-6xl mx-auto mt-6 sm:mt-8 md:mt-12 px-4">
+              <Card 
+                onClick={() => setLocation('/wellness')}
+                className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
+                style={{ borderRadius: '16px' }}
+              >
+                <CardContent className="p-0 relative">
+                  <div className="relative p-4 sm:p-5 md:p-6 bg-gradient-to-br from-rose-400 to-pink-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
+                    {/* Background decoration */}
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-700" />
+                    <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6 group-hover:scale-125 transition-transform duration-700" />
+                    
+                    <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
+                      <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Wellness Tracking</p>
+                    
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                  </div>
                 </CardContent>
               </Card>
-              <Card className="p-2 sm:p-3 md:p-4 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-md border-blue-200 dark:bg-black/80 dark:border-blue-800 hover:bg-white/90 dark:hover:bg-black/90">
-                <CardContent className="p-0">
-                  <Brain className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 mx-auto mb-1 sm:mb-2 text-blue-500" />
-                  <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-tight">AI Support</p>
+              
+              <Card 
+                onClick={() => setLocation('/ai-buddy')}
+                className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
+                style={{ borderRadius: '16px' }}
+              >
+                <CardContent className="p-0 relative">
+                  <div className="relative p-4 sm:p-5 md:p-6 bg-gradient-to-br from-sky-400 to-blue-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
+                    {/* Background decoration */}
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-700" />
+                    <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6 group-hover:scale-125 transition-transform duration-700" />
+                    
+                    <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
+                      <Brain className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">AI Support</p>
+                    
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                  </div>
                 </CardContent>
               </Card>
-              <Card className="p-2 sm:p-3 md:p-4 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-md border-emerald-200 dark:bg-black/80 dark:border-emerald-800 hover:bg-white/90 dark:hover:bg-black/90">
-                <CardContent className="p-0">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 mx-auto mb-1 sm:mb-2 text-emerald-500" />
-                  <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-tight">Peer Community</p>
+              
+              <Card 
+                onClick={() => setLocation('/peer-support')}
+                className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
+                style={{ borderRadius: '16px' }}
+              >
+                <CardContent className="p-0 relative">
+                  <div className="relative p-4 sm:p-5 md:p-6 bg-gradient-to-br from-emerald-400 to-green-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
+                    {/* Background decoration */}
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-700" />
+                    <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6 group-hover:scale-125 transition-transform duration-700" />
+                    
+                    <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
+                      <Users className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Peer Community</p>
+                    
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                  </div>
                 </CardContent>
               </Card>
-              <Card className="p-2 sm:p-3 md:p-4 text-center hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-md border-purple-200 dark:bg-black/80 dark:border-purple-800 hover:bg-white/90 dark:hover:bg-black/90">
-                <CardContent className="p-0">
-                  <Shield className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 mx-auto mb-1 sm:mb-2 text-purple-500" />
-                  <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-tight">Safe Space</p>
+              
+              <Card 
+                onClick={() => setLocation('/crisis')}
+                className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
+                style={{ borderRadius: '16px' }}
+              >
+                <CardContent className="p-0 relative">
+                  <div className="relative p-4 sm:p-5 md:p-6 bg-gradient-to-br from-violet-400 to-purple-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
+                    {/* Background decoration */}
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-700" />
+                    <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6 group-hover:scale-125 transition-transform duration-700" />
+                    
+                    <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
+                      <Shield className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Safe Space</p>
+                    
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                  </div>
                 </CardContent>
               </Card>
             </div>

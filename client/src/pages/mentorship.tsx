@@ -16,9 +16,12 @@ export default function MentorshipPage() {
     <div className="container mx-auto max-w-6xl space-y-4 sm:space-y-8">
       <BackButton to="/dashboard" />
       <div className="text-center space-y-2 sm:space-y-4">
-        <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Savangadi Program
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+          <span className="text-indigo-600">Savangadi</span> <span className="text-slate-800">Program</span>
         </h1>
+        <p className="text-lg text-slate-600 font-medium max-w-2xl mx-auto">
+          Connecting minds, building futures through meaningful mentorship
+        </p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -31,13 +34,13 @@ export default function MentorshipPage() {
 
         <TabsContent value="overview" className="space-y-4 sm:space-y-6">
           <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
-            <Card className="border-blue-200 hover:shadow-lg transition-shadow">
+            <Card className="border-2 border-indigo-100 hover:border-indigo-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
               <CardHeader className="text-center pb-3 sm:pb-6">
-                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mb-2 sm:mb-4">
-                  <GraduationCap className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 rounded-full flex items-center justify-center mb-2 sm:mb-4 shadow-lg">
+                  <GraduationCap className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <CardTitle className="text-lg sm:text-xl text-blue-700">Become a Mentor</CardTitle>
-                <CardDescription className="text-sm sm:text-base">
+                <CardTitle className="text-lg sm:text-xl text-slate-900 font-bold">Become a Mentor</CardTitle>
+                <CardDescription className="text-sm sm:text-base text-slate-600">
                   Share your knowledge and experience with junior students from your region
                 </CardDescription>
               </CardHeader>
@@ -58,20 +61,20 @@ export default function MentorshipPage() {
                 </div>
                 <Button 
                   onClick={() => setActiveTab("register-mentor")} 
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-sm sm:text-base py-2 sm:py-3"
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm sm:text-base py-3 sm:py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Register as Mentor
                 </Button>
               </CardContent>
             </Card>
 
-            <Card className="border-purple-200 hover:shadow-lg transition-shadow">
+            <Card className="border-2 border-purple-100 hover:border-purple-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
               <CardHeader className="text-center pb-3 sm:pb-6">
-                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mb-2 sm:mb-4">
-                  <Users className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
+                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-purple-600 rounded-full flex items-center justify-center mb-2 sm:mb-4 shadow-lg">
+                  <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <CardTitle className="text-lg sm:text-xl text-purple-700">Find a Mentor</CardTitle>
-                <CardDescription className="text-sm sm:text-base">
+                <CardTitle className="text-lg sm:text-xl text-slate-900 font-bold">Find a Mentor</CardTitle>
+                <CardDescription className="text-sm sm:text-base text-slate-600">
                   Get guidance from senior students who understand your background and goals
                 </CardDescription>
               </CardHeader>
@@ -92,7 +95,7 @@ export default function MentorshipPage() {
                 </div>
                 <Button 
                   onClick={() => setActiveTab("register-mentee")} 
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-sm sm:text-base py-2 sm:py-3"
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm sm:text-base py-3 sm:py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Find a Mentor
                 </Button>
@@ -110,8 +113,8 @@ export default function MentorshipPage() {
             <CardContent className="pt-0">
               <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
                 <div className="text-center space-y-2">
-                  <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 font-bold text-sm sm:text-base">1</span>
+                  <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm sm:text-base">1</span>
                   </div>
                   <h3 className="font-semibold text-sm sm:text-base">Register</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">
@@ -119,8 +122,8 @@ export default function MentorshipPage() {
                   </p>
                 </div>
                 <div className="text-center space-y-2">
-                  <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                    <span className="text-purple-600 font-bold text-sm sm:text-base">2</span>
+                  <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm sm:text-base">2</span>
                   </div>
                   <h3 className="font-semibold text-sm sm:text-base">Match</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">
@@ -128,8 +131,8 @@ export default function MentorshipPage() {
                   </p>
                 </div>
                 <div className="text-center space-y-2">
-                  <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="text-green-600 font-bold text-sm sm:text-base">3</span>
+                  <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm sm:text-base">3</span>
                   </div>
                   <h3 className="font-semibold text-sm sm:text-base">Connect</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">

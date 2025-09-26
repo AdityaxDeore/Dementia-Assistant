@@ -82,7 +82,7 @@ export function CrisisSupport() {
   return (
     <div className="space-y-6" data-testid="crisis-support">
       {/* Emergency Header */}
-      <Card className="border-red-200 bg-red-50">
+      <Card className="border-0 shadow-lg bg-gradient-to-r from-rose-400/10 via-red-400/10 to-pink-400/10 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-red-800">
             <AlertTriangle className="w-6 h-6" />
@@ -96,18 +96,18 @@ export function CrisisSupport() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="border-red-200">
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-rose-400/10 to-red-400/10 backdrop-blur-sm">
           <CardContent className="p-6">
             <div className="text-center space-y-4">
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto">
-                <Phone className="w-6 h-6 text-red-600" />
+              <div className="w-12 h-12 bg-gradient-to-br from-rose-400 to-red-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                <Phone className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 className="font-semibold text-lg">Emergency Call</h3>
                 <p className="text-sm text-muted-foreground">Immediate crisis support</p>
               </div>
               <Button 
-                className="w-full bg-red-600 hover:bg-red-700"
+                className="w-full bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 onClick={() => handleCallCrisis(crisisResources[0])}
                 data-testid="button-emergency-call"
               >
@@ -117,11 +117,11 @@ export function CrisisSupport() {
           </CardContent>
         </Card>
 
-        <Card className="border-blue-200">
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-sky-400/10 to-blue-400/10 backdrop-blur-sm">
           <CardContent className="p-6">
             <div className="text-center space-y-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                <Heart className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-gradient-to-br from-sky-400 to-blue-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                <Heart className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 className="font-semibold text-lg">Text Support</h3>
@@ -129,7 +129,7 @@ export function CrisisSupport() {
               </div>
               <Button 
                 variant="outline"
-                className="w-full border-blue-200 text-blue-700 hover:bg-blue-50"
+                className="w-full bg-gradient-to-r from-sky-400/20 to-blue-400/20 border-sky-300 text-sky-700 hover:bg-gradient-to-r hover:from-sky-400/30 hover:to-blue-400/30 font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                 onClick={() => handleCallCrisis(crisisResources[1])}
                 data-testid="button-text-support"
               >
@@ -201,21 +201,21 @@ export function CrisisSupport() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-3">
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-1">Immediate Steps</h4>
-              <p className="text-sm text-blue-800">
+            <div className="p-3 bg-gradient-to-r from-sky-400/10 to-blue-400/10 border-0 rounded-lg shadow-md backdrop-blur-sm">
+              <h4 className="font-medium text-sky-900 mb-1">Immediate Steps</h4>
+              <p className="text-sm text-sky-800">
                 Remove means of harm, stay with someone you trust, or go to a safe place.
               </p>
             </div>
-            <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-              <h4 className="font-medium text-green-900 mb-1">Coping Strategies</h4>
-              <p className="text-sm text-green-800">
+            <div className="p-3 bg-gradient-to-r from-emerald-400/10 to-green-400/10 border-0 rounded-lg shadow-md backdrop-blur-sm">
+              <h4 className="font-medium text-emerald-900 mb-1">Coping Strategies</h4>
+              <p className="text-sm text-emerald-800">
                 Practice breathing exercises, listen to calming music, or engage in grounding techniques.
               </p>
             </div>
-            <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg">
-              <h4 className="font-medium text-purple-900 mb-1">Support Network</h4>
-              <p className="text-sm text-purple-800">
+            <div className="p-3 bg-gradient-to-r from-violet-400/10 to-purple-400/10 border-0 rounded-lg shadow-md backdrop-blur-sm">
+              <h4 className="font-medium text-violet-900 mb-1">Support Network</h4>
+              <p className="text-sm text-violet-800">
                 Reach out to trusted friends, family members, or mental health professionals.
               </p>
             </div>

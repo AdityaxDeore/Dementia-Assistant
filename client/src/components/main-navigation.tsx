@@ -32,7 +32,7 @@ const navigationItems: InteractiveMenuItem[] = [
   { label: 'Community', icon: UsersIcon, path: '/peer-support' },
   { label: 'Resources', icon: AppsIcon, path: '/resources' },
   { label: 'Creative', icon: CreativeIcon, path: '/creative' },
-  { label: 'Games', icon: GamepadIcon, path: '/wellness' },
+  { label: 'Games', icon: GamepadIcon, path: '/petcare-game' },
 ];
 
 export const MainNavigation: React.FC<MainNavigationProps> = ({ 

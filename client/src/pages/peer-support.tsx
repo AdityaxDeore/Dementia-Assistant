@@ -158,11 +158,11 @@ export default function PeerSupportPage() {
         <TabsContent value={activeTab} className="mt-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredCommunities.map((community) => (
-              <Card key={community.id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+              <Card key={community.id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white via-slate-50/50 to-blue-50/30 border-0 shadow-md">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg bg-gray-50`}>
+                      <div className={`p-2 rounded-lg ${community.id === 'general' ? 'bg-gradient-to-br from-sky-100 to-blue-200' : community.id === 'mental-wellness' ? 'bg-gradient-to-br from-rose-100 to-pink-200' : community.id === 'learning-differences' ? 'bg-gradient-to-br from-violet-100 to-purple-200' : community.id === 'visual-impaired' ? 'bg-gradient-to-br from-emerald-100 to-green-200' : community.id === 'mobility-support' ? 'bg-gradient-to-br from-amber-100 to-orange-200' : 'bg-gradient-to-br from-cyan-100 to-teal-200'}`}>
                         <community.icon className={`w-6 h-6 ${community.color}`} />
                       </div>
                       <div>
@@ -249,7 +249,10 @@ export default function PeerSupportPage() {
       </Tabs>
 
       {/* Featured Section */}
-      <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-none">
+      <Card className="bg-gradient-to-r from-sky-400/10 via-violet-400/10 to-blue-400/10 border-0 shadow-lg backdrop-blur-sm relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full -translate-y-4 translate-x-8"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-sky-200/20 to-cyan-200/20 rounded-full translate-y-4 -translate-x-6"></div>
         <CardContent className="p-6">
           <div className="text-center space-y-4">
             <h2 className="text-2xl font-bold">New to Student Support Communities?</h2>
@@ -258,10 +261,10 @@ export default function PeerSupportPage() {
               with diverse needs. Each community has dedicated moderators and accessibility features.
             </p>
             <div className="flex justify-center gap-4 flex-wrap">
-              <Badge className="bg-green-100 text-green-800">Safe & Moderated</Badge>
-              <Badge className="bg-blue-100 text-blue-800">Anonymous Options</Badge>
-              <Badge className="bg-purple-100 text-purple-800">Accessibility First</Badge>
-              <Badge className="bg-orange-100 text-orange-800">Peer Support</Badge>
+              <Badge className="bg-gradient-to-r from-emerald-400 to-green-500 text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">Safe & Moderated</Badge>
+              <Badge className="bg-gradient-to-r from-sky-400 to-blue-500 text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">Anonymous Options</Badge>
+              <Badge className="bg-gradient-to-r from-violet-400 to-purple-500 text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">Accessibility First</Badge>
+              <Badge className="bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">Peer Support</Badge>
             </div>
           </div>
         </CardContent>

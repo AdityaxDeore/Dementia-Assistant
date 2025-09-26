@@ -107,28 +107,31 @@ export default function ResourcesPage() {
               </div>
               
               <div className="text-center mt-12">
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-8 border border-blue-100">
+                <div className="bg-gradient-to-r from-sky-400/10 via-violet-400/10 to-blue-400/10 rounded-2xl p-8 border-0 shadow-lg backdrop-blur-sm relative overflow-hidden">
+                  {/* Background decoration */}
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full -translate-y-2 translate-x-4"></div>
+                  <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-sky-200/20 to-cyan-200/20 rounded-full translate-y-2 -translate-x-2"></div>
                   <Brain className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold mb-2">Join the Conversation</h3>
                   <p className="text-gray-600 mb-4">
                     Share your insights, experiences, and resources to help build a supportive community.
                   </p>
                   <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
-                    <div className="flex items-center gap-1">
-                      <Heart className="w-4 h-4" />
-                      <span>Share Support</span>
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-rose-400/20 to-pink-400/20 rounded-full">
+                      <Heart className="w-4 h-4 text-rose-600" />
+                      <span className="text-rose-700 font-medium">Share Support</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <BookOpen className="w-4 h-4" />
-                      <span>Educational Content</span>
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-sky-400/20 to-blue-400/20 rounded-full">
+                      <BookOpen className="w-4 h-4 text-sky-600" />
+                      <span className="text-sky-700 font-medium">Educational Content</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Lightbulb className="w-4 h-4" />
-                      <span>Research Insights</span>
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-emerald-400/20 to-green-400/20 rounded-full">
+                      <Lightbulb className="w-4 h-4 text-emerald-600" />
+                      <span className="text-emerald-700 font-medium">Research Insights</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4" />
-                      <span>Success Stories</span>
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-violet-400/20 to-purple-400/20 rounded-full">
+                      <Star className="w-4 h-4 text-violet-600" />
+                      <span className="text-violet-700 font-medium">Success Stories</span>
                     </div>
                   </div>
                 </div>
