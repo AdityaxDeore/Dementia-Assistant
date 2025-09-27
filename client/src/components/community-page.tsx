@@ -373,54 +373,59 @@ export function CommunityPage() {
       {/* Community Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => setLocation("/peer-support")}>
+          <Button 
+            variant="ghost" 
+            onClick={() => setLocation("/peer-support")}
+            className="hover:bg-indigo-100 hover:text-indigo-700 transition-all duration-300 rounded-full px-4 py-2"
+          >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Communities
           </Button>
         </div>
         
-        <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-none">
-          <CardContent className="p-6">
+        <Card className="border-0 shadow-xl overflow-hidden" style={{ borderRadius: '16px' }}>
+          <div className="bg-blue-500 dark:bg-blue-600 p-6 text-white">
             <div className="flex items-start gap-4">
-              <div className={`p-3 rounded-full bg-white shadow-md`}>
-                <community.icon className={`w-8 h-8 ${community.color}`} />
+              <div className="p-3 rounded-full bg-white/20 backdrop-blur-sm shadow-lg">
+                <community.icon className="w-8 h-8 text-white" />
               </div>
-              <div className="flex-1 space-y-2">
-                <div className="flex items-center gap-2">
-                  <h1 className="text-3xl font-bold">{community.name}</h1>
+              <div className="flex-1 space-y-3">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <h1 className="text-3xl font-bold text-white">{community.name}</h1>
                   {community.isSpecialized && (
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                      Specialized
+                    <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
+                      <Shield className="w-3 h-3 mr-1" />
+                      Specialized Community
                     </Badge>
                   )}
                 </div>
-                <p className="text-muted-foreground">{community.longDescription}</p>
-                <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
+                <p className="text-white/90 text-lg leading-relaxed">{community.longDescription}</p>
+                <div className="flex items-center gap-6 text-sm text-white/80">
+                  <div className="flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    <span>{formatNumber(community.memberCount)} members</span>
+                    <span className="font-medium">{formatNumber(community.memberCount)} members</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span>{community.onlineCount} online</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+                    <span className="font-medium">{community.onlineCount} online</span>
                   </div>
                 </div>
                 {community.accessibilitySupport && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 pt-2">
                     {community.accessibilitySupport.map((support) => (
-                      <Badge key={support} variant="outline" className="text-xs">
+                      <Badge key={support} className="bg-white/10 text-white border-white/20 text-xs">
                         {support}
                       </Badge>
                     ))}
                   </div>
                 )}
               </div>
-              <Button className="bg-blue-600 hover:bg-blue-700">
+              <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm transition-all duration-300 hover:scale-105">
                 <Plus className="w-4 h-4 mr-2" />
                 Join Community
               </Button>
             </div>
-          </CardContent>
+          </div>
         </Card>
       </div>
 
@@ -428,29 +433,30 @@ export function CommunityPage() {
         {/* Main Content */}
         <div className="lg:col-span-3 space-y-6">
           {/* Post Creation */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+          <Card className="border-0 shadow-lg overflow-hidden" style={{ borderRadius: '16px' }}>
+            <div className="bg-green-500 dark:bg-green-600 p-4">
+              <CardTitle className="flex items-center gap-2 text-white">
                 <MessageSquare className="w-5 h-5" />
                 Create Post in {community.displayName}
               </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+            </div>
+            <CardContent className="p-6 space-y-4">
               <Input
                 placeholder="Post title"
                 value={newPostTitle}
                 onChange={(e) => setNewPostTitle(e.target.value)}
+                className="border-2 focus:border-emerald-400 transition-colors"
               />
               <Textarea
                 placeholder="What would you like to share with the community?"
                 value={newPost}
                 onChange={(e) => setNewPost(e.target.value)}
-                className="min-h-[100px]"
+                className="min-h-[100px] border-2 focus:border-emerald-400 transition-colors"
               />
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger className="w-40">
+                    <SelectTrigger className="w-40 border-2 focus:border-emerald-400">
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -467,9 +473,10 @@ export function CommunityPage() {
                       id="anonymous"
                       checked={isAnonymous}
                       onChange={(e) => setIsAnonymous(e.target.checked)}
+                      className="accent-emerald-500"
                     />
                     <label htmlFor="anonymous" className="text-sm flex items-center gap-1">
-                      <Shield className="w-4 h-4" />
+                      <Shield className="w-4 h-4 text-emerald-600" />
                       Anonymous
                     </label>
                   </div>
@@ -477,7 +484,9 @@ export function CommunityPage() {
                 <Button 
                   onClick={handleSubmitPost}
                   disabled={!newPost.trim() || !newPostTitle.trim()}
+                  className="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
+                  <Plus className="w-4 h-4 mr-2" />
                   Post
                 </Button>
               </div>
@@ -485,67 +494,96 @@ export function CommunityPage() {
           </Card>
 
           {/* Sort and Search */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search posts..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-64"
-              />
-            </div>
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="hot">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4" />
-                    Hot
+          <Card className="border-0 shadow-lg" style={{ borderRadius: '16px' }}>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 flex-1">
+                  <div className="relative flex-1 max-w-md">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-violet-500" />
+                    <Input
+                      placeholder="Search posts..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 border-2 focus:border-violet-400 transition-colors"
+                    />
                   </div>
-                </SelectItem>
-                <SelectItem value="new">New</SelectItem>
-                <SelectItem value="top">Top</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+                </div>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-32 border-2 focus:border-violet-400">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="hot">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-orange-500" />
+                        Hot
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="new">
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-blue-500" />
+                        New
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="top">
+                      <div className="flex items-center gap-2">
+                        <Award className="w-4 h-4 text-yellow-500" />
+                        Top
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Posts */}
           <div className="space-y-4">
             {posts.map((post, index) => (
-              <Card key={post.id} className={`hover:shadow-md transition-shadow ${post.isPinned ? 'border-green-200 bg-green-50/30' : ''}`}>
-                <CardContent className="p-4">
+              <Card key={post.id} className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.01] overflow-hidden ${
+                post.isPinned ? 'ring-2 ring-green-400 bg-green-50 dark:bg-green-900/20' : 'bg-white dark:bg-gray-800'
+              }`} style={{ borderRadius: '16px' }}>
+                <CardContent className="p-6">
                   <div className="flex gap-4">
                     {/* Vote Section */}
-                    <div className="flex flex-col items-center gap-1 min-w-[40px]">
+                    <div className="flex flex-col items-center gap-1 min-w-[50px]">
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => handleLike(post.id)}
-                        className={`p-1 h-auto ${post.isLiked ? 'text-orange-600' : 'text-muted-foreground'}`}
+                        className={`p-2 h-auto rounded-full transition-all duration-300 hover:scale-110 ${
+                          post.isLiked ? 'bg-orange-500 text-white shadow-lg' : 'text-gray-500 hover:bg-orange-100 dark:hover:bg-orange-900/20'
+                        }`}
                       >
-                        <ThumbsUp className="w-4 h-4" />
+                        <ThumbsUp className="w-5 h-5" />
                       </Button>
-                      <span className="text-sm font-medium">{formatNumber(post.likes)}</span>
-                      <Button variant="ghost" size="sm" className="p-1 h-auto text-muted-foreground">
-                        <ThumbsUp className="w-4 h-4 rotate-180" />
+                      <span className={`text-sm font-bold ${
+                        post.isLiked ? 'text-orange-600' : 'text-gray-700'
+                      }`}>{formatNumber(post.likes)}</span>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="p-2 h-auto rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-300 hover:scale-110"
+                      >
+                        <ThumbsUp className="w-5 h-5 rotate-180" />
                       </Button>
                     </div>
 
                     {/* Post Content */}
-                    <div className="flex-1 space-y-2">
+                    <div className="flex-1 space-y-3">
                       <div className="flex items-center gap-2 flex-wrap">
                         {post.isPinned && (
-                          <Pin className="w-4 h-4 text-green-600" />
+                          <div className="flex items-center gap-1 px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-full">
+                            <Pin className="w-3 h-3" />
+                            Pinned
+                          </div>
                         )}
                         {post.flairText && (
-                          <Badge className={`text-xs ${post.flairColor}`}>
+                          <Badge className={`text-xs font-medium ${post.flairColor} border-0`}>
                             {post.flairText}
                           </Badge>
                         )}
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-gray-500 font-medium">
                           Posted by u/{post.author} • {formatTimeAgo(post.timestamp)}
                         </span>
                         {post.awards && post.awards.length > 0 && (
@@ -557,22 +595,34 @@ export function CommunityPage() {
                         )}
                       </div>
                       
-                      <h3 className="font-semibold text-lg hover:text-blue-600 cursor-pointer">
+                      <h3 className="font-bold text-xl text-gray-900 hover:text-blue-600 cursor-pointer transition-colors duration-300 leading-tight">
                         {post.title}
                       </h3>
                       
-                      <p className="text-muted-foreground text-sm">{post.content}</p>
+                      <p className="text-gray-600 text-sm leading-relaxed">{post.content}</p>
                       
-                      <div className="flex items-center gap-4 pt-2">
-                        <Button variant="ghost" size="sm" className="text-xs">
-                          <MessageSquare className="w-4 h-4 mr-1" />
+                      <div className="flex items-center gap-4 pt-3">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-xs hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 rounded-full px-3 py-2"
+                        >
+                          <MessageSquare className="w-4 h-4 mr-2" />
                           {post.replies} comments
                         </Button>
-                        <Button variant="ghost" size="sm" className="text-xs">
-                          <Reply className="w-4 h-4 mr-1" />
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-xs hover:bg-purple-100 hover:text-purple-700 transition-all duration-300 rounded-full px-3 py-2"
+                        >
+                          <Reply className="w-4 h-4 mr-2" />
                           Reply
                         </Button>
-                        <Button variant="ghost" size="sm" className="text-xs">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-xs hover:bg-gray-100 hover:text-gray-700 transition-all duration-300 rounded-full px-3 py-2"
+                        >
                           <MoreHorizontal className="w-4 h-4" />
                         </Button>
                       </div>
@@ -587,39 +637,44 @@ export function CommunityPage() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Community Info */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">About Community</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground">{community.description}</p>
+          <Card className="border-0 shadow-lg overflow-hidden" style={{ borderRadius: '16px' }}>
+            <div className="bg-purple-500 dark:bg-purple-600 p-4">
+              <CardTitle className="text-lg text-white">About Community</CardTitle>
+            </div>
+            <CardContent className="p-6 space-y-4">
+              <p className="text-sm text-gray-600 leading-relaxed">{community.description}</p>
               
-              <Separator />
+              <Separator className="bg-gray-200" />
               
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Members</span>
-                  <span className="font-medium">{formatNumber(community.memberCount)}</span>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600">Members</span>
+                  <span className="font-bold text-violet-600">{formatNumber(community.memberCount)}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span>Online</span>
-                  <span className="font-medium">{community.onlineCount}</span>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600">Online</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="font-bold text-green-600">{community.onlineCount}</span>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Community Rules */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Community Rules</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
+          <Card className="border-0 shadow-lg overflow-hidden" style={{ borderRadius: '16px' }}>
+            <div className="bg-orange-500 dark:bg-orange-600 p-4">
+              <CardTitle className="text-lg text-white">Community Rules</CardTitle>
+            </div>
+            <CardContent className="p-6">
+              <div className="space-y-4">
                 {community.rules.map((rule, index) => (
-                  <div key={index} className="text-sm">
-                    <span className="font-medium">{index + 1}. </span>
-                    <span className="text-muted-foreground">{rule}</span>
+                  <div key={index} className="flex gap-3 text-sm">
+                    <div className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                      {index + 1}
+                    </div>
+                    <span className="text-gray-700 leading-relaxed">{rule}</span>
                   </div>
                 ))}
               </div>
@@ -627,19 +682,23 @@ export function CommunityPage() {
           </Card>
 
           {/* Moderators */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Moderators</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
+          <Card className="border-0 shadow-lg overflow-hidden" style={{ borderRadius: '16px' }}>
+            <div className="bg-pink-500 dark:bg-pink-600 p-4">
+              <CardTitle className="text-lg text-white">Moderators</CardTitle>
+            </div>
+            <CardContent className="p-6">
+              <div className="space-y-3">
                 {community.moderators.map((mod) => (
-                  <div key={mod} className="flex items-center gap-2 text-sm">
-                    <Avatar className="w-6 h-6">
-                      <AvatarFallback className="text-xs">{mod[0]}</AvatarFallback>
+                  <div key={mod} className="flex items-center gap-3 text-sm p-2 rounded-lg hover:bg-pink-50 transition-colors duration-300">
+                    <Avatar className="w-8 h-8 border-2 border-pink-200 dark:border-pink-700">
+                      <AvatarFallback className="text-xs bg-pink-500 text-white font-bold">{mod[0]}</AvatarFallback>
                     </Avatar>
-                    <span>u/{mod}</span>
-                    <Badge variant="outline" className="text-xs">MOD</Badge>
+                    <div className="flex-1">
+                      <span className="font-medium text-gray-900">u/{mod}</span>
+                    </div>
+                    <Badge className="bg-pink-500 text-white border-0 text-xs">
+                      MOD
+                    </Badge>
                   </div>
                 ))}
               </div>

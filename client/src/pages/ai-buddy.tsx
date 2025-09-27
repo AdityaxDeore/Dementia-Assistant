@@ -104,7 +104,7 @@ export default function AIBuddyPage() {
 
   // Desktop layout with Instagram-like design - fixed height containers
   const DesktopLayout = () => (
-    <div className="flex h-[calc(100vh-12rem)] gap-0 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+    <div className="flex h-[calc(100vh-8rem)] gap-0 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
       {/* Chat List - Instagram sidebar style */}
       <div className="w-80 flex-shrink-0 border-r border-gray-200 bg-white flex flex-col">
         <AIChatList
@@ -125,21 +125,16 @@ export default function AIBuddyPage() {
             userMoodEmoji={userMoodEmoji}
           />
         ) : (
-          <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20">
-            <div className="text-center space-y-6 p-8">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center">
-                <MessageCircle className="w-12 h-12 text-indigo-500" />
+          <div className="h-full flex items-center justify-center bg-gray-50">
+            <div className="text-center space-y-4 p-8">
+              <div className="w-16 h-16 mx-auto bg-indigo-100 rounded-full flex items-center justify-center">
+                <MessageCircle className="w-8 h-8 text-indigo-500" />
               </div>
-              <div className="space-y-3">
-                <h3 className="text-2xl font-semibold text-gray-800">Choose Your AI Buddy</h3>
-                <p className="text-gray-500 max-w-md leading-relaxed">
-                  Select a personality from the sidebar to start your wellness conversation. Each AI buddy is designed to support you in their unique way.
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold text-gray-800">Choose Your AI Buddy</h3>
+                <p className="text-gray-500 text-sm">
+                  Select a personality to start chatting
                 </p>
-              </div>
-              <div className="flex justify-center gap-2">
-                <div className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
               </div>
             </div>
           </div>
@@ -150,7 +145,7 @@ export default function AIBuddyPage() {
 
   // Mobile layout with Instagram-like full screen design
   const MobileLayout = () => (
-    <div className="h-[calc(100vh-12rem)] bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+    <div className="h-[calc(100vh-6rem)] xxs:h-[calc(100vh-5rem)] sm:h-[calc(100vh-8rem)] bg-white rounded-2xl xxs:rounded-xl shadow-xl overflow-hidden border border-gray-200">
       {selectedPersonality ? (
         <AIChat
           personality={selectedPersonality}
@@ -171,41 +166,14 @@ export default function AIBuddyPage() {
   );
 
   return (
-    <div className="space-y-6 pb-6" data-testid="page-ai-buddy">
+    <div className="h-full" data-testid="page-ai-buddy">
       <BackButton to="/dashboard" />
-      <div className="space-y-4">
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            AI Wellness Buddies
-          </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Connect with AI personalities designed to support your mental wellness journey. 
-            Each buddy offers unique expertise and a personalized approach to help you thrive.
-          </p>
-        </div>
-        
-        {/* Quick stats */}
-        <div className="flex justify-center gap-8 text-center">
-          <div className="space-y-1">
-            <div className="text-2xl font-bold text-indigo-600">{AI_PERSONALITIES.length}</div>
-            <div className="text-xs text-gray-500 font-medium">AI Buddies</div>
-          </div>
-          <div className="space-y-1">
-            <div className="text-2xl font-bold text-green-600">24/7</div>
-            <div className="text-xs text-gray-500 font-medium">Available</div>
-          </div>
-          <div className="space-y-1">
-            <div className="text-2xl font-bold text-purple-600">∞</div>
-            <div className="text-xs text-gray-500 font-medium">Support</div>
-          </div>
-        </div>
-      </div>
       
       {/* Show desktop layout on larger screens, mobile on smaller */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block mt-4">
         <DesktopLayout />
       </div>
-      <div className="lg:hidden">
+      <div className="lg:hidden mt-4">
         <MobileLayout />
       </div>
     </div>

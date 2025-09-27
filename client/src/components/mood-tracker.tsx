@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import { Sparkles, MessageCircle, PenTool } from "lucide-react";
+import { MoodChatMorph, moodOptions, type MoodOption } from "@/components/mood-chat-morph";
 
 interface MoodEntry {
   id: number;
@@ -15,58 +16,13 @@ interface MoodEntry {
   createdAt: string;
 }
 
-interface MoodOption {
-  emoji: string;
-  label: string;
-  value: number;
-  bgGradient: string;
-  description: string;
-}
-
-const moodOptions: MoodOption[] = [
-  {
-    emoji: "😭",
-    label: "Very Low",
-    value: 1,
-    bgGradient: "from-red-400 to-red-600",
-    description: "I need support"
-  },
-  {
-    emoji: "😔",
-    label: "Low", 
-    value: 2,
-    bgGradient: "from-orange-400 to-orange-600",
-    description: "Not my best day"
-  },
-  {
-    emoji: "😐",
-    label: "Medium",
-    value: 3,
-    bgGradient: "from-yellow-400 to-yellow-600", 
-    description: "It's okay"
-  },
-  {
-    emoji: "😊",
-    label: "Good",
-    value: 4,
-    bgGradient: "from-green-400 to-green-600",
-    description: "Feeling positive"
-  },
-  {
-    emoji: "😄",
-    label: "Excellent", 
-    value: 5,
-    bgGradient: "from-blue-400 to-purple-600",
-    description: "Amazing day!"
-  }
-];
-
 interface MoodTrackerProps {
   variant?: 'full' | 'compact';
 }
 
 export function MoodTracker({ variant = 'full' }: MoodTrackerProps) {
   const [selectedMood, setSelectedMood] = useState<number | null>(null);
+  const [selectedMoodForMorph, setSelectedMoodForMorph] = useState<MoodOption | null>(null);
   const [note, setNote] = useState("");
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -123,10 +79,15 @@ export function MoodTracker({ variant = 'full' }: MoodTrackerProps) {
 
   const handleMoodSelect = (mood: MoodOption) => {
     if (variant === 'compact') {
-      navigate(`/ai-buddy?mood=${mood.value}&emoji=${encodeURIComponent(mood.emoji)}`);
+      // For compact variant, show the morphing box instead of direct navigation
+      setSelectedMoodForMorph(mood);
       return;
     }
     setSelectedMood(mood.value);
+  };
+
+  const handleCloseMorph = () => {
+    setSelectedMoodForMorph(null);
   };
 
   const handleSubmit = () => {
@@ -139,51 +100,60 @@ export function MoodTracker({ variant = 'full' }: MoodTrackerProps) {
 
   if (variant === 'compact') {
     return (
-      <Card className="modern-card border-0 shadow-lg">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-center text-lg font-semibold flex items-center justify-center gap-3">
-            <div className="p-2 rounded-xl bg-blue-100 dark:bg-blue-900/20">
-              <Sparkles className="h-5 w-5 text-blue-500" />
+      <>
+        <Card className="modern-card border-0 shadow-lg">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-center text-lg font-semibold flex items-center justify-center gap-3">
+              <div className="p-2 rounded-xl bg-blue-100 dark:bg-blue-900/20">
+                <Sparkles className="h-5 w-5 text-blue-500" />
+              </div>
+              <div>
+                <span className="text-blue-500">How are you feeling?</span>
+                <p className="text-xs text-muted-foreground font-normal">Quick mood check-in</p>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-center gap-2 xxs:gap-1 sm:gap-3 overflow-x-auto px-2 mood-scroll android-scroll">
+              {moodOptions.map((mood, index) => (
+                <Button
+                  key={mood.value}
+                  variant="outline"
+                  size="lg"
+                  onClick={() => handleMoodSelect(mood)}
+                  className="modern-button relative flex flex-col items-center p-3 xxs:p-2 sm:p-4 h-auto min-h-[80px] xxs:min-h-[70px] sm:min-h-[100px] w-16 xxs:w-14 sm:w-20 flex-shrink-0 transition-all duration-300 ease-out transform hover:scale-110 hover:-translate-y-2 hover:shadow-xl active:scale-95 group rounded-2xl border-0 bg-white dark:bg-gray-800 shadow-lg"
+                  data-testid={`button-mood-${mood.value}`}
+                  style={{
+                    animationDelay: `${index * 100}ms`,
+                    animation: 'slideInBounce 0.8s ease-out forwards'
+                  }}
+                >
+                  <div className="text-3xl xxs:text-2xl sm:text-4xl mb-1 sm:mb-2 transition-transform duration-300 group-hover:scale-125 emoji-hover">
+                    {mood.emoji}
+                  </div>
+                  <span className="text-xs xxs:text-2xs sm:text-xs font-semibold text-center leading-tight">
+                    {mood.label}
+                  </span>
+                  <div className="absolute inset-0 rounded-2xl bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                </Button>
+              ))}
             </div>
-            <div>
-              <span className="text-blue-500">How are you feeling?</span>
-              <p className="text-xs text-muted-foreground font-normal">Quick mood check-in</p>
+            <div className="mt-6 text-center">
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground px-4 py-2 rounded-xl bg-blue-50 dark:bg-blue-900/20">
+                <MessageCircle className="h-4 w-4" />
+                <span>Tap any emoji to chat with an AI buddy</span>
+              </div>
             </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-center gap-2 sm:gap-3 overflow-x-auto px-2 mood-scroll android-scroll">
-            {moodOptions.map((mood, index) => (
-              <Button
-                key={mood.value}
-                variant="outline"
-                size="lg"
-                onClick={() => handleMoodSelect(mood)}
-                className="modern-button relative flex flex-col items-center p-3 sm:p-4 h-auto min-h-[80px] sm:min-h-[100px] w-16 sm:w-20 flex-shrink-0 transition-all duration-300 ease-out transform hover:scale-110 hover:-translate-y-2 hover:shadow-xl active:scale-95 group rounded-2xl border-0 bg-white dark:bg-gray-800 shadow-lg"
-                data-testid={`button-mood-${mood.value}`}
-                style={{
-                  animationDelay: `${index * 100}ms`,
-                  animation: 'slideInBounce 0.8s ease-out forwards'
-                }}
-              >
-                <div className="text-3xl sm:text-4xl mb-1 sm:mb-2 transition-transform duration-300 group-hover:scale-125 emoji-hover">
-                  {mood.emoji}
-                </div>
-                <span className="text-xs sm:text-xs font-semibold text-center leading-tight">
-                  {mood.label}
-                </span>
-                <div className="absolute inset-0 rounded-2xl bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-              </Button>
-            ))}
-          </div>
-          <div className="mt-6 text-center">
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground px-4 py-2 rounded-xl bg-blue-50 dark:bg-blue-900/20">
-              <MessageCircle className="h-4 w-4" />
-              <span>Tap any emoji to chat with an AI buddy</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+        
+        {/* Morphing chat box */}
+        <MoodChatMorph 
+          selectedMood={selectedMoodForMorph}
+          onClose={handleCloseMorph}
+          onBack={handleCloseMorph}
+        />
+      </>
     );
   }
 
@@ -203,7 +173,7 @@ export function MoodTracker({ variant = 'full' }: MoodTrackerProps) {
         </CardHeader>
         <CardContent>
           <div className="mb-6">
-            <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 overflow-x-auto px-2 pb-2 mood-scroll android-scroll">
+            <div className="flex justify-center gap-3 xxs:gap-2 sm:gap-4 md:gap-6 overflow-x-auto px-2 pb-2 mood-scroll android-scroll">
             {moodOptions.map((mood, index) => {
               const isSelected = selectedMood === mood.value;
               return (
@@ -212,7 +182,7 @@ export function MoodTracker({ variant = 'full' }: MoodTrackerProps) {
                   variant="outline"
                   size="lg"
                   onClick={() => handleMoodSelect(mood)}
-                  className={`modern-button relative flex flex-col items-center p-4 sm:p-6 h-auto min-h-[100px] sm:min-h-[120px] w-20 sm:w-24 flex-shrink-0 transition-all duration-300 ease-out transform hover:scale-110 hover:-translate-y-2 hover:shadow-2xl active:scale-95 group rounded-2xl border-0 ${
+                  className={`modern-button relative flex flex-col items-center p-4 xxs:p-3 sm:p-6 h-auto min-h-[100px] xxs:min-h-[80px] sm:min-h-[120px] w-20 xxs:w-16 sm:w-24 flex-shrink-0 transition-all duration-300 ease-out transform hover:scale-110 hover:-translate-y-2 hover:shadow-2xl active:scale-95 group rounded-2xl border-0 ${
                     isSelected 
                       ? 'bg-primary text-primary-foreground shadow-2xl scale-105 -translate-y-1 ring-2 ring-primary/50' 
                       : 'bg-white dark:bg-gray-800 shadow-lg'
@@ -223,10 +193,10 @@ export function MoodTracker({ variant = 'full' }: MoodTrackerProps) {
                     animation: 'slideInBounce 0.8s ease-out forwards'
                   }}
                 >
-                  <div className="text-4xl sm:text-5xl mb-2 sm:mb-3 transition-transform duration-300 group-hover:scale-125 emoji-hover">
+                  <div className="text-4xl xxs:text-3xl sm:text-5xl mb-2 xxs:mb-1 sm:mb-3 transition-transform duration-300 group-hover:scale-125 emoji-hover">
                     {mood.emoji}
                   </div>
-                  <span className="text-xs sm:text-sm font-semibold text-center leading-tight">
+                  <span className="text-xs xxs:text-2xs sm:text-sm font-semibold text-center leading-tight">
                     {mood.label}
                   </span>
                   <span className="text-xs text-center mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -3,17 +3,11 @@ import { BackButton } from "@/components/ui/back-button";
 
 export default function GoalsPage() {
   return (
-    <div className="space-y-6" data-testid="page-goals">
-      <BackButton to="/dashboard" />
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Goal Tracker</h1>
-        <p className="text-muted-foreground">
-          Set and track your personal wellness and academic goals. Break down big objectives into manageable steps 
-          and celebrate your progress along the way.
-        </p>
+    <div className="min-h-screen bg-slate-50" data-testid="page-goals">
+      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+        <BackButton to="/dashboard" />
+        <GoalTracker />
       </div>
-      
-      <GoalTracker />
     </div>
   );
 }

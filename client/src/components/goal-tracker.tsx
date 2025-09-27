@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Target, Plus, Check, X, Calendar, Trophy, Zap, TrendingUp, Award, Trash2, Play } from "lucide-react";
+import { Target, Plus, Check, X, Calendar, Trophy, Zap, TrendingUp, Award, Trash2, Play, Star, Clock, BarChart3, CheckCircle2, Circle, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -37,9 +37,9 @@ export function GoalTracker() {
   const queryClient = useQueryClient();
 
   const quotes = [
-    "The only impossible journey is the one you never begin. 🌟",
-    "Success is the sum of small efforts repeated daily. 💪",
-    "Your future self will thank you for the goals you pursue today. 🎆"
+    "The only impossible journey is the one you never begin.",
+    "Success is the sum of small efforts repeated daily.",
+    "Your future self will thank you for the goals you pursue today."
   ];
 
   useEffect(() => {
@@ -123,20 +123,20 @@ export function GoalTracker() {
   
   const getCategoryConfig = (category: Goal['category']) => {
     const configs = {
-      wellness: { icon: '🧘‍♀️', color: 'emerald' },
-      academic: { icon: '📚', color: 'blue' },
-      personal: { icon: '✨', color: 'purple' },
-      fitness: { icon: '💪', color: 'orange' },
-      career: { icon: '💼', color: 'gray' }
+      wellness: { icon: Target, color: 'emerald', bgColor: 'bg-emerald-50', textColor: 'text-emerald-700', borderColor: 'border-emerald-200' },
+      academic: { icon: Trophy, color: 'blue', bgColor: 'bg-blue-50', textColor: 'text-blue-700', borderColor: 'border-blue-200' },
+      personal: { icon: Star, color: 'purple', bgColor: 'bg-purple-50', textColor: 'text-purple-700', borderColor: 'border-purple-200' },
+      fitness: { icon: Zap, color: 'orange', bgColor: 'bg-orange-50', textColor: 'text-orange-700', borderColor: 'border-orange-200' },
+      career: { icon: Award, color: 'gray', bgColor: 'bg-gray-50', textColor: 'text-gray-700', borderColor: 'border-gray-200' }
     };
     return configs[category] || configs.personal;
   };
 
   const getPriorityConfig = (priority: Goal['priority']) => {
     const configs = {
-      high: { icon: '🔥', color: 'red' },
-      medium: { icon: '⚡', color: 'yellow' },
-      low: { icon: '🌱', color: 'green' }
+      high: { icon: Zap, color: 'red', bgColor: 'bg-red-50', borderColor: 'border-red-200' },
+      medium: { icon: Clock, color: 'yellow', bgColor: 'bg-yellow-50', borderColor: 'border-yellow-200' },
+      low: { icon: Circle, color: 'green', bgColor: 'bg-green-50', borderColor: 'border-green-200' }
     };
     return configs[priority];
   };
@@ -165,71 +165,101 @@ export function GoalTracker() {
   }
 
   return (
-    <div className="space-y-8" data-testid="goal-tracker">
-      {/* Hero Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 p-8 text-white shadow-2xl">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative z-10 text-center space-y-6">
-          <div className="space-y-4">
-            <div className="inline-flex p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
-              <Trophy className="w-8 h-8" />
+    <div className="space-y-6" data-testid="goal-tracker">
+      {/* Compact Header with Stats */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="border-0 shadow-lg bg-white">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Target className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-semibold text-gray-900">Goal Tracker</h1>
+                  <p className="text-sm text-gray-600">Track your wellness journey</p>
+                </div>
+              </div>
+              <Button 
+                onClick={() => setShowAddForm(!showAddForm)}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                data-testid="button-add-goal"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Goal
+              </Button>
             </div>
-            <h1 className="text-4xl font-bold">Smart Goal Tracker</h1>
-            <p className="text-lg text-white/90 max-w-2xl mx-auto">{motivationalQuote}</p>
-          </div>
-          
-          <div className="flex justify-center gap-8">
-            <div className="text-center">
-              <div className="text-3xl font-bold">{activeGoals.length}</div>
-              <div className="text-sm text-white/80">Active</div>
+            
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div className="p-3 bg-blue-50 rounded-lg">
+                <div className="text-2xl font-bold text-blue-600">{activeGoals.length}</div>
+                <div className="text-xs text-blue-600 font-medium">Active</div>
+              </div>
+              <div className="p-3 bg-green-50 rounded-lg">
+                <div className="text-2xl font-bold text-green-600">{completedGoals.length}</div>
+                <div className="text-xs text-green-600 font-medium">Complete</div>
+              </div>
+              <div className="p-3 bg-purple-50 rounded-lg">
+                <div className="text-2xl font-bold text-purple-600">{completionRate}%</div>
+                <div className="text-xs text-purple-600 font-medium">Success</div>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold">{completedGoals.length}</div>
-              <div className="text-sm text-white/80">Done</div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-0 shadow-lg bg-white">
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-gray-600" />
+                <h3 className="font-semibold text-gray-900">Overall Progress</h3>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Total Progress</span>
+                  <span className="font-semibold text-gray-900">{totalProgress}%</span>
+                </div>
+                <Progress value={totalProgress} className="h-3" />
+                <p className="text-sm text-gray-600 italic">
+                  {motivationalQuote}
+                </p>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold">{completionRate}%</div>
-              <div className="text-sm text-white/80">Success</div>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Controls */}
+      {/* Filter Controls */}
       <Card className="border-0 shadow-lg">
-        <CardContent className="p-6">
-          <div className="flex justify-between items-center gap-4">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
             <Select value={filterCategory} onValueChange={(value: any) => setFilterCategory(value)}>
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-64">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="wellness">🧘‍♀️ Wellness</SelectItem>
-                <SelectItem value="academic">📚 Academic</SelectItem>
-                <SelectItem value="personal">✨ Personal</SelectItem>
-                <SelectItem value="fitness">💪 Fitness</SelectItem>
+                <SelectItem value="wellness">Wellness</SelectItem>
+                <SelectItem value="academic">Academic</SelectItem>
+                <SelectItem value="personal">Personal</SelectItem>
+                <SelectItem value="fitness">Fitness</SelectItem>
+                <SelectItem value="career">Career</SelectItem>
               </SelectContent>
             </Select>
             
-            <Button 
-              onClick={() => setShowAddForm(!showAddForm)}
-              className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
-              data-testid="button-add-goal"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Goal
-            </Button>
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <span>Showing {filteredGoals.length} of {goals.length} goals</span>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Add Form */}
       {showAddForm && (
-        <Card className="border-0 shadow-lg border-l-4 border-l-indigo-500">
+        <Card className="border-0 shadow-lg border-l-4 border-l-blue-500">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-indigo-500" />
+              <Plus className="w-5 h-5 text-blue-500" />
               Create New Goal
             </CardTitle>
           </CardHeader>
@@ -257,25 +287,26 @@ export function GoalTracker() {
               <Select value={newGoal.category} onValueChange={(value: any) => setNewGoal({...newGoal, category: value})}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="wellness">🧘‍♀️ Wellness</SelectItem>
-                  <SelectItem value="academic">📚 Academic</SelectItem>
-                  <SelectItem value="personal">✨ Personal</SelectItem>
-                  <SelectItem value="fitness">💪 Fitness</SelectItem>
+                  <SelectItem value="wellness">Wellness</SelectItem>
+                  <SelectItem value="academic">Academic</SelectItem>
+                  <SelectItem value="personal">Personal</SelectItem>
+                  <SelectItem value="fitness">Fitness</SelectItem>
+                  <SelectItem value="career">Career</SelectItem>
                 </SelectContent>
               </Select>
               <Select value={newGoal.priority} onValueChange={(value: any) => setNewGoal({...newGoal, priority: value})}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="high">🔥 High</SelectItem>
-                  <SelectItem value="medium">⚡ Medium</SelectItem>
-                  <SelectItem value="low">🌱 Low</SelectItem>
+                  <SelectItem value="high">High Priority</SelectItem>
+                  <SelectItem value="medium">Medium Priority</SelectItem>
+                  <SelectItem value="low">Low Priority</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div className="flex gap-3">
-              <Button onClick={handleAddGoal} className="bg-green-500 hover:bg-green-600" data-testid="button-submit-goal">
-                <Check className="w-4 h-4 mr-2" />Create
+              <Button onClick={handleAddGoal} className="bg-blue-600 hover:bg-blue-700" data-testid="button-submit-goal">
+                <Check className="w-4 h-4 mr-2" />Create Goal
               </Button>
               <Button variant="outline" onClick={() => setShowAddForm(false)}>Cancel</Button>
             </div>
@@ -283,36 +314,12 @@ export function GoalTracker() {
         </Card>
       )}
 
-      {/* Stats */}
-      <div className="grid md:grid-cols-4 gap-4">
-        <Card className="text-center p-4 bg-blue-50">
-          <Target className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-          <div className="text-2xl font-bold text-blue-600">{activeGoals.length}</div>
-          <div className="text-sm text-blue-600">Active</div>
-        </Card>
-        <Card className="text-center p-4 bg-green-50">
-          <Trophy className="w-8 h-8 text-green-500 mx-auto mb-2" />
-          <div className="text-2xl font-bold text-green-600">{completedGoals.length}</div>
-          <div className="text-sm text-green-600">Done</div>
-        </Card>
-        <Card className="text-center p-4 bg-purple-50">
-          <TrendingUp className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-          <div className="text-2xl font-bold text-purple-600">{totalProgress}%</div>
-          <div className="text-sm text-purple-600">Progress</div>
-        </Card>
-        <Card className="text-center p-4 bg-amber-50">
-          <Award className="w-8 h-8 text-amber-500 mx-auto mb-2" />
-          <div className="text-2xl font-bold text-amber-600">{completionRate}%</div>
-          <div className="text-sm text-amber-600">Success</div>
-        </Card>
-      </div>
-
       {/* Active Goals */}
       {activeGoals.length > 0 && (
         <Card className="border-0 shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Play className="w-5 h-5 text-green-500" />
+              <Play className="w-5 h-5 text-blue-600" />
               Active Goals ({activeGoals.length})
             </CardTitle>
           </CardHeader>
@@ -321,16 +328,20 @@ export function GoalTracker() {
               {activeGoals.map((goal) => {
                 const categoryConfig = getCategoryConfig(goal.category);
                 const priorityConfig = getPriorityConfig(goal.priority);
+                const CategoryIcon = categoryConfig.icon;
+                const PriorityIcon = priorityConfig.icon;
                 
                 return (
-                  <div key={goal.id} className="group relative p-6 rounded-xl border shadow-sm hover:shadow-lg transition-all">
+                  <div key={goal.id} className={`group relative p-6 rounded-xl border-2 ${categoryConfig.borderColor} ${categoryConfig.bgColor} hover:shadow-lg transition-all`}>
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center gap-3">
-                        <span className="text-2xl">{categoryConfig.icon}</span>
+                        <div className={`w-10 h-10 ${categoryConfig.bgColor} rounded-full flex items-center justify-center`}>
+                          <CategoryIcon className={`w-5 h-5 ${categoryConfig.textColor}`} />
+                        </div>
                         <div>
-                          <h3 className="font-semibold">{goal.title}</h3>
-                          <Badge variant="outline" className="text-xs">
-                            {priorityConfig.icon} {goal.priority}
+                          <h3 className="font-semibold text-gray-900">{goal.title}</h3>
+                          <Badge variant="outline" className={`text-xs ${priorityConfig.borderColor}`}>
+                            <PriorityIcon className="w-3 h-3 mr-1" /> {goal.priority}
                           </Badge>
                         </div>
                       </div>
@@ -338,41 +349,44 @@ export function GoalTracker() {
                         variant="ghost"
                         size="sm"
                         onClick={() => deleteGoalMutation.mutate(goal.id)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500"
+                        className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-600 hover:bg-red-50"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                     
                     {goal.description && (
-                      <p className="text-gray-600 text-sm mb-4">{goal.description}</p>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">{goal.description}</p>
                     )}
                     
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Progress</span>
+                        <span className="text-sm font-medium text-gray-700">Progress</span>
                         <div className="flex items-center gap-2">
                           {goal.streak && (
-                            <Badge variant="outline" className="text-xs">
-                              🔥 {goal.streak}d
+                            <Badge variant="outline" className="text-xs bg-orange-50 border-orange-200 text-orange-700">
+                              <Zap className="w-3 h-3 mr-1" />{goal.streak}d
                             </Badge>
                           )}
-                          <span className="font-bold">{goal.progress}%</span>
+                          <span className="font-bold text-gray-900">{goal.progress}%</span>
                         </div>
                       </div>
                       <Progress value={goal.progress} className="h-2" />
                     </div>
                     
                     <div className="flex justify-between items-center mt-4 text-sm text-gray-500">
-                      <span><Calendar className="w-4 h-4 inline mr-1" />{formatDate(goal.targetDate)}</span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {formatDate(goal.targetDate)}
+                      </span>
                     </div>
                     
                     <Button
                       variant="outline"
-                      className="w-full mt-4 hover:bg-green-500 hover:text-white transition-colors"
+                      className="w-full mt-4 hover:bg-green-500 hover:text-white hover:border-green-500 transition-all"
                       onClick={() => toggleGoalMutation.mutate({ goalId: goal.id })}
                     >
-                      <Check className="w-4 h-4 mr-2" />Complete
+                      <CheckCircle2 className="w-4 h-4 mr-2" />Mark Complete
                     </Button>
                   </div>
                 );
@@ -384,7 +398,7 @@ export function GoalTracker() {
 
       {/* Completed Goals */}
       {completedGoals.length > 0 && (
-        <Card className="border-0 shadow-lg bg-green-50">
+        <Card className="border-0 shadow-lg bg-green-50/30">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-green-700">
               <Trophy className="w-5 h-5" />
@@ -392,40 +406,53 @@ export function GoalTracker() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {completedGoals.map((goal) => {
-              const categoryConfig = getCategoryConfig(goal.category);
-              
-              return (
-                <div key={goal.id} className="flex items-center gap-4 p-4 bg-white/60 rounded-lg mb-3">
-                  <Check className="w-5 h-5 text-green-600" />
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-semibold text-green-900">{goal.title}</h4>
-                      <span>{categoryConfig.icon}</span>
+            <div className="space-y-3">
+              {completedGoals.map((goal) => {
+                const categoryConfig = getCategoryConfig(goal.category);
+                const CategoryIcon = categoryConfig.icon;
+                
+                return (
+                  <div key={goal.id} className="flex items-center gap-4 p-4 bg-white rounded-lg border border-green-200 shadow-sm">
+                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
                     </div>
-                    {goal.streak && (
-                      <p className="text-xs text-green-600">🏆 {goal.streak} day streak achieved</p>
-                    )}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-semibold text-green-900">{goal.title}</h4>
+                        <CategoryIcon className="w-4 h-4 text-green-600" />
+                      </div>
+                      {goal.streak && (
+                        <p className="text-xs text-green-600 flex items-center gap-1">
+                          <Trophy className="w-3 h-3" /> {goal.streak} day streak achieved
+                        </p>
+                      )}
+                    </div>
+                    <Badge className="bg-green-500 text-white border-0">
+                      <Star className="w-3 h-3 mr-1" /> Done
+                    </Badge>
                   </div>
-                  <Badge className="bg-green-500 text-white">✨ Done</Badge>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
       )}
 
       {/* Empty State */}
       {activeGoals.length === 0 && completedGoals.length === 0 && (
-        <Card className="text-center p-12">
-          <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+        <Card className="text-center p-12 border-2 border-dashed border-gray-200">
+          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Target className="w-8 h-8 text-gray-400" />
+          </div>
           <h3 className="text-xl font-semibold text-gray-700 mb-2">No Goals Yet</h3>
-          <p className="text-gray-500 mb-6">Start your journey by creating your first goal!</p>
+          <p className="text-gray-500 mb-6 max-w-md mx-auto">
+            Start your wellness journey by creating your first goal. Set achievable targets and track your progress.
+          </p>
           <Button 
             onClick={() => setShowAddForm(true)}
-            className="bg-gradient-to-r from-indigo-500 to-purple-600"
+            className="bg-blue-600 hover:bg-blue-700"
           >
-            <Plus className="w-4 h-4 mr-2" />Create First Goal
+            <Plus className="w-4 h-4 mr-2" />Create Your First Goal
           </Button>
         </Card>
       )}

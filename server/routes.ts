@@ -187,8 +187,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = "default-user";
       
       // Validate limit parameter
-      const limitSchema = z.number().int().positive().max(365).optional();
-      const limit = limitSchema.parse(parseInt(req.query.limit as string) || 30);
+      const limitParam = req.query.limit as string;
+      const parsedLimit = limitParam ? parseInt(limitParam) : 30;
+      const limitSchema = z.number().int().positive().max(365);
+      const limit = limitSchema.parse(parsedLimit);
       
       const entries = await storage.getRecentMoodEntries(userId, limit);
       const streak = await storage.getMoodStreak(userId);
@@ -371,6 +373,150 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Goal deletion error:', error);
       res.status(500).json({ error: "Failed to delete goal" });
+    }
+  });
+
+  // Reaction tracking endpoints
+  app.post("/api/reactions", async (req, res) => {
+    try {
+      const { targetType, targetId, type } = req.body;
+      
+      // Validate request body
+      const reactionSchema = z.object({
+        targetType: z.enum(['post', 'comment', 'journal', 'resource']),
+        targetId: z.string(),
+        type: z.enum(['like', 'heart', 'helpful', 'support', 'thumbsup'])
+      });
+      
+      const validationResult = reactionSchema.safeParse({ targetType, targetId, type });
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          error: "Invalid reaction data", 
+          details: validationResult.error.issues 
+        });
+      }
+
+      const userId = "default-user";
+      
+      // Add reaction and update streak
+      const result = await storage.addReaction(userId, targetType, targetId, type);
+      
+      res.json(result);
+    } catch (error: any) {
+      console.error('Add reaction error:', error);
+      
+      // Handle duplicate reaction attempts
+      if (error?.code === '23505') { 
+        return res.status(409).json({ error: "Reaction already exists" });
+      }
+      
+      res.status(500).json({ error: "Failed to add reaction" });
+    }
+  });
+
+  app.delete("/api/reactions", async (req, res) => {
+    try {
+      const { targetType, targetId, type } = req.body;
+      
+      // Validate request body
+      const reactionSchema = z.object({
+        targetType: z.enum(['post', 'comment', 'journal', 'resource']),
+        targetId: z.string(),
+        type: z.enum(['like', 'heart', 'helpful', 'support', 'thumbsup'])
+      });
+      
+      const validationResult = reactionSchema.safeParse({ targetType, targetId, type });
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          error: "Invalid reaction data", 
+          details: validationResult.error.issues 
+        });
+      }
+
+      const userId = "default-user";
+      
+      // Remove reaction
+      const deleted = await storage.removeReaction(userId, targetType, targetId, type);
+      
+      if (!deleted) {
+        return res.status(404).json({ error: "Reaction not found" });
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Remove reaction error:', error);
+      res.status(500).json({ error: "Failed to remove reaction" });
+    }
+  });
+
+  // Get user's reaction streak
+  app.get("/api/reaction-streak", async (req, res) => {
+    try {
+      const userId = req.query.userId as string || "default-user";
+      
+      const streakData = await storage.getReactionStreak(userId);
+      
+      res.json(streakData);
+    } catch (error) {
+      console.error('Reaction streak error:', error);
+      res.status(500).json({ error: "Failed to get reaction streak" });
+    }
+  });
+
+  // Get reaction counts for content
+  app.get("/api/reactions/counts/:targetType/:targetId", async (req, res) => {
+    try {
+      const { targetType, targetId } = req.params;
+      
+      // Validate parameters
+      const paramsSchema = z.object({
+        targetType: z.enum(['post', 'comment', 'journal', 'resource']),
+        targetId: z.string()
+      });
+      
+      const validationResult = paramsSchema.safeParse({ targetType, targetId });
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          error: "Invalid parameters", 
+          details: validationResult.error.issues 
+        });
+      }
+      
+      const counts = await storage.getReactionCounts(targetType, targetId);
+      
+      res.json(counts);
+    } catch (error) {
+      console.error('Reaction counts error:', error);
+      res.status(500).json({ error: "Failed to get reaction counts" });
+    }
+  });
+
+  // Get user's reactions for content
+  app.get("/api/reactions/user/:targetType/:targetId", async (req, res) => {
+    try {
+      const { targetType, targetId } = req.params;
+      const userId = "default-user";
+      
+      // Validate parameters
+      const paramsSchema = z.object({
+        targetType: z.enum(['post', 'comment', 'journal', 'resource']),
+        targetId: z.string()
+      });
+      
+      const validationResult = paramsSchema.safeParse({ targetType, targetId });
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          error: "Invalid parameters", 
+          details: validationResult.error.issues 
+        });
+      }
+      
+      const userReactions = await storage.getUserReactions(userId, targetType, targetId);
+      
+      res.json(userReactions);
+    } catch (error) {
+      console.error('User reactions error:', error);
+      res.status(500).json({ error: "Failed to get user reactions" });
     }
   });
 

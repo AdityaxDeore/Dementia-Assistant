@@ -13,7 +13,7 @@ export default function Dashboard() {
       icon: MessageCircle, 
       href: "/ai-buddy", 
       color: "text-white", 
-      bg: "from-sky-400 to-blue-500",
+      bg: "bg-blue-500",
       description: "Smart companion"
     },
     { 
@@ -21,7 +21,7 @@ export default function Dashboard() {
       icon: PenTool, 
       href: "/diary", 
       color: "text-white", 
-      bg: "from-emerald-400 to-green-500",
+      bg: "bg-green-500",
       description: "Private thoughts"
     },
     { 
@@ -29,7 +29,7 @@ export default function Dashboard() {
       icon: Users, 
       href: "/peer-support", 
       color: "text-white", 
-      bg: "from-violet-400 to-purple-500",
+      bg: "bg-purple-500",
       description: "Connect & share"
     },
     { 
@@ -37,7 +37,7 @@ export default function Dashboard() {
       icon: Headphones, 
       href: "/audio-sessions", 
       color: "text-white", 
-      bg: "from-amber-400 to-orange-500",
+      bg: "bg-orange-500",
       description: "Guided sessions"
     },
     { 
@@ -45,7 +45,7 @@ export default function Dashboard() {
       icon: BookOpen, 
       href: "/resources", 
       color: "text-white", 
-      bg: "from-indigo-400 to-blue-500",
+      bg: "bg-indigo-500",
       description: "Learn & grow"
     },
     { 
@@ -53,7 +53,7 @@ export default function Dashboard() {
       icon: Palette, 
       href: "/creative", 
       color: "text-white", 
-      bg: "from-rose-400 to-pink-500",
+      bg: "bg-pink-500",
       description: "Express yourself"
     },
   ];
@@ -80,37 +80,37 @@ export default function Dashboard() {
       {/* Quick Actions Grid - Modern cards */}
       <div className="space-y-4">
         <h2 className="text-lg font-semibold text-center">Quick Actions</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 xxs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xxs:gap-2 sm:gap-4 lg:gap-6">
           {quickActions.map((action, index) => (
             <Card 
               key={action.title} 
-              className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden"
+              className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
               style={{
                 animationDelay: `${index * 100}ms`,
                 animation: 'slideInBounce 0.8s ease-out forwards',
                 borderRadius: '16px' // Following UI Corner Radius Standard
               }}
             >
-              <CardContent className="p-0 relative">
+              <CardContent className="p-0 relative" style={{ borderRadius: '16px' }}>
                 <Link href={action.href}>
-                  <div className={`relative p-6 bg-gradient-to-br ${action.bg} text-center space-y-4 cursor-pointer overflow-hidden transition-all duration-500 group-hover:scale-[1.01]`}>
+                  <div 
+                    className={`relative p-4 xxs:p-3 sm:p-6 ${action.bg} text-center space-y-3 xxs:space-y-2 sm:space-y-4 cursor-pointer overflow-hidden transition-all duration-300 hover:brightness-110`}
+                    style={{ borderRadius: '16px' }}
+                  >
                     {/* Background decoration */}
                     <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-10 translate-x-10 group-hover:scale-150 transition-transform duration-700" />
                     <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 -translate-x-8 group-hover:scale-125 transition-transform duration-700" />
                     
                     {/* Icon container */}
-                    <div className="relative z-10 mx-auto w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
-                      <action.icon className={`w-8 h-8 ${action.color} transition-all duration-300 group-hover:scale-110`} />
+                    <div className="relative z-10 mx-auto w-12 h-12 xxs:w-10 xxs:h-10 sm:w-16 sm:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
+                      <action.icon className={`w-6 h-6 xxs:w-5 xxs:h-5 sm:w-8 sm:h-8 ${action.color} transition-all duration-300 group-hover:scale-110`} />
                     </div>
                     
                     {/* Content */}
                     <div className="relative z-10 space-y-1">
-                      <p className="font-bold text-base text-white group-hover:scale-105 transition-transform duration-300">{action.title}</p>
-                      <p className="text-xs text-white/80 font-medium">{action.description}</p>
+                      <p className="font-bold text-sm xxs:text-xs sm:text-base text-white transition-transform duration-300">{action.title}</p>
+                      <p className="text-xs xxs:text-2xs sm:text-xs text-white/80 font-medium">{action.description}</p>
                     </div>
-                    
-                    {/* Shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                   </div>
                 </Link>
               </CardContent>

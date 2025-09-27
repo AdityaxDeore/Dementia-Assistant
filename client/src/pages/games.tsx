@@ -14,7 +14,8 @@ import {
   Play,
   Star,
   PawPrint,
-  Sparkles
+  Sparkles,
+  Castle
 } from 'lucide-react';
 
 export default function GamesPage() {
@@ -71,6 +72,17 @@ export default function GamesPage() {
       difficulty: "Easy",
       time: "Open-ended",
       route: "/petcare-game"
+    },
+    {
+      id: 6,
+      title: "Inner Gatekeeper",
+      description: "Protect your mind castle from negative thoughts and emotions in this therapeutic strategy game",
+      icon: Castle,
+      color: "text-indigo-600",
+      bgColor: "bg-indigo-50",
+      difficulty: "Medium",
+      time: "15-30 min",
+      route: "/inner-gatekeeper"
     }
   ];
 
@@ -201,6 +213,94 @@ export default function GamesPage() {
         </div>
       </div>
 
+      {/* Inner Gatekeeper Game Section */}
+      <div className="bg-gradient-to-r from-indigo-400/10 via-purple-400/10 to-blue-500/10 rounded-2xl p-8 border-0 shadow-xl backdrop-blur-sm relative overflow-hidden">
+        {/* Background decorations */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-200/20 to-purple-200/20 rounded-full -translate-y-6 translate-x-8"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-200/20 to-indigo-200/20 rounded-full translate-y-4 -translate-x-6"></div>
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="p-4 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full shadow-lg">
+              <Castle className="w-10 h-10 text-white" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-gray-800">Inner Gatekeeper</h2>
+              <Badge className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-0 shadow-md mt-2">
+                🧠 Mental Health Strategy Game
+              </Badge>
+            </div>
+          </div>
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-6">
+            Take on the role of a guardian protecting your mind castle from negative thoughts and emotions. 
+            Make strategic choices to maintain your mental wellbeing while growing stronger and more resilient.
+          </p>
+        </div>
+
+        {/* Game Preview Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
+            <div className="text-2xl mb-2">🏰</div>
+            <div className="font-semibold text-gray-800">Protect Castle</div>
+            <div className="text-sm text-gray-600">Maintain health & peace</div>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
+            <div className="text-2xl mb-2">⚔️</div>
+            <div className="font-semibold text-gray-800">Strategic Choices</div>
+            <div className="text-sm text-gray-600">Accept, reject, or challenge</div>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
+            <div className="text-2xl mb-2">🌤️</div>
+            <div className="font-semibold text-gray-800">Dynamic Weather</div>
+            <div className="text-sm text-gray-600">Reflects your mental state</div>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
+            <div className="text-2xl mb-2">📈</div>
+            <div className="font-semibold text-gray-800">Track Progress</div>
+            <div className="text-sm text-gray-600">Level up & improve skills</div>
+          </div>
+        </div>
+
+        {/* Therapeutic Benefits */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white/90 rounded-xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-indigo-50/80 to-blue-50/80 backdrop-blur-sm">
+            <Brain className="w-8 h-8 text-indigo-600 mx-auto mb-3" />
+            <h3 className="font-bold text-gray-800 mb-2">Emotional Regulation</h3>
+            <p className="text-gray-600 text-sm">
+              Learn to identify and manage difficult emotions through strategic gameplay
+            </p>
+          </div>
+          <div className="bg-white/90 rounded-xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-purple-50/80 to-violet-50/80 backdrop-blur-sm">
+            <Target className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+            <h3 className="font-bold text-gray-800 mb-2">Decision Making</h3>
+            <p className="text-gray-600 text-sm">
+              Practice making healthy choices under pressure in a safe environment
+            </p>
+          </div>
+          <div className="bg-white/90 rounded-xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-sm">
+            <Trophy className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+            <h3 className="font-bold text-gray-800 mb-2">Mental Resilience</h3>
+            <p className="text-gray-600 text-sm">
+              Build strength to handle life's challenges with wisdom and courage
+            </p>
+          </div>
+        </div>
+
+        {/* Play Button */}
+        <div className="text-center">
+          <Button 
+            onClick={() => setLocation('/inner-gatekeeper')}
+            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-600 hover:from-indigo-600 hover:via-purple-600 hover:to-blue-700 text-white font-bold py-4 px-8 text-lg rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+          >
+            <Castle className="w-6 h-6 mr-3" />
+            Begin Your Inner Journey
+            <Sparkles className="w-6 h-6 ml-3" />
+          </Button>
+          <p className="text-sm text-gray-600 mt-3">
+            🧠 Designed by mental health experts • 🎮 Evidence-based therapy • 🏰 Safe space to practice
+          </p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {games.map((game) => {
           const IconComponent = game.icon;
@@ -213,7 +313,8 @@ export default function GamesPage() {
                     game.id === 2 ? 'bg-gradient-to-br from-emerald-400 to-green-500' :
                     game.id === 3 ? 'bg-gradient-to-br from-violet-400 to-purple-500' :
                     game.id === 4 ? 'bg-gradient-to-br from-amber-400 to-orange-500' :
-                    'bg-gradient-to-br from-rose-400 to-pink-500'
+                    game.id === 5 ? 'bg-gradient-to-br from-rose-400 to-pink-500' :
+                    'bg-gradient-to-br from-indigo-400 to-purple-500'
                   }`}>
                     <IconComponent className="w-6 h-6 text-white" />
                   </div>

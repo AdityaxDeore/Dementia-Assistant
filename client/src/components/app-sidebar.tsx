@@ -13,7 +13,9 @@ import {
   Brain,
   PenTool,
   UserCheck,
-  Gamepad2
+  Gamepad2,
+  Castle,
+  GraduationCap
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
@@ -65,6 +67,11 @@ const mainItems = [
     url: "/petcare-game",
     icon: Gamepad2,
   },
+  {
+    title: "Inner Gatekeeper",
+    url: "/inner-gatekeeper",
+    icon: Castle,
+  },
 ];
 
 const supportItems = [
@@ -74,14 +81,19 @@ const supportItems = [
     icon: UserCheck,
   },
   {
-    title: "Anonymous",
+    title: "Counselor Connect",
     url: "/anonymous-chat",
-    icon: Shield,
+    icon: User,
   },
   {
     title: "Community",
     url: "/peer-support",
     icon: Users,
+  },
+  {
+    title: "Clarity Connect",
+    url: "/professional-community",
+    icon: GraduationCap,
   },
   {
     title: "Resources",
