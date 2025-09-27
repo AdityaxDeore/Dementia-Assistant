@@ -5,19 +5,33 @@ config();
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/clarity';
 
+// Track connection status
+export let isConnected = false;
+
 export const connectDB = async (): Promise<void> => {
   try {
+    console.log('🔄 Connecting to MongoDB Atlas...');
     const conn = await mongoose.connect(MONGODB_URI);
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    isConnected = true;
+    console.log(`✅ MongoDB Atlas Connected: ${conn.connection.host}`);
+    console.log(`📊 Database: ${conn.connection.name}`);
   } catch (error) {
-    console.error('❌ MongoDB connection error:', error);
-    console.log('💡 To use MongoDB locally:');
-    console.log('   1. Install MongoDB: https://www.mongodb.com/try/download/community');
-    console.log('   2. Start MongoDB service');
-    console.log('   3. Or use MongoDB Atlas (cloud): https://www.mongodb.com/atlas');
-    console.log('');
-    console.log('🔄 Continuing without database connection...');
-    console.log('   Note: API endpoints requiring database will return mock data');
+    isConnected = false;
+    console.log('❌ MongoDB Atlas connection failed');
+    console.log('💡 Please check your connection string in .env file');
+    console.log('🔍 Make sure:');
+    console.log('   1. Username and password are correct');
+    console.log('   2. Your IP address is whitelisted in Atlas');
+    console.log('   3. Cluster is running and accessible');
+    console.log('� Continuing with mock data for development...');
+    
+    // Log the actual error for debugging (but hide sensitive info)
+    const errorMsg = (error as Error).message;
+    if (errorMsg.includes('authentication failed')) {
+      console.log('� Authentication Error: Check username/password');
+    } else if (errorMsg.includes('ENOTFOUND')) {
+      console.log('🌐 Network Error: Check cluster URL and internet connection');
+    }
   }
 };
 

@@ -8,8 +8,12 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SOSButton } from "@/components/sos-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MainNavigation } from "@/components/main-navigation";
+import { AuthProvider } from "@/contexts/AuthContext";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/home";
+import LoginPage from "@/pages/login";
+import RegisterPage from "@/pages/register";
+import ProfilePage from "@/pages/profile";
 import Dashboard from "@/pages/dashboard";
 import AIBuddyPage from "@/pages/ai-buddy";
 import WellnessPage from "@/pages/wellness";
@@ -37,6 +41,9 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/login" component={LoginPage} />
+      <Route path="/register" component={RegisterPage} />
+      <Route path="/profile" component={ProfilePage} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/onboarding" component={OnboardingPage} />
       <Route path="/ai-buddy" component={AIBuddyPage} />
@@ -71,7 +78,7 @@ function App() {
   const showSOSButton = location === "/dashboard";
   
   // Routes that should not show the normal app layout
-  const isSpecialRoute = location === "/" || location === "/admin-login" || location === "/admin";
+  const isSpecialRoute = location === "/" || location === "/login" || location === "/register" || location === "/admin-login" || location === "/admin";
   
   // Navigation handler
   const handleNavigation = (path: string) => {
@@ -84,23 +91,26 @@ function App() {
     "--sidebar-width-icon": "3rem",
   };
 
-  // If it's a special route (home, admin), render without the normal app layout
+  // If it's a special route (home, admin, auth), render without the normal app layout
   if (isSpecialRoute) {
     return (
       <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <div className="min-h-screen">
-            <Router />
-          </div>
-          <Toaster />
-        </TooltipProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <div className="min-h-screen">
+              <Router />
+            </div>
+            <Toaster />
+          </TooltipProvider>
+        </AuthProvider>
       </QueryClientProvider>
     );
   }
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
         <div className="responsive-container">
           <SidebarProvider style={style as React.CSSProperties}>
           {/* Fixed Header */}
@@ -145,6 +155,7 @@ function App() {
           }
         `}</style>
       </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

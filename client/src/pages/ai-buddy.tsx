@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useState, useEffect } from "react";
 import { AIChatList } from "@/components/ai-chat-list";
 import { AIChat } from "@/components/ai-chat";
 import { BackButton } from "@/components/ui/back-button";
