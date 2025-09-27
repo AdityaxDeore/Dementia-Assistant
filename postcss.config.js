@@ -1,6 +1,6 @@
-export default {
+export default (ctx) => ({
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
   },
-}
+});

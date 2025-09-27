@@ -1,6 +1,7 @@
 import { Phone, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,16 +16,40 @@ import {
 
 export function SOSButton() {
   const [isPressed, setIsPressed] = useState(false);
+  const { toast } = useToast();
 
-  const handleSOSClick = () => {
-    setIsPressed(true);
-    console.log('SOS Emergency button triggered');
-    // TODO: In real app, this would trigger emergency protocols
-  };
-
-  const handleCrisisHelpline = () => {
-    console.log('Connecting to crisis helpline...');
-    // TODO: Connect to actual helpline
+  const handleTelemanus = () => {
+    const telmanusNumber = '18008914416';
+    console.log(`Connecting to Telemanus helpline: ${telmanusNumber}`);
+    
+    // Show immediate feedback
+    toast({
+      title: "Connecting to Telemanus Helpline",
+      description: "Redirecting to call 1800 891 4416. Help is on the way.",
+      duration: 5000,
+    });
+    
+    // For web browsers, try to initiate a phone call
+    try {
+      window.location.href = `tel:${telmanusNumber}`;
+    } catch (error) {
+      console.error('Failed to initiate call:', error);
+      // Fallback: Copy number to clipboard
+      navigator.clipboard.writeText(telmanusNumber).then(() => {
+        toast({
+          title: "Number Copied",
+          description: `Telemanus helpline number copied: ${telmanusNumber}`,
+          duration: 5000,
+        });
+      }).catch(() => {
+        toast({
+          title: "Call Telemanus",
+          description: `Please call: ${telmanusNumber}`,
+          variant: "destructive",
+          duration: 8000,
+        });
+      });
+    }
   };
 
   const handleCampusAuthorities = () => {
@@ -49,22 +74,27 @@ export function SOSButton() {
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-destructive" />
-            Emergency Support
+            Emergency Mental Health Support
           </AlertDialogTitle>
           <AlertDialogDescription className="text-left">
-            You're reaching out for emergency help. Choose how you'd like to get immediate support:
+            You're reaching out for emergency help. Get immediate professional mental health support:
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="space-y-3">
-          <Button 
-            onClick={handleCrisisHelpline}
-            variant="outline" 
-            className="w-full justify-start"
-            data-testid="button-crisis-helpline"
-          >
-            <Phone className="w-4 h-4 mr-2" />
-            Crisis Helpline (24/7)
-          </Button>
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-800 mb-2 font-medium">🇮🇳 Professional Mental Health Support - India</p>
+            <Button 
+              onClick={handleTelemanus}
+              className="w-full justify-start bg-red-600 hover:bg-red-700 text-white font-semibold"
+              data-testid="button-telemanus-helpline"
+            >
+              <Phone className="w-4 h-4 mr-2" />
+              Call Telemanus - 1800 891 4416
+            </Button>
+            <p className="text-xs text-red-700 mt-2">
+              Free 24/7 mental health helpline staffed by trained counselors
+            </p>
+          </div>
           <Button 
             onClick={handleCampusAuthorities}
             variant="outline" 

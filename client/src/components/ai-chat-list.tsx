@@ -37,26 +37,22 @@ export function AIChatList({
 
   const getPersonalityColor = (color: string) => {
     const colors = {
-      blue: 'bg-gradient-to-br from-sky-400 to-blue-500',
-      orange: 'bg-gradient-to-br from-amber-400 to-orange-500',
-      purple: 'bg-gradient-to-br from-violet-400 to-purple-500',
-      indigo: 'bg-gradient-to-br from-indigo-400 to-blue-600',
-      green: 'bg-gradient-to-br from-emerald-400 to-green-500',
+      blue: 'bg-sky-500',
+      orange: 'bg-amber-500',
+      purple: 'bg-violet-500',
+      indigo: 'bg-indigo-500',
+      green: 'bg-emerald-500',
     };
-    return colors[color as keyof typeof colors] || 'bg-gradient-to-br from-sky-400 to-blue-500';
+    return colors[color as keyof typeof colors] || 'bg-sky-500';
   };
 
   return (
     <div className="h-full flex flex-col bg-white">
       {/* Header - Fixed */}
-      <div className="flex-shrink-0 p-6 border-b border-gray-100">
+      <div className="flex-shrink-0 p-4 border-b border-gray-100">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-            <MessageCircle className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-gray-800">Messages</h2>
-            <p className="text-sm text-gray-500">Choose your AI buddy</p>
+          <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
+            <MessageCircle className="w-4 h-4 text-white" />
           </div>
         </div>
         
@@ -85,7 +81,7 @@ export function AIChatList({
                 key={personality.id}
                 onClick={() => onSelectPersonality(personality)}
                 className={`flex items-center gap-4 p-4 m-2 cursor-pointer transition-all duration-200 rounded-xl hover:bg-gray-50 active:scale-[0.98] ${
-                  isSelected ? 'bg-gradient-to-r from-indigo-50 to-purple-50 shadow-md border border-indigo-100' : ''
+                  isSelected ? 'bg-indigo-50 shadow-md border border-indigo-200' : ''
                 }`}
               >
                 {/* Avatar with status */}

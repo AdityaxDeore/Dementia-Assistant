@@ -490,9 +490,9 @@ export function AudioSessions() {
         </div>
       </div>
 
-      {/* Fixed Bottom Player - Above Navigation */}
+      {/* Fixed Bottom Player */}
       {currentSession && (
-        <div className="fixed bottom-16 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-4 z-[1001] shadow-xl">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-4 z-[1001] shadow-xl">
           <div className="max-w-screen-xl mx-auto">
             <div className="flex items-center justify-between">
               {/* Current Track Info */}
@@ -572,8 +572,8 @@ export function AudioSessions() {
         </div>
       )}
       
-      {/* Bottom Padding for Fixed Player - accounts for both player and navigation */}
-      {currentSession && <div className="h-32" />}
+      {/* Bottom Padding for Fixed Player */}
+      {currentSession && <div className="h-24" />}
     </div>
   );
 }

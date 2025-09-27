@@ -87,6 +87,33 @@ export const mentorTasks = pgTable("mentor_tasks", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const reactions = pgTable("reactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  targetType: text("target_type").notNull(), // 'post', 'comment', 'journal', 'resource'
+  targetId: varchar("target_id").notNull(),
+  type: text("type").notNull(), // 'like', 'heart', 'helpful', 'support', 'thumbsup'
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => ({
+  uniqueReaction: unique().on(table.userId, table.targetType, table.targetId, table.type),
+}));
+
+export const reactionStreaks = pgTable("reaction_streaks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().unique(),
+  currentStreak: integer("current_streak").default(0).notNull(),
+  longestStreak: integer("longest_streak").default(0).notNull(),
+  lastReactionDate: date("last_reaction_date"),
+  totalReactions: integer("total_reactions").default(0).notNull(),
+  reactionsByType: text("reactions_by_type").default('{}').notNull(), // JSON object
+  weeklyReactions: integer("weekly_reactions").default(0).notNull(),
+  monthlyReactions: integer("monthly_reactions").default(0).notNull(),
+  streakResetDate: date("streak_reset_date"),
+  achievements: text("achievements").default('{}').notNull(), // JSON object
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -206,6 +233,26 @@ export const insertMentorTaskSchema = createInsertSchema(mentorTasks).pick({
   priority: true,
 });
 
+export const insertReactionSchema = createInsertSchema(reactions).pick({
+  userId: true,
+  targetType: true,
+  targetId: true,
+  type: true,
+});
+
+export const insertReactionStreakSchema = createInsertSchema(reactionStreaks).pick({
+  userId: true,
+  currentStreak: true,
+  longestStreak: true,
+  lastReactionDate: true,
+  totalReactions: true,
+  reactionsByType: true,
+  weeklyReactions: true,
+  monthlyReactions: true,
+  streakResetDate: true,
+  achievements: true,
+});
+
 // API types
 export type ApiMoodEntry = z.infer<typeof apiMoodEntrySchema>;
 export type ApiCreateGoal = z.infer<typeof apiCreateGoalSchema>;
@@ -231,3 +278,7 @@ export type InsertMentorship = z.infer<typeof insertMentorshipSchema>;
 export type Mentorship = typeof mentorships.$inferSelect;
 export type InsertMentorTask = z.infer<typeof insertMentorTaskSchema>;
 export type MentorTask = typeof mentorTasks.$inferSelect;
+export type InsertReaction = z.infer<typeof insertReactionSchema>;
+export type Reaction = typeof reactions.$inferSelect;
+export type InsertReactionStreak = z.infer<typeof insertReactionStreakSchema>;
+export type ReactionStreak = typeof reactionStreaks.$inferSelect;

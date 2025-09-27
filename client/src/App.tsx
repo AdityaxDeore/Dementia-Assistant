@@ -7,7 +7,6 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SOSButton } from "@/components/sos-button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { MainNavigation } from "@/components/main-navigation";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/home";
 import Dashboard from "@/pages/dashboard";
@@ -16,6 +15,7 @@ import WellnessPage from "@/pages/wellness";
 import GoalsPage from "@/pages/goals";
 import PeerSupportPage from "@/pages/peer-support";
 import ResourcesPage from "@/pages/resources";
+import ProfessionalCommunityPage from "@/pages/professional-community";
 import CreativePage from "@/pages/creative";
 import CrisisPage from "@/pages/crisis";
 import SettingsPage from "@/pages/settings";
@@ -32,6 +32,9 @@ import AssessmentPage from "@/pages/assessment";
 import InteractiveMenuDemo from "@/pages/interactive-menu-demo";
 import GamesPage from "@/pages/games";
 import PetCareGamePage from "@/pages/petcare-game";
+import ReactionStreakPage from "@/pages/reaction-streak";
+import EmojiMorphDemo from "@/pages/emoji-morph-demo";
+import InnerGatekeeperPage from "@/pages/inner-gatekeeper";
 
 function Router() {
   return (
@@ -50,11 +53,15 @@ function Router() {
       <Route path="/peer-support" component={PeerSupportPage} />
       <Route path="/community/:id" component={CommunityRoute} />
       <Route path="/resources" component={ResourcesPage} />
+      <Route path="/professional-community" component={ProfessionalCommunityPage} />
       <Route path="/creative" component={CreativePage} />
       <Route path="/crisis" component={CrisisPage} />
       <Route path="/report" component={ReportPage} />
       <Route path="/games" component={GamesPage} />
       <Route path="/petcare-game" component={PetCareGamePage} />
+      <Route path="/reaction-streak" component={ReactionStreakPage} />
+      <Route path="/emoji-morph-demo" component={EmojiMorphDemo} />
+      <Route path="/inner-gatekeeper" component={InnerGatekeeperPage} />
       <Route path="/menu-demo" component={InteractiveMenuDemo} />
       <Route path="/admin-login" component={AdminLogin} />
       <Route path="/admin" component={AdminPage} />
@@ -126,16 +133,12 @@ function App() {
           <div className="flex h-screen w-full main-content">
             <AppSidebar />
             <div className="flex flex-col flex-1">
-              <main className="flex-1 overflow-auto p-2 sm:p-3 md:p-4 lg:p-6 pb-safe-area-bottom android-scroll">
+              <main className="flex-1 overflow-auto p-2 xxs:p-1 sm:p-3 md:p-4 lg:p-6 pb-safe-area-bottom android-scroll">
                 <Router />
               </main>
             </div>
           </div>
-        {/* Interactive Navigation Menu */}
-        <MainNavigation 
-          currentPath={location} 
-          onNavigate={handleNavigation}
-        />
+
         </SidebarProvider>
         </div>
         <Toaster />

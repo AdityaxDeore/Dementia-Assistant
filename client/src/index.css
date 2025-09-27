@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Navigation Padding - Updated for Fixed Header and Music Player */
+/* Navigation Padding - Removed Bottom Navigation */
 body {
-  padding-bottom: 60px !important; /* Bottom nav */
+  padding-bottom: 0 !important; /* No bottom nav */
   padding-top: 0 !important; /* No top padding needed with fixed header */
   margin: 0;
   overflow-x: hidden;
@@ -13,24 +13,24 @@ body {
 
 /* Additional padding when music player is active */
 .has-music-player {
-  padding-bottom: 140px !important; /* Space for both music player and navigation */
+  padding-bottom: 80px !important; /* Space for music player only */
 }
 
 @media (max-width: 640px) {
   body {
-    padding-bottom: 55px !important;
+    padding-bottom: 0 !important;
   }
   .has-music-player {
-    padding-bottom: 130px !important;
+    padding-bottom: 75px !important;
   }
 }
 
 @media (max-width: 480px) {
   body {
-    padding-bottom: 50px !important;
+    padding-bottom: 0 !important;
   }
   .has-music-player {
-    padding-bottom: 120px !important;
+    padding-bottom: 70px !important;
   }
 }
 
@@ -85,6 +85,58 @@ body {
   .xs\:h-16 { height: 4rem; }
   .xs\:px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
   .xs\:gap-1 { gap: 0.25rem; }
+}
+
+/* Specific optimizations for 360px width phones */
+@media (max-width: 360px) {
+  /* Container and layout optimizations */
+  .max-w-7xl { max-width: 100%; }
+  .max-w-6xl { max-width: 100%; }
+  .max-w-5xl { max-width: 100%; }
+  .max-w-4xl { max-width: 100%; }
+  .max-w-3xl { max-width: 100%; }
+  .max-w-2xl { max-width: 100%; }
+  
+  /* Reduce padding for better space utilization */
+  .p-6 { padding: 1rem; }
+  .p-8 { padding: 1.25rem; }
+  .px-6 { padding-left: 1rem; padding-right: 1rem; }
+  .py-8 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+  
+  /* Grid optimizations for small screens */
+  .grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  .md\:grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  .lg\:grid-cols-3 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  
+  /* Card and component sizing */
+  .rounded-2xl { border-radius: 12px; }
+  .rounded-xl { border-radius: 8px; }
+  
+  /* Text sizing adjustments */
+  .text-4xl { font-size: 1.875rem; line-height: 2.25rem; }
+  .text-3xl { font-size: 1.5rem; line-height: 2rem; }
+  .text-2xl { font-size: 1.25rem; line-height: 1.75rem; }
+  .text-xl { font-size: 1.125rem; line-height: 1.75rem; }
+  
+  /* Button optimizations */
+  .min-h-\[100px\] { min-height: 80px; }
+  .min-h-\[120px\] { min-height: 90px; }
+  .w-20 { width: 4rem; }
+  .w-24 { width: 4.5rem; }
+  
+  /* Gap reductions */
+  .gap-6 { gap: 1rem; }
+  .gap-4 { gap: 0.75rem; }
+  .gap-3 { gap: 0.5rem; }
+  
+  /* Space optimizations */
+  .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5rem; }
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+  .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem; }
+  
+  /* Font size utilities for very small screens */
+  .text-2xs { font-size: 0.625rem; line-height: 0.75rem; }
+  .text-3xs { font-size: 0.5rem; line-height: 0.625rem; }
 }
 
 /* LIGHT MODE */
@@ -839,6 +891,33 @@ body {
   }
 }
 
+/* Extra optimizations for 360px phones */
+@media (max-width: 360px) {
+  .fixed-header {
+    height: 2.5rem; /* 40px - Even smaller for 360px */
+    padding: 0 0.375rem;
+  }
+  .main-content {
+    padding-top: 2.5rem;
+  }
+  .header-left {
+    gap: 0.375rem;
+  }
+  .header-right {
+    gap: 0.25rem;
+  }
+  
+  /* Header logo sizing */
+  .header-left img {
+    height: 1.25rem; /* 20px */
+  }
+  
+  /* Button sizing in header */
+  .header-right button {
+    padding: 0.25rem;
+  }
+}
+
 /* Large phones: 481px - 640px */
 @media (min-width: 481px) and (max-width: 640px) {
   .fixed-header {
@@ -1127,10 +1206,11 @@ body {
   background-image: 
     linear-gradient(to right, #ff6b6b 78px, transparent 78px),
     linear-gradient(to right, hsl(var(--border)) 78px, hsl(var(--border)) 79px, transparent 79px),
-    linear-gradient(to bottom, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px, transparent 32px);
-  background-size: 100% 32px;
-  line-height: 32px;
-  padding: 16px 16px 16px 88px;
+    linear-gradient(to bottom, transparent 27px, hsl(var(--border)) 28px, hsl(var(--border)) 28px, transparent 29px);
+  background-size: 100% 28px;
+  background-position: 0 0;
+  line-height: 28px;
+  padding: 4px 16px 16px 88px;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   font-size: 16px;
   border: 2px solid hsl(var(--card-border));
@@ -1139,6 +1219,7 @@ body {
   resize: none;
   min-height: 320px;
   color: hsl(var(--card-foreground));
+  vertical-align: baseline;
 }
 
 .notebook-paper:focus {
@@ -1150,7 +1231,7 @@ body {
 .notebook-paper::placeholder {
   color: hsl(var(--muted-foreground));
   font-style: italic;
-  line-height: 32px;
+  line-height: 28px;
 }
 
 /* Notebook header styling - Theme-aware */
@@ -1203,7 +1284,7 @@ body {
   background-image: 
     linear-gradient(to right, #ff0000 78px, transparent 78px),
     linear-gradient(to right, black 78px, black 79px, transparent 79px),
-    linear-gradient(to bottom, transparent 31px, black 31px, black 32px, transparent 32px);
+    linear-gradient(to bottom, transparent 27px, black 28px, black 28px, transparent 29px);
 }
 
 .high-contrast .notebook-paper:focus {
@@ -1233,7 +1314,7 @@ body {
   background-image: 
     linear-gradient(to right, #cc6600 78px, transparent 78px),
     linear-gradient(to right, hsl(var(--border)) 78px, hsl(var(--border)) 79px, transparent 79px),
-    linear-gradient(to bottom, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px, transparent 32px);
+    linear-gradient(to bottom, transparent 27px, hsl(var(--border)) 28px, hsl(var(--border)) 28px, transparent 29px);
 }
 
 /* Purple theme adjustments */
@@ -1241,7 +1322,7 @@ body {
   background-image: 
     linear-gradient(to right, #9333ea 78px, transparent 78px),
     linear-gradient(to right, hsl(var(--border)) 78px, hsl(var(--border)) 79px, transparent 79px),
-    linear-gradient(to bottom, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px, transparent 32px);
+    linear-gradient(to bottom, transparent 27px, hsl(var(--border)) 28px, hsl(var(--border)) 28px, transparent 29px);
 }
 
 /* Dark mode specific adjustments */
@@ -1249,7 +1330,7 @@ body {
   background-image: 
     linear-gradient(to right, #ef4444 78px, transparent 78px),
     linear-gradient(to right, hsl(var(--border)) 78px, hsl(var(--border)) 79px, transparent 79px),
-    linear-gradient(to bottom, transparent 31px, hsl(var(--border)) 31px, hsl(var(--border)) 32px, transparent 32px);
+    linear-gradient(to bottom, transparent 27px, hsl(var(--border)) 28px, hsl(var(--border)) 28px, transparent 29px);
 }
 
 /* Reduce motion support */

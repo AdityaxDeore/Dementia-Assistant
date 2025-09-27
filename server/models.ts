@@ -474,11 +474,190 @@ const crisisReportSchema = new Schema<ICrisisReport>({
 
 export const CrisisReport = mongoose.model<ICrisisReport>('CrisisReport', crisisReportSchema);
 
+// Reaction Interface and Model
+export interface IReaction extends Document {
+  _id: string;
+  userId: string;
+  targetType: 'post' | 'comment' | 'journal' | 'resource';
+  targetId: string;
+  type: 'like' | 'heart' | 'helpful' | 'support' | 'thumbsup';
+  createdAt: Date;
+}
+
+const reactionSchema = new Schema<IReaction>({
+  userId: {
+    type: String,
+    required: true,
+    ref: 'User'
+  },
+  targetType: {
+    type: String,
+    required: true,
+    enum: ['post', 'comment', 'journal', 'resource']
+  },
+  targetId: {
+    type: String,
+    required: true
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ['like', 'heart', 'helpful', 'support', 'thumbsup'],
+    default: 'like'
+  }
+}, {
+  timestamps: true
+});
+
+// Compound index for user, target, and type (unique constraint)
+reactionSchema.index({ userId: 1, targetType: 1, targetId: 1, type: 1 }, { unique: true });
+
+export const Reaction = mongoose.model<IReaction>('Reaction', reactionSchema);
+
+// Reaction Streak Interface and Model
+export interface IReactionStreak extends Document {
+  _id: string;
+  userId: string;
+  currentStreak: number;
+  longestStreak: number;
+  lastReactionDate: Date;
+  totalReactions: number;
+  reactionsByType: {
+    like: number;
+    heart: number;
+    helpful: number;
+    support: number;
+    thumbsup: number;
+  };
+  weeklyReactions: number;
+  monthlyReactions: number;
+  streakResetDate?: Date;
+  achievements: {
+    firstReaction: boolean;
+    streak3Days: boolean;
+    streak7Days: boolean;
+    streak30Days: boolean;
+    streak100Days: boolean;
+    socialButterflyWeekly: boolean; // 50+ reactions in a week
+    helpfulMember: boolean; // 100+ helpful reactions
+    supportiveUser: boolean; // 100+ support reactions
+  };
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const reactionStreakSchema = new Schema<IReactionStreak>({
+  userId: {
+    type: String,
+    required: true,
+    unique: true,
+    ref: 'User'
+  },
+  currentStreak: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  longestStreak: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  lastReactionDate: {
+    type: Date
+  },
+  totalReactions: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  reactionsByType: {
+    like: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    heart: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    helpful: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    support: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    thumbsup: {
+      type: Number,
+      default: 0,
+      min: 0
+    }
+  },
+  weeklyReactions: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  monthlyReactions: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  streakResetDate: {
+    type: Date
+  },
+  achievements: {
+    firstReaction: {
+      type: Boolean,
+      default: false
+    },
+    streak3Days: {
+      type: Boolean,
+      default: false
+    },
+    streak7Days: {
+      type: Boolean,
+      default: false
+    },
+    streak30Days: {
+      type: Boolean,
+      default: false
+    },
+    streak100Days: {
+      type: Boolean,
+      default: false
+    },
+    socialButterflyWeekly: {
+      type: Boolean,
+      default: false
+    },
+    helpfulMember: {
+      type: Boolean,
+      default: false
+    },
+    supportiveUser: {
+      type: Boolean,
+      default: false
+    }
+  }
+}, {
+  timestamps: true
+});
+
+export const ReactionStreak = mongoose.model<IReactionStreak>('ReactionStreak', reactionStreakSchema);
+
 // Export all models
 export const models = {
   User,
   MoodEntry,
   Goal,
   JournalEntry,
-  CrisisReport
+  CrisisReport,
+  Reaction,
+  ReactionStreak
 };

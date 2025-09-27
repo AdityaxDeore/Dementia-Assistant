@@ -1,13 +1,33 @@
-import { Heart, Target, BookOpen, Palette, Calendar } from "lucide-react";
+import { Heart, Target, BookOpen, Palette, Calendar, Flame } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { ReactionStreak } from "@/components/reaction-streak";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 
 export function WellnessDashboard() {
   const [, setLocation] = useLocation();
+
+  // Fetch reaction streak data
+  const { data: reactionStreakData } = useQuery({
+    queryKey: ['/api/reaction-streak'],
+    queryFn: async () => {
+      // Return mock data for now
+      return {
+        currentStreak: 5,
+        longestStreak: 12,
+        totalReactions: 147,
+        weeklyReactions: 23,
+        achievements: {
+          firstReaction: true,
+          streak3Days: true,
+          streak7Days: false,
+        }
+      };
+    }
+  });
 
   // Fetch mood data
   const { data: moodData, isLoading: moodLoading } = useQuery({
@@ -40,6 +60,7 @@ export function WellnessDashboard() {
 
   // Calculate wellness metrics from real data
   const moodStreak = moodData?.streak || 0;
+  const reactionStreak = reactionStreakData?.currentStreak || 0;
   const goals = goalsData?.goals || [];
   const goalsCompleted = goals.filter((goal: any) => goal.isCompleted).length;
   const totalGoals = goals.length;
@@ -47,15 +68,22 @@ export function WellnessDashboard() {
   // Calculate weekly progress based on recent activity
   const recentMoodEntries = moodData?.entries?.length || 0;
   const goalCompletionRate = totalGoals > 0 ? (goalsCompleted / totalGoals) * 100 : 0;
-  const weeklyProgress = Math.round((goalCompletionRate + Math.min(recentMoodEntries * 10, 50)) / 2);
+  const reactionActivity = reactionStreakData?.weeklyReactions || 0;
+  const weeklyProgress = Math.round((goalCompletionRate + Math.min(recentMoodEntries * 10, 50) + Math.min(reactionActivity * 2, 30)) / 3);
 
   // Dynamic badge system based on real data
   const badges = [
     { 
-      name: "Streak Master", 
+      name: "Mood Streak", 
       icon: "🔥", 
       earned: moodStreak >= 3,
-      description: `${moodStreak >= 3 ? 'Earned' : 'Reach 3-day streak'}`
+      description: `${moodStreak >= 3 ? 'Earned' : 'Reach 3-day mood streak'}`
+    },
+    { 
+      name: "Reaction Streak", 
+      icon: "⚡", 
+      earned: reactionStreak >= 3,
+      description: `${reactionStreak >= 3 ? 'Earned' : 'React for 3 days straight'}`
     },
     { 
       name: "Goal Achiever", 
@@ -70,10 +98,16 @@ export function WellnessDashboard() {
       description: `${recentMoodEntries >= 5 ? 'Earned' : 'Track mood 5 times'}`
     },
     { 
+      name: "Social Butterfly", 
+      icon: "🦋", 
+      earned: reactionActivity >= 20,
+      description: `${reactionActivity >= 20 ? 'Earned' : '20+ reactions this week'}`
+    },
+    { 
       name: "Wellness Champion", 
       icon: "🏆", 
-      earned: moodStreak >= 7 && goalsCompleted >= 2,
-      description: `${moodStreak >= 7 && goalsCompleted >= 2 ? 'Earned' : '7-day streak + 2 goals'}`
+      earned: moodStreak >= 7 && goalsCompleted >= 2 && reactionStreak >= 5,
+      description: `${moodStreak >= 7 && goalsCompleted >= 2 && reactionStreak >= 5 ? 'Earned' : 'Master all wellness areas'}`
     },
   ];
 
@@ -133,10 +167,14 @@ export function WellnessDashboard() {
               <Progress value={weeklyProgress} className="h-3 rounded-full" />
             </div>
             
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="text-center p-3 rounded-xl bg-blue-100 dark:bg-blue-900/20">
                 <div className="text-2xl font-bold text-blue-600">{moodStreak}</div>
-                <div className="text-xs text-blue-600/70">Streak</div>
+                <div className="text-xs text-blue-600/70">Mood Streak</div>
+              </div>
+              <div className="text-center p-3 rounded-xl bg-orange-100 dark:bg-orange-900/20">
+                <div className="text-2xl font-bold text-orange-600">{reactionStreak}</div>
+                <div className="text-xs text-orange-600/70">React Streak</div>
               </div>
               <div className="text-center p-3 rounded-xl bg-green-100 dark:bg-green-900/20">
                 <div className="text-2xl font-bold text-green-600">{recentMoodEntries}</div>
@@ -169,11 +207,10 @@ export function WellnessDashboard() {
               data-testid="button-quick-mood"
               style={{ borderRadius: '16px' }}
             >
-              <div className="relative w-full p-4 bg-gradient-to-br from-rose-300 to-pink-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
+              <div className="relative w-full p-4 bg-pink-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
                 <div className="absolute top-0 right-0 w-12 h-12 bg-white/10 rounded-full -translate-y-6 translate-x-6 group-hover:scale-150 transition-transform duration-700" />
                 <Heart className="relative z-10 w-6 h-6 text-white icon-interactive group-hover:scale-110 transition-transform duration-300" />
                 <span className="relative z-10 text-xs font-bold">Mood</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
               </div>
             </Button>
             
@@ -184,11 +221,10 @@ export function WellnessDashboard() {
               data-testid="button-quick-journal"
               style={{ borderRadius: '16px' }}
             >
-              <div className="relative w-full p-4 bg-gradient-to-br from-sky-300 to-blue-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
+              <div className="relative w-full p-4 bg-blue-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
                 <div className="absolute top-0 right-0 w-12 h-12 bg-white/10 rounded-full -translate-y-6 translate-x-6 group-hover:scale-150 transition-transform duration-700" />
                 <BookOpen className="relative z-10 w-6 h-6 text-white icon-interactive group-hover:scale-110 transition-transform duration-300" />
                 <span className="relative z-10 text-xs font-bold">Journal</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
               </div>
             </Button>
             
@@ -199,11 +235,10 @@ export function WellnessDashboard() {
               data-testid="button-quick-meditation"
               style={{ borderRadius: '16px' }}
             >
-              <div className="relative w-full p-4 bg-gradient-to-br from-violet-300 to-purple-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
+              <div className="relative w-full p-4 bg-purple-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
                 <div className="absolute top-0 right-0 w-12 h-12 bg-white/10 rounded-full -translate-y-6 translate-x-6 group-hover:scale-150 transition-transform duration-700" />
                 <Calendar className="relative z-10 w-6 h-6 text-white icon-interactive group-hover:scale-110 transition-transform duration-300" />
                 <span className="relative z-10 text-xs font-bold">Meditate</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
               </div>
             </Button>
             
@@ -214,11 +249,10 @@ export function WellnessDashboard() {
               data-testid="button-quick-creative"
               style={{ borderRadius: '16px' }}
             >
-              <div className="relative w-full p-4 bg-gradient-to-br from-amber-300 to-orange-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
+              <div className="relative w-full p-4 bg-orange-400 text-white flex flex-col items-center gap-2 transition-all duration-300 group-hover:scale-[1.02]">
                 <div className="absolute top-0 right-0 w-12 h-12 bg-white/10 rounded-full -translate-y-6 translate-x-6 group-hover:scale-150 transition-transform duration-700" />
                 <Palette className="relative z-10 w-6 h-6 text-white icon-interactive group-hover:scale-110 transition-transform duration-300" />
                 <span className="relative z-10 text-xs font-bold">Create</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
               </div>
             </Button>
           </div>
@@ -229,7 +263,7 @@ export function WellnessDashboard() {
       <Card className="modern-card border-0 shadow-lg" style={{ borderRadius: '16px' }}>
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-3 text-lg">
-            <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-300 to-amber-400">
+            <div className="p-3 rounded-2xl bg-amber-400">
               <Target className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -239,14 +273,14 @@ export function WellnessDashboard() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             {badges.map((badge, index) => (
               <div 
                 key={index}
                 className={`group relative overflow-hidden transition-all duration-500 hover:scale-105 cursor-pointer ${
                   badge.earned 
-                    ? 'bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 shadow-lg hover:shadow-xl' 
-                    : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 opacity-60 hover:opacity-80'
+                    ? 'bg-green-100 dark:bg-green-900/30 shadow-lg hover:shadow-xl' 
+                    : 'bg-gray-100 dark:bg-gray-800 opacity-60 hover:opacity-80'
                 }`}
                 style={{ borderRadius: '16px', padding: '1rem' }}
                 data-testid={`badge-${badge.name.toLowerCase().replace(/\s+/g, '-')}`}
@@ -277,6 +311,9 @@ export function WellnessDashboard() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Reaction Streak Details */}
+      <ReactionStreak className="col-span-full" />
     </div>
   );
 }

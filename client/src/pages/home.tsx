@@ -144,7 +144,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 dark:from-emerald-950 dark:via-blue-950 dark:to-purple-950">
+    <div className="relative min-h-screen w-full overflow-hidden bg-slate-50 dark:bg-gray-900">
       {/* Animated Background Paths */}
       <div className="absolute inset-0">
         <BackgroundPaths title="" />
@@ -165,7 +165,7 @@ export default function HomePage() {
 
             {/* Main Heading */}
             <div className="space-y-3 sm:space-y-4 md:space-y-6">
-              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 dark:from-emerald-400 dark:via-blue-400 dark:to-purple-400 leading-tight px-2">
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-blue-600 dark:text-blue-400 leading-tight px-2">
                 Welcome to Clarity
               </h1>
               <div className="space-y-2">
@@ -190,14 +190,14 @@ export default function HomePage() {
             </div>
 
             {/* Features Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-6xl mx-auto mt-6 sm:mt-8 md:mt-12 px-4">
+            <div className="grid grid-cols-2 xxs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 xxs:gap-2 sm:gap-4 md:gap-6 max-w-6xl mx-auto mt-6 sm:mt-8 md:mt-12 px-4">
               <Card 
                 onClick={() => setLocation('/wellness')}
                 className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
                 style={{ borderRadius: '16px' }}
               >
                 <CardContent className="p-0 relative">
-                  <div className="relative p-4 sm:p-5 md:p-6 bg-gradient-to-br from-rose-400 to-pink-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
+                  <div className="relative p-4 xxs:p-3 sm:p-5 md:p-6 bg-pink-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
                     {/* Background decoration */}
                     <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-700" />
                     <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6 group-hover:scale-125 transition-transform duration-700" />

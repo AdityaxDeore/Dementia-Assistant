@@ -10,8 +10,10 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import { useState } from "react";
+import { MultiReaction, ReactionButton } from "@/components/reaction-button";
 
 interface SocialCardProps {
+  id?: string; // Added for reaction tracking
   author?: {
     name?: string;
     username?: string;
@@ -39,9 +41,11 @@ interface SocialCardProps {
   onBookmark?: () => void;
   onMore?: () => void;
   className?: string;
+  enableReactionStreak?: boolean; // New prop to enable reaction streak
 }
 
 export function SocialCard({
+  id,
   author,
   content,
   engagement,
@@ -50,7 +54,8 @@ export function SocialCard({
   onShare,
   onBookmark,
   onMore,
-  className
+  className,
+  enableReactionStreak = true
 }: SocialCardProps) {
   const [isLiked, setIsLiked] = useState(engagement?.isLiked ?? false);
   const [isBookmarked, setIsBookmarked] = useState(engagement?.isBookmarked ?? false);
@@ -134,42 +139,56 @@ export function SocialCard({
 
           {/* Engagement section */}
           <div className="flex items-center justify-between pt-2">
-            <div className="flex items-center gap-6">
-              <button
-                type="button"
-                onClick={handleLike}
-                className={cn(
-                  "flex items-center gap-2 text-sm transition-colors",
-                  isLiked
-                    ? "text-rose-600"
-                    : "text-zinc-500 dark:text-zinc-400 hover:text-rose-600"
-                )}
-              >
-                <Heart
+            {enableReactionStreak && id ? (
+              <MultiReaction 
+                targetType="post"
+                targetId={id}
+                variant="minimal"
+                showStreak={true}
+                onReaction={(type, added) => {
+                  if (type === 'heart' && onLike) {
+                    onLike();
+                  }
+                }}
+              />
+            ) : (
+              <div className="flex items-center gap-6">
+                <button
+                  type="button"
+                  onClick={handleLike}
                   className={cn(
-                    "w-5 h-5 transition-all",
-                    isLiked && "fill-current scale-110"
+                    "flex items-center gap-2 text-sm transition-colors",
+                    isLiked
+                      ? "text-rose-600"
+                      : "text-zinc-500 dark:text-zinc-400 hover:text-rose-600"
                   )}
-                />
-                <span>{likes}</span>
-              </button>
-              <button
-                type="button"
-                onClick={onComment}
-                className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-blue-500 transition-colors"
-              >
-                <MessageCircle className="w-5 h-5" />
-                <span>{engagement?.comments}</span>
-              </button>
-              <button
-                type="button"
-                onClick={onShare}
-                className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-green-500 transition-colors"
-              >
-                <Share2 className="w-5 h-5" />
-                <span>{engagement?.shares}</span>
-              </button>
-            </div>
+                >
+                  <Heart
+                    className={cn(
+                      "w-5 h-5 transition-all",
+                      isLiked && "fill-current scale-110"
+                    )}
+                  />
+                  <span>{likes}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onComment}
+                  className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-blue-500 transition-colors"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  <span>{engagement?.comments}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onShare}
+                  className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-green-500 transition-colors"
+                >
+                  <Share2 className="w-5 h-5" />
+                  <span>{engagement?.shares}</span>
+                </button>
+              </div>
+            )}
             <button
               type="button"
               onClick={handleBookmark}
