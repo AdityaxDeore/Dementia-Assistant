@@ -43,8 +43,8 @@ import InnerGatekeeperPage from "@/pages/inner-gatekeeper";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={RegisterPage} />
-      <Route path="/home" component={HomePage} />
+      <Route path="/" component={HomePage} />
+      <Route path="/register" component={RegisterPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/profile" component={ProfilePage} />
       <Route path="/dashboard" component={Dashboard} />
@@ -85,7 +85,7 @@ function App() {
   const showSOSButton = location === "/dashboard";
   
   // Routes that should not show the normal app layout
-  const isSpecialRoute = location === "/" || location === "/home" || location === "/login" || location === "/admin-login" || location === "/admin";
+  const isSpecialRoute = location === "/" || location === "/login" || location === "/register" || location === "/admin-login" || location === "/admin";
   
   // Navigation handler
   const handleNavigation = (path: string) => {
