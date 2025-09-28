@@ -73,7 +73,7 @@ export default function RegisterPage() {
         {/* Back to Home Button */}
         <Button
           variant="outline"
-          onClick={() => setLocation("/")}
+          onClick={() => setLocation("/home")}
           className="flex items-center gap-2 mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
