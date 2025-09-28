@@ -1,5 +1,9 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+// Check if we're in static hosting mode (GitHub Pages)
+const isStaticMode = typeof window !== 'undefined' && 
+  (window.location.hostname.includes('github.io') || !window.location.hostname.includes('localhost'));
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
@@ -12,6 +16,18 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  if (isStaticMode && url.includes('/api/')) {
+    // Return mock response for static mode
+    const mockResponse = new Response(JSON.stringify({ 
+      message: 'Demo mode - no backend available', 
+      data: [] 
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+    return mockResponse;
+  }
+
   const res = await fetch(url, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
@@ -29,6 +45,12 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    if (isStaticMode && queryKey.join("/").includes('/api/')) {
+      // Return mock data for static mode
+      console.log('Static mode: Returning mock data for', queryKey.join("/"));
+      return { message: 'Demo mode - no backend available', data: [] };
+    }
+
     const res = await fetch(queryKey.join("/") as string, {
       credentials: "include",
     });

@@ -81,9 +81,6 @@ function RouterComponent() {
 function App() {
   const [location, setLocation] = useLocation();
   
-  // Debug: log the current location
-  console.log("Current location:", location);
-  
   // Show SOS button only on dashboard page
   const showSOSButton = location === "/dashboard";
   

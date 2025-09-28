@@ -35,6 +35,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // API base URL
 const API_BASE_URL = '/api';
 
+// Check if we're in static hosting mode (GitHub Pages)
+const isStaticMode = window.location.hostname.includes('github.io') || !window.location.hostname.includes('localhost');
+
 // AuthProvider component
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -61,6 +64,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Login function
   const login = async (username: string, password: string) => {
+    if (isStaticMode) {
+      // Demo mode - simulate successful login
+      const demoUser: User = {
+        id: 'demo-user',
+        username: username,
+        email: `${username}@demo.com`,
+        firstName: 'Demo',
+        lastName: 'User'
+      };
+      setUser(demoUser);
+      setToken('demo-token');
+      localStorage.setItem('authToken', 'demo-token');
+      localStorage.setItem('authUser', JSON.stringify(demoUser));
+      return;
+    }
+    
     try {
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
@@ -91,6 +110,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Register function
   const register = async (userData: RegisterData) => {
+    if (isStaticMode) {
+      // Demo mode - simulate successful registration
+      const demoUser: User = {
+        id: 'demo-user',
+        username: userData.username,
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName
+      };
+      setUser(demoUser);
+      setToken('demo-token');
+      localStorage.setItem('authToken', 'demo-token');
+      localStorage.setItem('authUser', JSON.stringify(demoUser));
+      return;
+    }
+    
     try {
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
