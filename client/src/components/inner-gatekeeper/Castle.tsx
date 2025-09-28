@@ -1,34 +1,19 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { 
-  GameState, 
-  Visitor, 
-  getRandomVisitor, 
-  getWeatherFromHealth, 
-  getGatekeeperMood,
-  WEATHER_DESCRIPTIONS,
-  GATEKEEPER_DESCRIPTIONS
-} from "./GameState";
+import { useState, useEffect } from "react";
 
 interface CastleProps {
-  gameState: GameState;
-  currentVisitor: Visitor | null;
-  isProcessingChoice: boolean;
+  health: number;
+  weather: string;
+  gatekeeperMood: string;
 }
 
-export function Castle({ gameState, currentVisitor, isProcessingChoice }: CastleProps) {
+export function Castle({ health, weather, gatekeeperMood }: CastleProps) {
   const [cracks, setCracks] = useState<Array<{id: string, x: number, y: number, severity: number}>>([]);
-  const [repairs, setRepairs] = useState<Array<{id: string, x: number, y: number}>>([]);
 
   // Update castle damage visualization
   useEffect(() => {
-    const healthPercent = gameState.castleHealth;
+    const healthPercent = health;
     const numCracks = Math.floor((100 - healthPercent) / 10);
     
     if (numCracks > cracks.length) {
@@ -45,23 +30,12 @@ export function Castle({ gameState, currentVisitor, isProcessingChoice }: Castle
       setCracks(prev => [...prev, ...newCracks]);
     } else if (numCracks < cracks.length) {
       // Remove cracks (healing)
-      const removedCracks = cracks.slice(numCracks);
-      removedCracks.forEach(crack => {
-        setRepairs(prev => [...prev, { id: `repair-${Date.now()}`, x: crack.x, y: crack.y }]);
-      });
       setCracks(prev => prev.slice(0, numCracks));
-      
-      // Remove repair animations after delay
-      setTimeout(() => {
-        setRepairs(prev => prev.filter(repair => 
-          !removedCracks.some(crack => repair.x === crack.x && repair.y === crack.y)
-        ));
-      }, 2000);
     }
-  }, [gameState.castleHealth, cracks.length]);
+  }, [health, cracks.length]);
 
   const getWeatherEffects = () => {
-    switch (gameState.weather) {
+    switch (weather) {
       case 'sunny':
         return (
           <div className="absolute inset-0 pointer-events-none">
@@ -138,7 +112,7 @@ export function Castle({ gameState, currentVisitor, isProcessingChoice }: Castle
   };
 
   const getGatekeeperExpression = () => {
-    switch (gameState.gatekeeperMood) {
+    switch (gatekeeperMood) {
       case 'peaceful':
         return '😌';
       case 'concerned':
@@ -155,7 +129,6 @@ export function Castle({ gameState, currentVisitor, isProcessingChoice }: Castle
   };
 
   const getCastleColor = () => {
-    const health = gameState.castleHealth;
     if (health >= 80) return 'text-stone-600';
     if (health >= 60) return 'text-stone-700';
     if (health >= 40) return 'text-stone-800';
@@ -172,7 +145,7 @@ export function Castle({ gameState, currentVisitor, isProcessingChoice }: Castle
       <div className="absolute bottom-0 w-full h-32 bg-green-300 dark:bg-green-800"></div>
       
       {/* Castle Structure */}
-      <div className={cn("absolute bottom-16 left-1/2 transform -translate-x-1/2", getCastleColor())}>
+      <div className={`absolute bottom-16 left-1/2 transform -translate-x-1/2 ${getCastleColor()}`}>
         {/* Castle base */}
         <div className="relative">
           {/* Main castle body */}
@@ -202,13 +175,13 @@ export function Castle({ gameState, currentVisitor, isProcessingChoice }: Castle
           {/* Central tower */}
           <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-12 h-20 bg-stone-500 dark:bg-stone-700 rounded-t-lg">
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-10 h-6 bg-red-600 dark:bg-red-700 rounded-t-full"></div>
-            {/* Inner Peace indicator */}
+            {/* Inner Peace indicator - simplified for now */}
             <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full border-2 border-cyan-400">
               <div 
                 className="w-full h-full rounded-full bg-cyan-400 transition-all duration-1000"
                 style={{ 
-                  opacity: gameState.innerPeace / 100,
-                  transform: `scale(${gameState.innerPeace / 100})`
+                  opacity: 0.5,
+                  transform: 'scale(0.5)'
                 }}
               ></div>
             </div>
@@ -226,18 +199,6 @@ export function Castle({ gameState, currentVisitor, isProcessingChoice }: Castle
               width: `${crack.severity * 3}px`,
               height: `${crack.severity * 20}px`,
               transform: `rotate(${crack.severity * 30}deg)`
-            }}
-          ></div>
-        ))}
-        
-        {/* Repair effects */}
-        {repairs.map(repair => (
-          <div
-            key={repair.id}
-            className="absolute w-4 h-4 bg-golden-400 rounded-full animate-ping"
-            style={{
-              left: `${repair.x}%`,
-              top: `${repair.y}%`,
             }}
           ></div>
         ))}
@@ -262,30 +223,6 @@ export function Castle({ gameState, currentVisitor, isProcessingChoice }: Castle
           <div className="absolute top-8 right-1 w-2 h-6 bg-blue-800 dark:bg-blue-900 rounded-full"></div>
         </div>
       </div>
-      
-      {/* Current visitor display */}
-      {currentVisitor && !isProcessingChoice && (
-        <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-float">
-          <div 
-            className="w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-lg border-4 border-white"
-            style={{ backgroundColor: currentVisitor.color }}
-          >
-            {currentVisitor.emoji}
-          </div>
-          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-xs whitespace-nowrap">
-            {currentVisitor.name}
-          </div>
-        </div>
-      )}
-      
-      {/* Processing effect */}
-      {isProcessingChoice && (
-        <div className="absolute inset-0 bg-white bg-opacity-20 flex items-center justify-center">
-          <div className="bg-black bg-opacity-75 text-white px-6 py-3 rounded-lg">
-            <div className="animate-pulse">Processing your choice...</div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

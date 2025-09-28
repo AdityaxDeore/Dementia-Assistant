@@ -3,26 +3,21 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Visitor, GameState } from "./GameState";
+import { Visitor } from "./GameState";
 import { CheckCircle, XCircle, HelpCircle, Lightbulb } from "lucide-react";
 
 interface VisitorChoiceProps {
-  visitor: Visitor | null;
-  gameState: GameState;
+  visitor: Visitor;
   onChoice: (choice: 'accept' | 'reject' | 'challenge') => void;
-  isProcessing: boolean;
 }
 
-export function VisitorChoice({ visitor, gameState, onChoice, isProcessing }: VisitorChoiceProps) {
+export function VisitorChoice({ visitor, onChoice }: VisitorChoiceProps) {
   const [hoveredChoice, setHoveredChoice] = useState<string | null>(null);
 
-  if (!visitor || isProcessing) return null;
-
   const getChoicePreview = (choice: 'accept' | 'reject' | 'challenge') => {
-    const effect = choice === 'challenge' ? visitor.effect.challenge?.success : visitor.effect[choice];
+    const effect = visitor.effects[choice];
     if (!effect) return null;
 
     return (
@@ -54,9 +49,9 @@ export function VisitorChoice({ visitor, gameState, onChoice, isProcessing }: Vi
   };
 
   const getChallengeInfo = () => {
-    if (visitor.type !== 'complex' || !visitor.effect.challenge) return null;
+    if (visitor.type !== 'complex') return null;
     
-    const difficulty = visitor.effect.challenge.difficulty;
+    const difficulty = visitor.effects.challenge.difficulty || 1;
     const stars = '⭐'.repeat(difficulty);
     
     return (
@@ -110,7 +105,6 @@ export function VisitorChoice({ visitor, gameState, onChoice, isProcessing }: Vi
                   "bg-gradient-to-r shadow-lg",
                   getChoiceColor('accept')
                 )}
-                disabled={isProcessing}
               >
                 <div className="flex flex-col items-center">
                   <CheckCircle className="w-6 h-6 mb-1" />
@@ -131,7 +125,6 @@ export function VisitorChoice({ visitor, gameState, onChoice, isProcessing }: Vi
                   "bg-gradient-to-r shadow-lg",
                   getChoiceColor('reject')
                 )}
-                disabled={isProcessing}
               >
                 <div className="flex flex-col items-center">
                   <XCircle className="w-6 h-6 mb-1" />
@@ -143,7 +136,7 @@ export function VisitorChoice({ visitor, gameState, onChoice, isProcessing }: Vi
           </div>
 
           {/* Challenge Button (for complex visitors only) */}
-          {visitor.type === 'complex' && visitor.effect.challenge && (
+          {visitor.type === 'complex' && (
             <div className="relative">
               <Button
                 onClick={() => onChoice('challenge')}
@@ -154,7 +147,6 @@ export function VisitorChoice({ visitor, gameState, onChoice, isProcessing }: Vi
                   "bg-gradient-to-r shadow-lg",
                   getChoiceColor('challenge')
                 )}
-                disabled={isProcessing}
               >
                 <div className="flex flex-col items-center">
                   <HelpCircle className="w-6 h-6 mb-1" />

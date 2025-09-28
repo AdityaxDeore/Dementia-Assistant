@@ -110,23 +110,13 @@ For a **complete and detailed technical documentation** of our entire stack, see
    npm start
    ```
 
-### Troubleshooting
+## 🌐 GitHub Pages Deployment
 
-**Error: "DATABASE_URL must be set"**
-- Make sure you've copied `.env.example` to `.env`
-- Check that the `.env` file contains `DATABASE_URL=sqlite:./local.db`
-
-**Error: "Cannot find module dist/index.js"**
-- Run `npm run build` before `npm start`
-- Use `npm run dev` for development instead
-
-**App not loading on other devices:**
-- Ensure all dependencies are installed: `npm install`
-- Make sure the `.env` file exists and is configured properly
+If you're experiencing issues with GitHub Pages showing the README file instead of your application, please refer to our [Deployment Guide](DEPLOYMENT.md) for detailed instructions on how to properly configure GitHub Pages.
 
 ## 🏗️ Project Structure
 
-```
+```bash
 Clarity/
 ├── client/               # React frontend
 │   ├── src/
