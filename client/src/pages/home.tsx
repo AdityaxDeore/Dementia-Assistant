@@ -6,6 +6,7 @@ import { Heart, Brain, Users, Shield, ArrowRight, Sparkles, LogIn, UserPlus, Use
 import { motion, Transition } from 'framer-motion';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useAuth } from "@/contexts/AuthContext";
+import clarityLogo from "@/assets/clarity-logo.png";
 
 type BlurTextProps = {
   text?: string;
@@ -220,9 +221,13 @@ export default function HomePage() {
             {/* Logo */}
             <div className="flex justify-center mb-4 sm:mb-6 md:mb-8">
               <img 
-                src="/src/assets/clarity-logo.png" 
+                src={clarityLogo} 
                 alt="Clarity Logo" 
                 className="h-16 w-auto xs:h-20 sm:h-24 md:h-28 lg:h-32 drop-shadow-lg max-w-full"
+                onError={(e) => {
+                  // Hide if image doesn't load
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             </div>
 
