@@ -81,11 +81,14 @@ function RouterComponent() {
 function App() {
   const [location, setLocation] = useLocation();
   
+  // Debug: log the current location
+  console.log("Current location:", location);
+  
   // Show SOS button only on dashboard page
   const showSOSButton = location === "/dashboard";
   
   // Routes that should not show the normal app layout
-  const isSpecialRoute = location === "/" || location === "/login" || location === "/register" || location === "/admin-login" || location === "/admin";
+  const isSpecialRoute = location === "/" || location === "" || location === "/login" || location === "/register" || location === "/admin-login" || location === "/admin";
   
   // Navigation handler
   const handleNavigation = (path: string) => {
