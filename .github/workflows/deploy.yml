@@ -31,27 +31,29 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build client
-        run: npm run build:client
+        run: |
+          echo "Building React application..."
+          npm run build:client
+          echo "Build completed successfully"
 
-      - name: List build output (debug)
+      - name: Verify build output
         run: |
           echo "Contents of dist/public:"
           ls -la dist/public/
-          echo "Index.html exists:"
-          test -f dist/public/index.html && echo "Yes" || echo "No"
+          echo "Checking for required files:"
+          test -f dist/public/index.html && echo "✅ index.html exists" || echo "❌ index.html missing"
+          test -d dist/public/assets && echo "✅ assets directory exists" || echo "❌ assets directory missing"
 
-      - name: Copy 404.html for SPA routing
+      - name: Setup 404 page for SPA routing  
         run: |
+          echo "Setting up 404.html for SPA routing..."
           if [ -f client/404.html ]; then
             cp client/404.html dist/public/404.html
+            echo "✅ Copied custom 404.html"
           else
             cp dist/public/index.html dist/public/404.html
+            echo "✅ Created 404.html from index.html"
           fi
-
-      - name: List final output (debug)
-        run: |
-          echo "Final contents of dist/public:"
-          ls -la dist/public/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
