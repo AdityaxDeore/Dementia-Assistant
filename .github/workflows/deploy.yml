@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy React App to GitHub Pages
 
 on:
   push:
@@ -54,6 +54,11 @@ jobs:
             cp dist/public/index.html dist/public/404.html
             echo "✅ Created 404.html from index.html"
           fi
+          
+      - name: Setup .nojekyll file
+        run: |
+          touch dist/public/.nojekyll
+          echo "✅ Created .nojekyll file to disable Jekyll processing"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
