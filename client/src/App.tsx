@@ -1,4 +1,4 @@
-import { Switch, Route, useLocation } from "wouter";
+import { Switch, Route, useLocation, Router } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -40,7 +40,7 @@ import ReactionStreakPage from "@/pages/reaction-streak";
 import EmojiMorphDemo from "@/pages/emoji-morph-demo";
 import InnerGatekeeperPage from "@/pages/inner-gatekeeper";
 
-function Router() {
+function RouterComponent() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
@@ -104,9 +104,11 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <TooltipProvider>
-            <div className="min-h-screen">
-              <Router />
-            </div>
+            <Router base="/Clarity">
+              <div className="min-h-screen">
+                <RouterComponent />
+              </div>
+            </Router>
             <Toaster />
           </TooltipProvider>
         </AuthProvider>
@@ -118,6 +120,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
+        <Router base="/Clarity">
         <div className="responsive-container">
           <SidebarProvider style={style as React.CSSProperties}>
           {/* Fixed Header */}
@@ -144,13 +147,14 @@ function App() {
             <AppSidebar />
             <div className="flex flex-col flex-1">
               <main className="flex-1 overflow-auto p-2 xxs:p-1 sm:p-3 md:p-4 lg:p-6 pb-safe-area-bottom android-scroll">
-                <Router />
+                <RouterComponent />
               </main>
             </div>
           </div>
 
         </SidebarProvider>
         </div>
+        </Router>
         <Toaster />
         <style>{`
           .pb-safe-area {
