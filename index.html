@@ -3,149 +3,556 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clarity - Mental Health Platform</title>
+    <title>Clarity - Mental Health Support Platform</title>
+    <meta name="description" content="Clarity is a comprehensive mental health support platform for students, featuring AI assistance, peer support, wellness tracking, and crisis resources.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="client/src/assets/clarity-logo.png">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://adityaxdeore.github.io/Clarity/">
+    <meta property="og:title" content="Clarity - Mental Health Support Platform">
+    <meta property="og:description" content="Supporting student mental health with compassion and innovation. 24/7 support, safe environment, always free.">
+    <meta property="og:image" content="https://adityaxdeore.github.io/Clarity/client/src/assets/clarity-logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://adityaxdeore.github.io/Clarity/">
+    <meta property="twitter:title" content="Clarity - Mental Health Support Platform">
+    <meta property="twitter:description" content="Supporting student mental health with compassion and innovation. 24/7 support, safe environment, always free.">
+    <meta property="twitter:image" content="https://adityaxdeore.github.io/Clarity/client/src/assets/clarity-logo.png">
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: -2;
+        }
+
+        .animated-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.8) 0%, 
+                rgba(118, 75, 162, 0.8) 25%,
+                rgba(34, 193, 195, 0.8) 50%,
+                rgba(253, 187, 45, 0.8) 75%,
+                rgba(102, 126, 234, 0.8) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 60px; height: 60px; top: 20%; right: 10%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 100px; height: 100px; bottom: 20%; left: 15%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 40px; height: 40px; bottom: 10%; right: 20%; animation-delay: 1s; }
+        .particle:nth-child(5) { width: 120px; height: 120px; top: 50%; left: 5%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(20px) rotate(240deg); }
+        }
+
+        /* Main content */
+        .container {
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            color: white;
-        }
-        
-        .container {
-            text-align: center;
-            max-width: 600px;
+            align-items: center;
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            text-align: center;
+            max-width: 1200px;
             backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 3rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
         }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #fff, #f0f8ff);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
+
+        .logo {
+            width: 120px;
+            height: auto;
             margin-bottom: 2rem;
-            opacity: 0.9;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
         }
-        
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            font-style: italic;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            animation: fadeInUp 1s ease-out 0.6s both;
         }
-        
+
         .feature {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .feature h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .status {
-            background: rgba(0, 255, 0, 0.2);
-            border: 1px solid rgba(0, 255, 0, 0.3);
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 2rem 0;
-        }
-        
-        .github-link {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            text-decoration: none;
-            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 2rem;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
         }
-        
-        .github-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+
+        .feature:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
-        
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .cta-section {
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            margin: 0 1rem 1rem 0;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            display: block;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
         @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .container { margin: 1rem; padding: 1.5rem; }
+            .content { padding: 2rem; }
+            h1 { font-size: 2.5rem; }
+            .subtitle { font-size: 1.2rem; }
+            .tagline { font-size: 1rem; }
+            .features { grid-template-columns: 1fr; gap: 1.5rem; }
+            .stats { grid-template-columns: 1fr; gap: 1.5rem; }
+            .btn { margin: 0.5rem; display: block; }
+        }
+
+        /* Loading animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOut 1s ease-out 2s forwards;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: white;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🧠 Clarity</h1>
-        <p class="subtitle">Mental Health & Student Support Platform</p>
-        
-        <div class="status">
-            ✅ <strong>GitHub Pages Successfully Deployed!</strong><br>
-            Your Clarity platform is now live and accessible
-        </div>
-        
-        <div class="features">
-            <div class="feature">
-                <h3>🤖 AI Wellness Buddy</h3>
-                <p>24/7 conversational AI support for mental health guidance</p>
-            </div>
-            <div class="feature">
-                <h3>📊 Mood Tracking</h3>
-                <p>Daily mood logging with visual progress tracking</p>
-            </div>
-            <div class="feature">
-                <h3>🎯 Goal Management</h3>
-                <p>Personal goal setting with achievement celebrations</p>
-            </div>
-            <div class="feature">
-                <h3>👥 Peer Support</h3>
-                <p>Anonymous peer support forum and community</p>
-            </div>
-            <div class="feature">
-                <h3>🎨 Creative Zone</h3>
-                <p>Digital art canvas for therapeutic expression</p>
-            </div>
-            <div class="feature">
-                <h3>🚨 Crisis Support</h3>
-                <p>Emergency resources and immediate help contacts</p>
-            </div>
-        </div>
-        
-        <p style="margin-top: 2rem; opacity: 0.8;">
-            <strong>Tech Stack:</strong> React 18 + TypeScript + Vite + Tailwind CSS<br>
-            <strong>Backend:</strong> Node.js + Express + PostgreSQL
-        </p>
-        
-        <a href="https://github.com/AdityaxDeore/Clarity" class="github-link" target="_blank">
-            📦 View Source Code on GitHub
-        </a>
-        
-        <div style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.7;">
-            <p><strong>Crisis Resources:</strong></p>
-            <p>🆘 Emergency: 911 | Crisis Text Line: 741741 | Suicide Prevention: 988</p>
+    <!-- Loading Screen -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Loading Clarity...</p>
         </div>
     </div>
+
+    <!-- Animated Background -->
+    <div class="bg-container">
+        <div class="animated-bg"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="content">
+            <!-- Logo -->
+            <img src="client/src/assets/clarity-logo.png" alt="Clarity Logo" class="logo" onerror="this.style.display='none'">
+            
+            <!-- Main Heading -->
+            <h1>Clarity</h1>
+            <p class="subtitle">Mental Health Support Platform</p>
+            <p class="tagline">"Mental wellbeing begins with clarity, when the mind is clear, the heart is at peace"</p>
+
+            <!-- Features Grid -->
+            <div class="features">
+                <div class="feature" onclick="showFeature('wellness')">
+                    <span class="feature-icon">❤️</span>
+                    <h3>Wellness Tracking</h3>
+                    <p>Monitor your mental health journey with personalized insights and mood tracking tools.</p>
+                </div>
+                
+                <div class="feature" onclick="showFeature('ai')">
+                    <span class="feature-icon">🧠</span>
+                    <h3>AI Support</h3>
+                    <p>Get 24/7 support from our AI companion, trained to provide compassionate guidance.</p>
+                </div>
+                
+                <div class="feature" onclick="showFeature('community')">
+                    <span class="feature-icon">👥</span>
+                    <h3>Peer Community</h3>
+                    <p>Connect with others who understand your journey in a safe, supportive environment.</p>
+                </div>
+                
+                <div class="feature" onclick="showFeature('crisis')">
+                    <span class="feature-icon">🛡️</span>
+                    <h3>Safe Space</h3>
+                    <p>Access crisis support and resources whenever you need them most.</p>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="cta-section">
+                <h2 style="color: white; margin-bottom: 1.5rem; font-size: 2rem;">Ready to start your wellness journey?</h2>
+                <a href="#" class="btn" onclick="launchApp()">Launch Clarity App</a>
+                <a href="https://github.com/AdityaxDeore/Clarity" class="btn btn-secondary" target="_blank">View on GitHub</a>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Support Available</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">Safe</span>
+                    <span class="stat-label">Environment</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">Free</span>
+                    <span class="stat-label">Always</span>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>© 2025 Clarity. Supporting student mental health with compassion and innovation.</p>
+                <p style="margin-top: 0.5rem;">
+                    <a href="https://github.com/AdityaxDeore/Clarity" target="_blank" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
+                        Open Source Project
+                    </a> | 
+                    <a href="mailto:contact@clarity-app.com" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
+                        Contact Us
+                    </a>
+                </p>
+                <p style="margin-top: 1rem; font-size: 0.8rem;">
+                    <strong>Crisis Resources:</strong> Emergency: 911 | Crisis Text Line: 741741 | Suicide Prevention: 988
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Feature showcase function
+        function showFeature(feature) {
+            const features = {
+                wellness: {
+                    title: 'Wellness Tracking',
+                    description: 'Track your mood, set wellness goals, and monitor your mental health journey with beautiful visualizations and personalized insights.'
+                },
+                ai: {
+                    title: 'AI Support',
+                    description: 'Our AI wellness buddy provides 24/7 compassionate support, helping you navigate difficult moments with personalized guidance.'
+                },
+                community: {
+                    title: 'Peer Community',
+                    description: 'Connect with others in a safe, anonymous environment. Share experiences, offer support, and build meaningful connections.'
+                },
+                crisis: {
+                    title: 'Safe Space',
+                    description: 'Immediate access to crisis resources, emergency contacts, and professional support when you need it most.'
+                }
+            };
+            
+            const info = features[feature];
+            alert(`🌟 ${info.title}\n\n${info.description}\n\nComing soon in the full Clarity application!`);
+        }
+
+        // App launch function
+        function launchApp() {
+            alert('🚀 The full Clarity React application is coming soon!\n\n✨ Current Features:\n• Beautiful responsive design\n• Interactive UI components\n• Mental health resources\n• Crisis support system\n\n📱 For now, explore the source code on GitHub to see the amazing features we\'re building!\n\n💝 Thank you for supporting student mental health!');
+        }
+
+        // Interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stats on load
+            const stats = document.querySelectorAll('.stat-number');
+            
+            function animateStats() {
+                stats.forEach((stat, index) => {
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            stat.style.transform = 'scale(1)';
+                        }, 300);
+                    }, index * 300);
+                });
+            }
+
+            // Trigger stats animation after loading
+            setTimeout(animateStats, 3500);
+
+            // Add hover effects to features
+            const features = document.querySelectorAll('.feature');
+            features.forEach(feature => {
+                feature.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-15px) scale(1.05)';
+                });
+                
+                feature.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Dynamic background animation
+            let colorIndex = 0;
+            const colors = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+            ];
+
+            setInterval(() => {
+                colorIndex = (colorIndex + 1) % colors.length;
+                document.querySelector('.bg-container').style.background = colors[colorIndex];
+            }, 12000);
+
+            // Interactive particles
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                particle.addEventListener('click', function() {
+                    this.style.animation = 'none';
+                    this.style.transform = 'scale(3) rotate(360deg)';
+                    this.style.opacity = '0.5';
+                    setTimeout(() => {
+                        this.style.animation = 'float 6s ease-in-out infinite';
+                        this.style.transform = 'scale(1)';
+                        this.style.opacity = '1';
+                    }, 800);
+                });
+            });
+
+            // Welcome message
+            setTimeout(() => {
+                console.log('🌟 Welcome to Clarity! 🌟');
+                console.log('💙 Supporting student mental health with compassion and innovation.');
+                console.log('🔗 GitHub: https://github.com/AdityaxDeore/Clarity');
+            }, 2500);
+        });
+
+        // Easter egg: Konami code for special animation
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+        
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.code);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                document.body.style.filter = 'hue-rotate(180deg) saturate(1.5)';
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                    alert('🎉 Secret unlocked! Clarity believes in the power of play and joy in mental wellness! 🌈✨');
+                }, 3000);
+                konamiCode = [];
+            }
+        });
+
+        // Add some motivational quotes
+        const quotes = [
+            "Your mental health is a priority. Your happiness is essential. Your self-care is a necessity.",
+            "It's okay to not be okay. It's not okay to stay that way without seeking help.",
+            "Healing is not linear. Be patient with yourself.",
+            "You are stronger than you think and more resilient than you know.",
+            "Taking care of your mental health is not selfish. It's essential."
+        ];
+
+        // Show inspirational quote periodically
+        setInterval(() => {
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            console.log(`💭 "${randomQuote}"`);
+        }, 30000);
+    </script>
 </body>
 </html>
