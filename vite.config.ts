@@ -23,5 +23,5 @@ export default defineConfig({
     },
   },
   // Add base path for GitHub Pages
-  base: "/clarity/",
+  base: "/Clarity/",
 });
