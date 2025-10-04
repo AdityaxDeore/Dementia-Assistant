@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Clarity 🧠✨
 
 A comprehensive digital mental health platform designed specifically for students. Clarity provides AI-powered wellness support, mood tracking, peer community features, creative expression tools, and crisis intervention resources.
@@ -193,3 +194,6 @@ If you're in immediate danger or having thoughts of self-harm:
 ---
 
 **Built with ❤️ for student mental health and wellbeing**
+=======
+# Dementia-Assistant
+>>>>>>> 7790b945916c9a3c78086ee2065447e4be14268e
