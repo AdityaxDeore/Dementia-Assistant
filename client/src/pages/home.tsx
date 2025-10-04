@@ -135,7 +135,7 @@ const BlurText: React.FC<BlurTextProps> = ({
 };
 
 export function DemoBackgroundPaths() {
-    return <BackgroundPaths title="Welcome to Clarity" />
+    return <BackgroundPaths title="Welcome to Dementia Assistant" />
 }
 
 export default function HomePage() {
@@ -168,7 +168,7 @@ export default function HomePage() {
         <header className="flex justify-between items-center p-4 sm:p-6">
           <div className="flex items-center space-x-2">
             <Heart className="w-6 h-6 text-emerald-600" />
-            <span className="text-lg font-bold text-gray-800 dark:text-gray-200">Clarity</span>
+            <span className="text-lg font-bold text-gray-800 dark:text-gray-200">Dementia Assistant</span>
           </div>
           
           <div className="flex items-center space-x-3">
@@ -234,11 +234,11 @@ export default function HomePage() {
             {/* Main Heading */}
             <div className="space-y-3 sm:space-y-4 md:space-y-6">
               <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-blue-600 dark:text-blue-400 leading-tight px-2">
-                Welcome to Clarity
+                Welcome to Dementia Assistant
               </h1>
               <div className="space-y-2">
                 <BlurText 
-                  text="Mental wellbeing begins with clarity,"
+                  text="Caring for those with dementia starts with understanding,"
                   className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 dark:text-gray-200 max-w-5xl mx-auto px-4 leading-snug text-center justify-center tracking-wide"
                   delay={150}
                   animateBy="words"
@@ -260,7 +260,7 @@ export default function HomePage() {
             {/* Features Grid */}
             <div className="grid grid-cols-2 xxs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 xxs:gap-2 sm:gap-4 md:gap-6 max-w-6xl mx-auto mt-6 sm:mt-8 md:mt-12 px-4">
               <Card 
-                onClick={() => setLocation('/wellness')}
+                onClick={() => setLocation('/dashboard')}
                 className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
                 style={{ borderRadius: '16px' }}
               >
@@ -273,7 +273,7 @@ export default function HomePage() {
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
                       <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Wellness Tracking</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Daily Care</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
@@ -295,7 +295,7 @@ export default function HomePage() {
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
                       <Brain className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">AI Support</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Cognitive Support</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
@@ -372,7 +372,7 @@ export default function HomePage() {
               ) : (
                 <div className="space-y-4">
                   <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400">
-                    Ready to start your mental wellness journey?
+                    Ready to start your dementia care journey?
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                     <div className="inline-block group relative bg-gradient-to-b from-emerald-500/10 via-blue-500/10 to-purple-500/10 dark:from-emerald-400/10 dark:via-blue-400/10 dark:to-purple-400/10 p-px rounded-xl sm:rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -424,7 +424,7 @@ export default function HomePage() {
 
         {/* Footer */}
         <footer className="flex-shrink-0 text-center py-3 sm:py-4 md:py-6 text-xs sm:text-sm text-gray-500 dark:text-gray-400 bg-white/50 dark:bg-black/50 backdrop-blur-sm border-t border-gray-200 dark:border-gray-800 px-4">
-          <p className="leading-relaxed">© 2025 Clarity. Supporting student mental health with compassion and innovation.</p>
+          <p className="leading-relaxed">© 2025 Dementia Assistant. Supporting dementia care with compassion and innovation.</p>
         </footer>
       </div>
     </div>

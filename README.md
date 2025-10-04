@@ -1,39 +1,38 @@
-<<<<<<< HEAD
-# Clarity 🧠✨
+# Dementia Assistant 🧠💙
 
-A comprehensive digital mental health platform designed specifically for students. Clarity provides AI-powered wellness support, mood tracking, peer community features, creative expression tools, and crisis intervention resources.
+A comprehensive digital dementia care platform designed to support patients, caregivers, and families. Dementia Assistant provides AI-powered cognitive support, memory aids, daily routine management, caregiver resources, and emergency assistance tools.
 
 ## 🌟 Features
 
-### 🤖 AI Wellness Buddy
-- Conversational AI support for mental health guidance
-- Safe space for expressing thoughts and feelings
-- 24/7 availability for immediate support
+### 🤖 AI Cognitive Support
+- Conversational AI designed for dementia patients and caregivers
+- Memory prompts and cognitive stimulation activities
+- 24/7 availability for immediate guidance and support
 
-### 📊 Mood & Wellness Tracking
-- Daily mood logging with visual progress tracking
-- Streak tracking to build healthy habits
-- Comprehensive wellness dashboard
+### 📊 Cognitive & Daily Tracking
+- Daily cognitive assessment and memory exercises
+- Routine tracking to maintain familiar patterns
+- Progress monitoring for caregivers and healthcare providers
 
-### 🎯 Goal Management
-- Personal goal setting with progress tracking
-- Subtask management and achievement celebrations
-- Motivational milestone tracking
+### 🎯 Daily Routine Management
+- Structured daily schedules and reminders
+- Medication tracking and appointment management
+- Familiar activity suggestions and prompts
 
-### 👥 Peer Support Community
-- Anonymous peer support forum
-- Safe sharing environment with moderation
-- Connect with others facing similar challenges
+### 👥 Caregiver Support Community
+- Support network for dementia caregivers and families
+- Resource sharing and experience exchange
+- Connect with others on similar caregiving journeys
 
-### 🎨 Creative Expression Zone
-- Digital art canvas for therapeutic expression
-- Creative writing tools and prompts
-- Art therapy and mindfulness activities
+### 🧩 Memory Stimulation Activities
+- Cognitive games and memory exercises
+- Photo albums and reminiscence therapy tools
+- Music therapy and familiar content engagement
 
-### 🚨 Crisis Support
-- Emergency resources and immediate help contacts
-- Quick access to crisis hotlines
-- Safety planning tools
+### 🚨 Emergency Assistance
+- Wandering alerts and GPS tracking features
+- Emergency contact system for caregivers
+- Crisis intervention and immediate help resources
 
 ## 🛠️ Tech Stack
 
@@ -66,8 +65,8 @@ For a **complete and detailed technical documentation** of our entire stack, see
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/Clarity.git
-   cd Clarity
+   git clone https://github.com/AdityaxDeore/Dementia-Assistant.git
+   cd Dementia-Assistant
    ```
 
 2. **Quick Setup (Recommended)**
