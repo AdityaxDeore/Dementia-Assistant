@@ -49,7 +49,7 @@ export default function RegisterPage() {
       await register(formData);
       
       toast({
-        title: "Welcome to Dementia Assistant! 🧠",
+        title: "Welcome to Clarity! 🎉",
         description: "Your account has been created successfully.",
       });
       
@@ -88,7 +88,7 @@ export default function RegisterPage() {
                 <UserPlus className="w-6 h-6 text-white" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold">Join Dementia Assistant</CardTitle>
+            <CardTitle className="text-2xl font-bold">Join Clarity</CardTitle>
             <CardDescription>
               Create your account to start your cognitive care journey
             </CardDescription>

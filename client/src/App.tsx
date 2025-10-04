@@ -104,7 +104,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <TooltipProvider>
-            <Router base="/Dementia-Assistant">
+            <Router base="/Clarity">
               <div className="min-h-screen">
                 <RouterComponent />
               </div>
@@ -120,7 +120,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
-        <Router base="/Dementia-Assistant">
+        <Router base="/Clarity">
         <div className="responsive-container">
           <SidebarProvider style={style as React.CSSProperties}>
           {/* Fixed Header */}

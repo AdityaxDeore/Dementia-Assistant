@@ -65,7 +65,7 @@ export default function Dashboard() {
       {/* Welcome Header - Modern minimal design */}
       <div className="text-center space-y-3 py-4">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-primary">
-          Welcome to Dementia Assistant
+          Welcome to Clarity
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto">
           Your wellness companion

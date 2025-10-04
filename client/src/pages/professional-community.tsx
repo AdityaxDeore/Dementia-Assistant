@@ -73,7 +73,7 @@ export default function ProfessionalCommunityPage() {
     <div className="p-6">
       <div className="max-w-6xl mx-auto">
         <BackButton to="/dashboard" />
-        <h1 className="text-3xl font-bold mb-8 text-center">Professional Connect</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center">Clarity Connect</h1>
         
         <Tabs defaultValue="community" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-8">

@@ -72,7 +72,7 @@ export default function AdminLogin() {
             Admin Access
           </CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-300">
-            Secure login for Dementia Assistant administrators
+            Secure login for Clarity administrators
           </CardDescription>
         </CardHeader>
         
