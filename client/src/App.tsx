@@ -8,6 +8,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SOSButton } from "@/components/sos-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthProvider } from "@/contexts/AuthContext";
+import clarityLogo from "@/assets/clarity-logo.png";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/home";
 import LoginPage from "@/pages/login";
@@ -104,7 +105,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <TooltipProvider>
-            <Router base="/Clarity">
+            <Router base="/Dementia-Assistant/">
               <div className="min-h-screen">
                 <RouterComponent />
               </div>
@@ -120,7 +121,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
-        <Router base="/Clarity">
+        <Router base="/Dementia-Assistant/">
         <div className="responsive-container">
           <SidebarProvider style={style as React.CSSProperties}>
           {/* Fixed Header */}
@@ -131,8 +132,8 @@ function App() {
                 className="flex-shrink-0 icon-interactive modern-button rounded-xl p-2 hover:bg-accent/50" 
               />
               <img 
-                src="/src/assets/clarity-logo.png" 
-                alt="Clarity" 
+                src={clarityLogo} 
+                alt="Dementia Assistant" 
                 className="h-6 w-auto sm:h-7 md:h-8 cursor-pointer transition-all duration-300 hover:scale-105 hover:drop-shadow-lg hover:brightness-110 max-w-full flex-shrink-0 rounded-lg"
               />
             </div>
