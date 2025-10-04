@@ -1,4 +1,4 @@
-import { BookOpen, Video, FileText, ExternalLink, Search } from "lucide-react";
+import { BookOpen, Video, FileText, ExternalLink, Search, Users, Shield, Heart, Phone, MapPin, Calendar } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,97 +10,122 @@ interface Resource {
   id: string;
   title: string;
   description: string;
-  type: 'article' | 'video' | 'guide' | 'exercise';
+  type: 'article' | 'video' | 'guide' | 'directory' | 'support' | 'safety';
   category: string;
   readTime?: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  urgency: 'low' | 'medium' | 'high' | 'crisis';
   url: string;
+  helpline?: string;
 }
 
 export function ResourceHub() {
   const [searchQuery, setSearchQuery] = useState("");
   
-  // TODO: remove mock functionality
+  // Dementia care resources based on Alzheimer's Association and research
   const resources: Resource[] = [
     {
       id: '1',
-      title: 'Managing Exam Anxiety: A Student\'s Guide',
-      description: 'Practical strategies for reducing stress during exam periods and improving performance.',
-      type: 'article',
-      category: 'Academic Stress',
-      readTime: '8 min read',
-      difficulty: 'beginner',
+      title: 'Daily Care Planning for Dementia',
+      description: 'Organize routines, activities, and create structure for better daily management.',
+      type: 'guide',
+      category: 'Daily Care',
+      readTime: '10 min read',
+      urgency: 'medium',
       url: '#'
     },
     {
       id: '2',
-      title: 'Breathing Exercises for Immediate Calm',
-      description: 'Simple breathing techniques you can use anywhere to reduce anxiety and find focus.',
-      type: 'exercise',
-      category: 'Mindfulness',
-      readTime: '5 min practice',
-      difficulty: 'beginner',
-      url: '#'
+      title: 'Alzheimer\'s Association 24/7 Helpline',
+      description: 'Free confidential support, crisis assistance, and local resources in 200+ languages.',
+      type: 'support',
+      category: 'Crisis Support',
+      readTime: 'Available 24/7',
+      urgency: 'crisis',
+      url: 'https://www.alz.org/help-support/resources/helpline',
+      helpline: '800-272-3900'
     },
     {
       id: '3',
-      title: 'Building Healthy Study Habits',
-      description: 'Video guide on creating sustainable study routines that support both academic success and mental wellbeing.',
-      type: 'video',
-      category: 'Study Skills',
-      readTime: '12 min watch',
-      difficulty: 'intermediate',
+      title: 'Wandering Prevention & Safety',
+      description: 'Learn warning signs, safety tips, and prevention strategies for wandering behavior.',
+      type: 'safety',
+      category: 'Safety & Wandering',
+      readTime: '8 min read',
+      urgency: 'high',
       url: '#'
     },
     {
       id: '4',
-      title: 'Understanding Depression in College Students',
-      description: 'Comprehensive guide to recognizing signs, seeking help, and supporting recovery.',
-      type: 'guide',
-      category: 'Mental Health',
-      readTime: '15 min read',
-      difficulty: 'intermediate',
+      title: 'Local Support Groups Directory',
+      description: 'Find in-person and online support groups for caregivers and families in your area.',
+      type: 'directory',
+      category: 'Support Groups',
+      readTime: 'Search locations',
+      urgency: 'medium',
       url: '#'
     },
     {
       id: '5',
-      title: 'Sleep Hygiene for Students',
-      description: 'Evidence-based tips for improving sleep quality and establishing healthy sleep patterns.',
-      type: 'article',
-      category: 'Wellness',
-      readTime: '6 min read',
-      difficulty: 'beginner',
+      title: 'Communication Strategies',
+      description: 'Effective techniques for connecting and communicating with people living with dementia.',
+      type: 'video',
+      category: 'Communication',
+      readTime: '15 min watch',
+      urgency: 'medium',
       url: '#'
     },
     {
       id: '6',
-      title: 'Progressive Muscle Relaxation',
-      description: 'Guided exercise to release physical tension and promote deep relaxation.',
-      type: 'exercise',
-      category: 'Mindfulness',
-      readTime: '10 min practice',
-      difficulty: 'beginner',
+      title: 'Caregiver Health & Stress Management',
+      description: 'Essential self-care strategies for maintaining physical and emotional wellbeing.',
+      type: 'article',
+      category: 'Caregiver Support',
+      readTime: '12 min read',
+      urgency: 'medium',
+      url: '#'
+    },
+    {
+      id: '7',
+      title: 'Memory Care Facility Finder',
+      description: 'Directory of specialized dementia care facilities and in-home care services.',
+      type: 'directory',
+      category: 'Professional Care',
+      readTime: 'Search locations',
+      urgency: 'low',
+      url: '#'
+    },
+    {
+      id: '8',
+      title: 'Legal & Financial Planning',
+      description: 'Planning ahead for legal matters, advance directives, and care costs.',
+      type: 'guide',
+      category: 'Planning',
+      readTime: '20 min read',
+      urgency: 'medium',
       url: '#'
     }
   ];
 
-  const categories = ['All', 'Academic Stress', 'Mental Health', 'Mindfulness', 'Study Skills', 'Wellness'];
+  const categories = ['All', 'Daily Care', 'Crisis Support', 'Safety & Wandering', 'Support Groups', 'Communication', 'Caregiver Support'];
 
   const getResourceIcon = (type: Resource['type']) => {
     switch (type) {
       case 'article': return <FileText className="w-4 h-4" />;
       case 'video': return <Video className="w-4 h-4" />;
       case 'guide': return <BookOpen className="w-4 h-4" />;
-      case 'exercise': return <BookOpen className="w-4 h-4" />;
+      case 'directory': return <MapPin className="w-4 h-4" />;
+      case 'support': return <Phone className="w-4 h-4" />;
+      case 'safety': return <Shield className="w-4 h-4" />;
       default: return <FileText className="w-4 h-4" />;
     }
   };
 
-  const getDifficultyColor = (difficulty: Resource['difficulty']) => {
-    switch (difficulty) {
-      case 'beginner': return 'bg-green-100 text-green-800';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-800';
-      case 'advanced': return 'bg-red-100 text-red-800';
+  const getUrgencyColor = (urgency: Resource['urgency']) => {
+    switch (urgency) {
+      case 'low': return 'bg-blue-100 text-blue-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'high': return 'bg-orange-100 text-orange-800';
+      case 'crisis': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -191,13 +216,19 @@ export function ResourceHub() {
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Badge className={getDifficultyColor(resource.difficulty)}>
-                          {resource.difficulty}
+                        <Badge className={getUrgencyColor(resource.urgency)}>
+                          {resource.urgency === 'crisis' ? '24/7' : resource.urgency}
                         </Badge>
                         <Badge variant="secondary" className="text-xs">
                           {resource.category}
                         </Badge>
                       </div>
+                      {resource.helpline && (
+                        <div className="flex items-center gap-1 text-xs text-green-600">
+                          <Phone className="w-3 h-3" />
+                          {resource.helpline}
+                        </div>
+                      )}
                     </div>
                     
                     {resource.readTime && (

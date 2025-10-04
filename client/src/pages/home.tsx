@@ -260,7 +260,7 @@ export default function HomePage() {
             {/* Features Grid */}
             <div className="grid grid-cols-2 xxs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 xxs:gap-2 sm:gap-4 md:gap-6 max-w-6xl mx-auto mt-6 sm:mt-8 md:mt-12 px-4">
               <Card 
-                onClick={() => setLocation('/assessment')}
+                onClick={() => setLocation('/wellness')}
                 className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
                 style={{ borderRadius: '16px' }}
               >
@@ -271,9 +271,9 @@ export default function HomePage() {
                     <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6 group-hover:scale-125 transition-transform duration-700" />
                     
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
-                      <Brain className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                      <Calendar className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Voice Analysis</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Daily Care Plan</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
@@ -295,7 +295,7 @@ export default function HomePage() {
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
                       <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Memory Diary</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Memory Preservation</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
@@ -317,7 +317,7 @@ export default function HomePage() {
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
                       <Users className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Caregiver Support</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Support Network</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
@@ -339,7 +339,7 @@ export default function HomePage() {
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
                       <Shield className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Emergency SOS</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Safety & Wandering</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />

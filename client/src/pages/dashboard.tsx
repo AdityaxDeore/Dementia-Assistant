@@ -4,66 +4,66 @@ import { WellnessDashboard } from "@/components/wellness-dashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/ui/back-button";
-import { MessageCircle, Users, BookOpen, Palette, PenTool, Headphones, Mic, Shield, Brain, Heart } from "lucide-react";
+import { MessageCircle, Users, BookOpen, Palette, PenTool, Headphones, Mic, Shield, Brain, Heart, Calendar } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Dashboard() {
   const quickActions = [
     { 
-      title: "Voice Analysis", 
-      icon: Mic, 
-      href: "/assessment", 
+      title: "Daily Care Plan", 
+      icon: Calendar, 
+      href: "/wellness", 
       color: "text-white", 
       bg: "bg-blue-500",
-      description: "Cognitive assessment"
+      description: "Organize routines & activities"
     },
     { 
-      title: "Memory Diary", 
+      title: "Memory Preservation", 
       icon: PenTool, 
       href: "/diary", 
       color: "text-white", 
       bg: "bg-green-500",
-      description: "Daily memories & mood"
+      description: "Capture precious memories"
     },
     { 
-      title: "Emergency SOS", 
+      title: "Safety & Wandering", 
       icon: Shield, 
       href: "/sos", 
       color: "text-white", 
       bg: "bg-red-500",
-      description: "Emergency assistance"
+      description: "Location tracking & alerts"
     },
     { 
-      title: "Cognitive Exercises", 
+      title: "Cognitive Assessment", 
       icon: Brain, 
-      href: "/games", 
+      href: "/assessment", 
       color: "text-white", 
       bg: "bg-purple-500",
-      description: "Brain training games"
+      description: "Monitor cognitive health"
     },
     { 
-      title: "Caregiver Connect", 
+      title: "Support Network", 
       icon: Users, 
       href: "/peer-support", 
       color: "text-white", 
       bg: "bg-orange-500",
-      description: "Family & caregivers"
+      description: "Local caregiver groups"
     },
     { 
-      title: "Daily Wellness", 
+      title: "Healthcare Team", 
       icon: Heart, 
-      href: "/wellness", 
+      href: "/professional", 
       color: "text-white", 
       bg: "bg-pink-500",
-      description: "Health tracking"
+      description: "Professional care network"
     },
     { 
-      title: "Create", 
-      icon: Palette, 
+      title: "Communication Aid", 
+      icon: Mic, 
       href: "/creative", 
       color: "text-white", 
-      bg: "bg-pink-500",
-      description: "Express yourself"
+      bg: "bg-indigo-500",
+      description: "Interaction support tools"
     },
   ];
 
