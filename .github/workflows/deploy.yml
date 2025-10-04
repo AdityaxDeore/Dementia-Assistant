@@ -28,10 +28,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: |
-          echo "Installing dependencies..."
-          npm ci --legacy-peer-deps
-          echo "Dependencies installed successfully"
+        run: npm ci --legacy-peer-deps
 
       - name: Build client
         run: |
@@ -46,8 +43,6 @@ jobs:
           echo "Checking for required files:"
           test -f dist/public/index.html && echo "✅ index.html exists" || echo "❌ index.html missing"
           test -d dist/public/assets && echo "✅ assets directory exists" || echo "❌ assets directory missing"
-          echo "Checking index.html content:"
-          head -20 dist/public/index.html
 
       - name: Setup 404 page for SPA routing  
         run: |
@@ -64,16 +59,6 @@ jobs:
         run: |
           touch dist/public/.nojekyll
           echo "✅ Created .nojekyll file to disable Jekyll processing"
-
-      - name: Final verification
-        run: |
-          echo "Final build verification:"
-          echo "Total files in dist/public:"
-          find dist/public -type f | wc -l
-          echo "Directory structure:"
-          tree dist/public/ || find dist/public/ -type d
-          echo "File sizes:"
-          du -sh dist/public/*
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
