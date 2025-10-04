@@ -8,14 +8,14 @@ If GitHub Pages is currently showing your README.md file instead of your React a
 
 ### Option 1: GitHub Actions Deployment (Recommended)
 
-This repository already includes a GitHub Actions workflow that automatically builds and deploys your application to GitHub Pages:
+This repository includes a GitHub Actions workflow that automatically builds and deploys your application to GitHub Pages:
 
 1. Ensure your GitHub Pages settings are configured to deploy from GitHub Actions:
    - Go to your repository Settings
    - Click on "Pages" in the left sidebar
    - Under "Source", select "GitHub Actions"
 
-2. The workflow will automatically run on every push to the `main` branch and deploy your application.
+2. The workflow will automatically run on every push to the `master` branch and deploy your application.
 
 ### Option 2: Manual Deployment
 
@@ -60,13 +60,24 @@ If you want to deploy from a specific branch:
 If you encounter 404 errors or a blank page after deployment:
 
 1. Ensure the [404.html](client/404.html) file is copied to your build directory
-2. Check that your [vite.config.ts](vite.config.ts) has the correct `base` setting
+2. Check that your [vite.config.ts](vite.config.ts) has the correct `base` setting: `/Dementia-Assistant/`
 3. Verify that your routing library (wouter) is configured for GitHub Pages
+4. Clear your browser cache and try again
 
 ### Still Seeing README.md
 
 If you're still seeing the README.md file:
 
-1. Check your GitHub Pages source settings
-2. Ensure the workflow has run successfully
-3. Verify that the build artifacts are being generated in the correct directory
+1. Check your GitHub Pages source settings (should be "GitHub Actions")
+2. Ensure the workflow has run successfully in the Actions tab
+3. Verify that the build artifacts are being generated in the correct directory (`dist/public`)
+4. Wait a few minutes for GitHub Pages to update
+
+### Application Not Loading
+
+If the application loads but shows errors:
+
+1. Check the browser console for JavaScript errors
+2. Verify that all assets are loading correctly
+3. Ensure the base path in vite.config.ts matches your repository name
+4. Check that the 404.html redirect is working for client-side routing

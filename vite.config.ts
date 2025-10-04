@@ -31,5 +31,5 @@ export default defineConfig({
     },
   },
   // Add base path for GitHub Pages
-  base: "/Clarity/",
+  base: "/Dementia-Assistant/",
 });
