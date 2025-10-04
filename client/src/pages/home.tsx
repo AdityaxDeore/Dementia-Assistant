@@ -246,7 +246,7 @@ export default function HomePage() {
                   stepDuration={0.5}
                 />
                 <BlurText 
-                  text="when the mind is clear, the heart is at peace"
+                  text="when memories are cherished, dignity remains"
                   className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 dark:text-gray-200 max-w-5xl mx-auto px-4 leading-snug text-center justify-center tracking-wide"
                   delay={150}
                   animateBy="words"

@@ -207,7 +207,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Mental Health Assessment endpoints
+  // Cognitive Assessment endpoints
   app.post("/api/assessment", async (req, res) => {
     try {
       const { phq9, gad7, ghq12, recommendations } = req.body;

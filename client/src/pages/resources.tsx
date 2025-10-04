@@ -100,7 +100,7 @@ export default function ResourcesPage() {
       title: 'Building Resilience Through Daily Habits',
       description: 'Comprehensive guide to developing mental resilience through small, consistent daily practices.',
       type: 'guide',
-      category: 'Mental Health',
+      category: 'Cognitive Care',
       readTime: '18 min read',
       difficulty: 'intermediate',
       rating: 4.7,
@@ -117,8 +117,8 @@ export default function ResourcesPage() {
     },
     {
       id: '4',
-      title: 'Sleep Hygiene for Better Mental Health',
-      description: 'Scientific approaches to improving sleep quality and its impact on mood, focus, and overall wellbeing.',
+      title: 'Sleep Hygiene for Better Cognitive Health',
+      description: 'Scientific approaches to improving sleep quality and its impact on memory, focus, and overall cognitive function.',
       type: 'article',
       category: 'Wellness',
       readTime: '10 min read',
@@ -180,7 +180,7 @@ export default function ResourcesPage() {
   const categories = [
     { name: 'All', count: resources.length, color: 'bg-gray-500' },
     { name: 'Academic Stress', count: resources.filter(r => r.category === 'Academic Stress').length, color: 'bg-red-500' },
-    { name: 'Mental Health', count: resources.filter(r => r.category === 'Mental Health').length, color: 'bg-blue-500' },
+    { name: 'Cognitive Care', count: resources.filter(r => r.category === 'Cognitive Care').length, color: 'bg-blue-500' },
     { name: 'Mindfulness', count: resources.filter(r => r.category === 'Mindfulness').length, color: 'bg-green-500' },
     { name: 'Wellness', count: resources.filter(r => r.category === 'Wellness').length, color: 'bg-purple-500' },
     { name: 'Self-Discovery', count: resources.filter(r => r.category === 'Self-Discovery').length, color: 'bg-orange-500' }
@@ -325,10 +325,10 @@ export default function ResourcesPage() {
                 </div>
                 
                 <h1 className="text-3xl xxs:text-2xl sm:text-4xl font-bold">
-                  Mental Health Resources
+                  Cognitive Care Resources
                 </h1>
                 <p className="text-lg xxs:text-base sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-                  Evidence-based tools, guides, and exercises curated by mental health professionals
+                  Evidence-based tools, guides, and exercises curated by cognitive care professionals
                 </p>
                 
                 {/* Enhanced Search Bar */}

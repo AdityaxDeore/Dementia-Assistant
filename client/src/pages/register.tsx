@@ -90,7 +90,7 @@ export default function RegisterPage() {
             </div>
             <CardTitle className="text-2xl font-bold">Join Clarity</CardTitle>
             <CardDescription>
-              Create your account to start your mental wellness journey
+              Create your account to start your cognitive care journey
             </CardDescription>
           </CardHeader>
           

@@ -1,4 +1,4 @@
-# Student Mental Health Platform - Design Guidelines
+# Dementia Care Platform - Design Guidelines
 
 ## Design Approach
 **Reference-Based Approach**: Drawing inspiration from wellness and healthcare apps like Headspace, Calm, and Betterhelp, combined with accessibility-focused platforms. The design prioritizes emotional safety, trust, and inclusivity over trendy aesthetics.
@@ -91,4 +91,4 @@ No large hero images recommended. Instead, use:
 - **Peer Support**: Warm, community-focused visual language
 - **Cultural Sensitivity**: Avoid region-specific imagery, use inclusive representations
 
-This design framework ensures the platform feels safe, accessible, and supportive for students experiencing mental health challenges while maintaining professional credibility.
+This design framework ensures the platform feels safe, accessible, and supportive for individuals and families dealing with dementia while maintaining professional credibility.

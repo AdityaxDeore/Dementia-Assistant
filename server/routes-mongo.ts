@@ -285,7 +285,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         } else if (personalityId === 'luna') {
           if (lowerMessage.includes('sleep') || lowerMessage.includes('tired')) {
-            fallbackResponse = "Rest is so important for your wellbeing... 🌙 Try creating a calming bedtime routine: dim lights, gentle stretches, maybe some journaling. You deserve peaceful sleep.";
+            fallbackResponse = "Rest is so important for your cognitive health... 🌙 Try creating a calming bedtime routine: dim lights, gentle stretches, maybe some journaling. You deserve peaceful sleep.";
           } else {
             fallbackResponse = "I'm having some connection troubles, but I want you to know you're not alone in this quiet moment... Take time to breathe and be gentle with yourself. 🌙";
           }

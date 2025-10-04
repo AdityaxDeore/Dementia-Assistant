@@ -72,9 +72,9 @@ export default function Dashboard() {
         </p>
       </div>
 
-      {/* Mood Tracker - Enhanced */}
+      {/* Cognitive Tracker - Enhanced */}
       <div className="w-full">
-        <MoodTracker variant="compact" />
+        <CognitiveTracker variant="compact" />
       </div>
 
       {/* Quick Actions Grid - Modern cards */}

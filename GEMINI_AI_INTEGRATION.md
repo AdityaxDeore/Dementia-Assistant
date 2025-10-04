@@ -97,7 +97,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 If Gemini fails, the system automatically tries:
 1. **Gemini AI** (Primary) - Personality-based responses
-2. **OpenAI GPT** (Fallback) - Generic mental health support
+2. **OpenAI GPT** (Fallback) - Generic cognitive care support
 3. **Static Responses** (Emergency fallback) - Predefined helpful messages
 
 ## File Generation
@@ -204,4 +204,4 @@ curl -X POST http://localhost:5000/api/chat/gemini \
 
 ---
 
-**Ready to use!** The AI buddy system now provides more natural, personality-driven conversations that better support student mental health needs.
+**Ready to use!** The AI buddy system now provides more natural, personality-driven conversations that better support dementia care needs.

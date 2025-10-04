@@ -192,7 +192,7 @@ If you're in immediate danger or having thoughts of self-harm:
 
 ---
 
-**Built with ❤️ for student mental health and wellbeing**
+**Built with ❤️ for dementia care and family support**
 =======
 # Dementia-Assistant
 >>>>>>> 7790b945916c9a3c78086ee2065447e4be14268e

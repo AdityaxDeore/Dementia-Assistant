@@ -100,7 +100,7 @@
 
 ### **Styling & CSS**
 - **Tailwind CSS 3.4.17** - Utility-first CSS framework
-  - Custom design tokens for mental health theming
+  - Custom design tokens for dementia care theming
   - Dark/light mode support
   - Responsive design utilities
   - Custom component variants
@@ -305,7 +305,7 @@ esbuild server/index.ts → dist/index.js
 ## 🎨 Design System & Accessibility
 
 ### **Design Tokens**
-- **Custom color palette** for mental health applications
+- **Custom color palette** for dementia care applications
 - **Typography scale** with Inter and Poppins fonts
 - **Spacing and sizing** system
 - **Dark/light mode** support
@@ -489,4 +489,4 @@ setup.bat           # Windows setup script
 
 ---
 
-*This tech stack is optimized for student mental health applications with a focus on accessibility, performance, and developer experience.*
+*This tech stack is optimized for dementia care applications with a focus on accessibility, performance, and developer experience.*

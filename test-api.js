@@ -24,17 +24,17 @@ async function testAPI() {
             console.log(`   User: ${registerResponse.data.user.username}`);
             console.log(`   Token: ${registerResponse.data.token.substring(0, 20)}...`);
             
-            // Test 2: Use the token to create a mood entry
-            console.log('\n2️⃣ Testing mood entry with authentication...');
-            const moodResponse = await makeRequest('/api/mood', 'POST', {
-                moodValue: 4,
+            // Test 2: Use the token to create a cognitive entry
+            console.log('\n2️⃣ Testing cognitive entry with authentication...');
+            const cognitiveResponse = await makeRequest('/api/cognitive', 'POST', {
+                cognitiveValue: 4,
                 notes: 'Feeling good after setting up MERN stack!'
             }, registerResponse.data.token);
             
-            if (moodResponse.success) {
-                console.log('✅ Mood entry successful!');
+            if (cognitiveResponse.success) {
+                console.log('✅ Cognitive entry successful!');
             } else {
-                console.log('❌ Mood entry failed:', moodResponse.error || 'Unknown error');
+                console.log('❌ Cognitive entry failed:', cognitiveResponse.error || 'Unknown error');
             }
             
             // Test 3: Create a goal

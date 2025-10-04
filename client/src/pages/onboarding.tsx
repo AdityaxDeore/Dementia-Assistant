@@ -24,7 +24,7 @@ export default function OnboardingPage() {
         </h1>
         <p className="text-muted-foreground">
           {hasCompletedBefore 
-            ? 'You can retake this assessment anytime to update your mental health profile.'
+            ? 'You can retake this assessment anytime to update your cognitive care profile.'
             : 'Let\'s start by understanding your current mental health to provide you with personalized support.'
           }
         </p>

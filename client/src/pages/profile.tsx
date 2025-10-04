@@ -287,7 +287,7 @@ export default function ProfilePage() {
                 Your Activity
               </CardTitle>
               <CardDescription>
-                Track your wellness journey and progress
+                Track your care journey and progress
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -320,7 +320,7 @@ export default function ProfilePage() {
               <Alert>
                 <CheckCircle className="h-4 w-4" />
                 <AlertDescription>
-                  Great progress! You've been consistently engaging with your wellness journey.
+                  Great progress! You've been consistently engaging with your care journey.
                 </AlertDescription>
               </Alert>
             </CardContent>

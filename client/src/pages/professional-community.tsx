@@ -37,11 +37,11 @@ const communityPosts = [
   {
     id: "post-2",
     author: {
-      name: "Mental Health Alliance",
+      name: "Dementia Care Alliance",
       username: "@mhalliance",
       avatar: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=40&h=40&fit=crop&crop=face"
     },
-    content: "Remember: It's okay to not be okay. Your mental health journey is unique, and seeking help is a sign of strength, not weakness. 💙 #MentalHealthAwareness",
+    content: "Remember: Every person with dementia deserves dignity and compassion. Your cognitive care journey matters, and seeking support shows strength and wisdom. 💙 #DementiaCareAwareness",
     timestamp: "4 hours ago",
     likes: 89,
     comments: 12,
@@ -89,7 +89,7 @@ export default function ProfessionalCommunityPage() {
                   <h2 className="text-2xl font-semibold">Community Insights</h2>
                 </div>
                 <p className="text-gray-600 max-w-2xl mx-auto">
-                  Connect with mental health professionals, researchers, and advocates sharing valuable insights, 
+                  Connect with dementia care professionals, researchers, and advocates sharing valuable insights, 
                   research findings, and supportive content from around the world.
                 </p>
               </div>

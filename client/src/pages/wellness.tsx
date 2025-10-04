@@ -49,7 +49,7 @@ export default function WellnessPage() {
               Wellness Center
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Your personal sanctuary for mental health and mindfulness
+              Your personal sanctuary for cognitive care and mindfulness
             </p>
           </div>
           
@@ -105,7 +105,7 @@ export default function WellnessPage() {
                   },
                   {
                     title: "Mindfulness",
-                    description: "Manage academic stress mindfully",
+                    description: "Support cognitive function mindfully",
                     duration: "5-25 min",
                     instructor: "Prof. Michael Davis",
                     icon: Heart,
@@ -125,7 +125,7 @@ export default function WellnessPage() {
                   },
                   {
                     title: "Breathing",
-                    description: "Techniques to reduce anxiety",
+                    description: "Techniques to support cognitive health",
                     duration: "5-20 min",
                     instructor: "Dr. James Wilson",
                     icon: Play,
@@ -170,7 +170,7 @@ export default function WellnessPage() {
             <div className="space-y-6">
               <div className="text-center space-y-2">
                 <h2 className="text-3xl font-light text-gray-800">Quick Actions</h2>
-                <p className="text-gray-600">Start your wellness journey</p>
+                <p className="text-gray-600">Start your care journey</p>
               </div>
               
               <div className="grid gap-6 md:grid-cols-3">
@@ -226,7 +226,7 @@ export default function WellnessPage() {
             <div className="space-y-6">
               <div className="text-center space-y-2">
                 <h2 className="text-3xl font-light text-gray-800">This Week's Progress</h2>
-                <p className="text-gray-600">Track your wellness journey</p>
+                <p className="text-gray-600">Track your care journey</p>
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

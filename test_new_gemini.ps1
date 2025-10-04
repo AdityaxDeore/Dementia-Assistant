@@ -1,6 +1,6 @@
 # Test the new Gemini API key
 $body = @{
-    message = "Hello Alex, I need help with stress"
+    message = "Hello Alex, I need help with memory activities"
     personalityId = "alex"
 } | ConvertTo-Json
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Clarity Setup Script
-echo "🚀 Setting up Clarity - Student Mental Health Platform..."
+echo "🚀 Setting up Dementia Assistant - Cognitive Care Platform..."
 
 # Check if Node.js is installed
 if ! command -v node &> /dev/null; then

@@ -39,7 +39,7 @@ const COMMUNITIES: Community[] = [
     id: "mental-wellness",
     name: "r/MentalWellness",
     displayName: "Mental Wellness",
-    description: "Mental health support, coping strategies, and wellness resources",
+    description: "Dementia care support, coping strategies, and care resources",
     icon: Heart,
     color: "text-red-600",
     memberCount: 3247,

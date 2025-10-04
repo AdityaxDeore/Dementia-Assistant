@@ -12,7 +12,7 @@ cat << EOF > request.json
         "role": "user",
         "parts": [
           {
-            "text": "Hi Alex! I'm feeling stressed about my exams. Can you help me?"
+            "text": "Hi Alex! I'm looking for memory activities. Can you help me?"
           }
         ]
       }

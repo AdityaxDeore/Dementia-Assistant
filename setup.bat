@@ -1,6 +1,6 @@
 @echo off
 REM Clarity Setup Script for Windows
-echo 🚀 Setting up Clarity - Student Mental Health Platform...
+echo 🚀 Setting up Dementia Assistant - Cognitive Care Platform...
 
 REM Check if Node.js is installed
 node -v >nul 2>&1
