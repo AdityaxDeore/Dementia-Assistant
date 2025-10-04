@@ -84,8 +84,8 @@ function App() {
   // Show SOS button only on dashboard page
   const showSOSButton = location === "/dashboard";
   
-  // Routes that should not show the normal app layout
-  const isSpecialRoute = location === "/" || location === "" || location === "/login" || location === "/register" || location === "/admin-login" || location === "/admin";
+  // Only hide sidebar on the home page
+  const hideSidebar = location === "/" || location === "";
   
   // Navigation handler
   const handleNavigation = (path: string) => {
@@ -98,8 +98,8 @@ function App() {
     "--sidebar-width-icon": "3rem",
   };
 
-  // If it's a special route (home, admin, auth), render without the normal app layout
-  if (isSpecialRoute) {
+  // Special handling for home page - no sidebar, no header
+  if (hideSidebar) {
     return (
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
