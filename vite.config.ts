@@ -16,6 +16,10 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
     rollupOptions: {
+      input: {
+        main: path.resolve(import.meta.dirname, "client/index.html"),
+        "404": path.resolve(import.meta.dirname, "client/404.html")
+      },
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],

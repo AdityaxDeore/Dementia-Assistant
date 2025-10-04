@@ -10,6 +10,20 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
     <title>Dementia Assistant - Comprehensive Dementia Care Platform</title>
     <meta name="description" content="A comprehensive digital dementia care platform offering AI cognitive support, daily care tracking, caregiver resources, and emergency assistance tools.">
+    <script>
+      // Single page app for GitHub Pages
+      // https://github.com/rafgraph/spa-github-pages
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
   </head>
   <body>
     <div id="root"></div>
