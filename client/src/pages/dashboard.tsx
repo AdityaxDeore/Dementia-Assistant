@@ -1,5 +1,5 @@
-import MoodTracker from "@/components/mood-tracker";
-import { WellnessDashboard } from "@/components/wellness-dashboard";
+import CognitiveTracker from "@/components/cognitive-tracker";
+import { CareDashboard } from "@/components/care-dashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/ui/back-button";
@@ -9,44 +9,44 @@ import { Link } from "wouter";
 export default function Dashboard() {
   const quickActions = [
     { 
-      title: "AI Buddy", 
+      title: "Cognitive Support", 
       icon: MessageCircle, 
       href: "/ai-buddy", 
       color: "text-white", 
       bg: "bg-blue-500",
-      description: "Smart companion"
+      description: "AI companion"
     },
     { 
-      title: "Diary", 
+      title: "Memory Journal", 
       icon: PenTool, 
       href: "/diary", 
       color: "text-white", 
       bg: "bg-green-500",
-      description: "Private thoughts"
+      description: "Record memories"
     },
     { 
-      title: "Peer Support", 
+      title: "Caregiver Network", 
       icon: Users, 
       href: "/peer-support", 
       color: "text-white", 
       bg: "bg-purple-500",
-      description: "Connect & share"
+      description: "Support community"
     },
     { 
-      title: "Audio", 
+      title: "Memory Activities", 
       icon: Headphones, 
       href: "/audio-sessions", 
       color: "text-white", 
       bg: "bg-orange-500",
-      description: "Guided sessions"
+      description: "Cognitive exercises"
     },
     { 
-      title: "Resources", 
+      title: "Care Resources", 
       icon: BookOpen, 
       href: "/resources", 
       color: "text-white", 
       bg: "bg-indigo-500",
-      description: "Learn & grow"
+      description: "Helpful guides"
     },
     { 
       title: "Create", 

@@ -1,4 +1,4 @@
-import { MoodTracker } from "@/components/mood-tracker";
+import { CognitiveTracker } from "@/components/cognitive-tracker";
 import { BackButton } from "@/components/ui/back-button";
 import { Calendar, Clock, Heart, Brain, Headphones, Play, Volume2, Star, TrendingUp, Users, BookOpen, MessageCircle, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -77,9 +77,9 @@ export default function WellnessPage() {
         </div>
 
         <div className="grid gap-12 lg:grid-cols-3">
-          {/* Mood Tracker */}
+          {/* Cognitive Tracker */}
           <div className="lg:col-span-1">
-            <MoodTracker />
+            <CognitiveTracker />
           </div>
 
           {/* Audio Sessions - Clean Design */}

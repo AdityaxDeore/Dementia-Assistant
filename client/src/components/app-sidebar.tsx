@@ -15,7 +15,9 @@ import {
   UserCheck,
   Gamepad2,
   Castle,
-  GraduationCap
+  GraduationCap,
+  AlertTriangle,
+  BarChart
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
@@ -38,37 +40,37 @@ const mainItems = [
     icon: Home,
   },
   {
-    title: "Assessment",
+    title: "Cognitive Assessment",
     url: "/assessment",
     icon: Brain,
   },
   {
-    title: "AI Buddy",
+    title: "Cognitive Support",
     url: "/ai-buddy",
     icon: MessageCircle,
   },
   {
-    title: "Diary",
+    title: "Memory Journal",
     url: "/diary",
     icon: PenTool,
   },
   {
-    title: "Wellness",
+    title: "Daily Care",
     url: "/wellness",
     icon: Heart,
   },
   {
-    title: "Goals",
+    title: "Care Routines",
     url: "/goals",
     icon: Target,
   },
   {
-    title: "Pet Game",
+    title: "Memory Games",
     url: "/petcare-game",
     icon: Gamepad2,
   },
   {
-    title: "Inner Gatekeeper",
+    title: "Cognitive Tools",
     url: "/inner-gatekeeper",
     icon: Castle,
   },
@@ -76,32 +78,32 @@ const mainItems = [
 
 const supportItems = [
   {
-    title: "Mentorship",
+    title: "Caregiver Support",
     url: "/mentorship",
     icon: UserCheck,
   },
   {
-    title: "Counselor Connect",
+    title: "Healthcare Connect",
     url: "/anonymous-chat",
     icon: User,
   },
   {
-    title: "Community",
+    title: "Caregiver Community",
     url: "/peer-support",
     icon: Users,
   },
   {
-    title: "Clarity Connect",
+    title: "Professional Network",
     url: "/professional-community",
     icon: GraduationCap,
   },
   {
-    title: "Resources",
+    title: "Care Resources",
     url: "/resources",
     icon: BookOpen,
   },
   {
-    title: "Creative",
+    title: "Memory Activities",
     url: "/creative",
     icon: Palette,
   },
@@ -109,13 +111,13 @@ const supportItems = [
 
 const helpItems = [
   {
-    title: "Crisis",
+    title: "Emergency Care",
     url: "/crisis",
-    icon: Phone,
+    icon: AlertTriangle,
   },
   {
-    title: "Report",
-    url: "/report",
+    title: "Care Safety",
+    url: "/anti-ragging",
     icon: Shield,
   },
   {
