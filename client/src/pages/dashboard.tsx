@@ -1,5 +1,6 @@
 import CognitiveTracker from "@/components/cognitive-tracker";
 import { CareDashboard } from "@/components/care-dashboard";
+import { WellnessDashboard } from "@/components/wellness-dashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/ui/back-button";
@@ -65,10 +66,10 @@ export default function Dashboard() {
       {/* Welcome Header - Modern minimal design */}
       <div className="text-center space-y-3 py-4">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-primary">
-          Welcome to Clarity
+          Dementia Care Dashboard
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto">
-          Your wellness companion
+          Your comprehensive dementia care companion
         </p>
       </div>
 
