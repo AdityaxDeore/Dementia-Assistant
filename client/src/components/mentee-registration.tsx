@@ -14,30 +14,30 @@ import { Users, X } from "lucide-react";
 import { apiMenteeRegistrationSchema, type ApiMenteeRegistration } from "@shared/schema";
 
 const interests = [
-  "Academic Excellence",
-  "Programming & Development", 
-  "Research & Projects",
-  "Communication Skills",
-  "Leadership & Management",
-  "Career Planning",
-  "Internship Guidance",
-  "Competitive Programming",
-  "Technical Writing",
-  "Public Speaking",
-  "Time Management",
-  "Stress Management",
-  "Data Science & AI",
-  "Web Development",
-  "Mobile Development",
-  "UI/UX Design",
-  "Entrepreneurship",
-  "Finance & Investment",
-  "Study Techniques",
-  "Interview Preparation"
+  "Emotional Support",
+  "Daily Care Guidance", 
+  "Caregiver Respite",
+  "Communication Help",
+  "Safety & Wandering Support",
+  "Memory Activity Ideas",
+  "Family Coordination",
+  "Healthcare Navigation",
+  "Legal & Financial Guidance",
+  "Community Resources",
+  "Crisis Support",
+  "Grief & Loss Support",
+  "Early Stage Dementia Help",
+  "Middle Stage Dementia Support",
+  "Late Stage Dementia Care",
+  "Alzheimer's Specific Support",
+  "Behavioral Management",
+  "Social Interaction",
+  "Meal Planning Help",
+  "Medication Management"
 ];
 
 const regions = [
-  "North India", "South India", "East India", "West India", "Central India", "Northeast India"
+  "North Region", "South Region", "East Region", "West Region", "Central Region", "Northeast Region"
 ];
 
 export function MenteeRegistration() {
@@ -115,9 +115,9 @@ export function MenteeRegistration() {
         <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mb-2 sm:mb-4">
           <Users className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
         </div>
-        <CardTitle className="text-xl sm:text-2xl text-purple-700">Find a Mentor</CardTitle>
+        <CardTitle className="text-xl sm:text-2xl text-purple-700">Find a Companion</CardTitle>
         <CardDescription className="text-sm sm:text-base">
-          Connect with senior students from your region who can guide you in your areas of interest
+          Connect with experienced caregivers in your area who can provide emotional support and guidance
         </CardDescription>
       </CardHeader>
       

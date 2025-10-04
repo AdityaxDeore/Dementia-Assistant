@@ -14,28 +14,28 @@ import { GraduationCap, Plus, X } from "lucide-react";
 import { apiMentorRegistrationSchema, type ApiMentorRegistration } from "@shared/schema";
 
 const domains = [
-  "Academic Excellence",
-  "Programming & Development", 
-  "Research & Projects",
-  "Communication Skills",
-  "Leadership & Management",
-  "Career Planning",
-  "Internship Guidance",
-  "Competitive Programming",
-  "Technical Writing",
-  "Public Speaking",
-  "Time Management",
-  "Stress Management",
-  "Data Science & AI",
-  "Web Development",
-  "Mobile Development",
-  "UI/UX Design",
-  "Entrepreneurship",
-  "Finance & Investment"
+  "Emotional Support",
+  "Daily Care Assistance", 
+  "Caregiver Respite",
+  "Communication Support",
+  "Safety & Wandering Prevention",
+  "Memory Care Activities",
+  "Family Navigation",
+  "Healthcare Coordination",
+  "Legal & Financial Planning",
+  "Community Resources",
+  "Crisis Support",
+  "Grief & Loss Support",
+  "Early Stage Dementia",
+  "Middle Stage Dementia",
+  "Late Stage Dementia",
+  "Alzheimer's Specific Care",
+  "Vascular Dementia Support",
+  "Frontotemporal Dementia"
 ];
 
 const regions = [
-  "North India", "South India", "East India", "West India", "Central India", "Northeast India"
+  "North Region", "South Region", "East Region", "West Region", "Central Region", "Northeast Region"
 ];
 
 export function MentorRegistration() {
@@ -72,7 +72,7 @@ export function MentorRegistration() {
     if (selectedDomains.length === 0) {
       toast({
         title: "Error",
-        description: "Please select at least one domain of expertise.",
+        description: "Please select at least one area of support.",
         variant: "destructive",
       });
       return;
@@ -87,12 +87,12 @@ export function MentorRegistration() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to register as mentor");
+        throw new Error("Failed to register as companion");
       }
 
       toast({
         title: "Success!",
-        description: "You have been registered as a mentor. You'll start receiving mentee requests soon!",
+        description: "You have been registered as a companion. You'll start receiving family connection requests soon!",
       });
 
       form.reset();
@@ -100,7 +100,7 @@ export function MentorRegistration() {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to register as mentor. Please try again.",
+        description: "Failed to register as companion. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -114,9 +114,9 @@ export function MentorRegistration() {
         <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mb-2 sm:mb-4">
           <GraduationCap className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
         </div>
-        <CardTitle className="text-xl sm:text-2xl text-blue-700">Become a Mentor</CardTitle>
+        <CardTitle className="text-xl sm:text-2xl text-blue-700">Become a Companion</CardTitle>
         <CardDescription className="text-sm sm:text-base">
-          Help junior students from your region by sharing your knowledge and experience
+          Support families affected by dementia in your area by sharing your caregiving experience and emotional support
         </CardDescription>
       </CardHeader>
       
@@ -137,18 +137,19 @@ export function MentorRegistration() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="year" className="text-sm sm:text-base">Academic Year *</Label>
+              <Label htmlFor="year" className="text-sm sm:text-base">Experience Level *</Label>
               <Select
                 value={form.watch("year")?.toString()}
                 onValueChange={(value) => form.setValue("year", parseInt(value))}
               >
                 <SelectTrigger className="text-sm sm:text-base">
-                  <SelectValue placeholder="Select your year" />
+                  <SelectValue placeholder="Select your experience level" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="2">2nd Year</SelectItem>
-                  <SelectItem value="3">3rd Year</SelectItem>
-                  <SelectItem value="4">4th Year</SelectItem>
+                  <SelectItem value="1">New to Caregiving</SelectItem>
+                  <SelectItem value="2">Some Experience (1-3 years)</SelectItem>
+                  <SelectItem value="3">Experienced (3-7 years)</SelectItem>
+                  <SelectItem value="4">Very Experienced (7+ years)</SelectItem>
                 </SelectContent>
               </Select>
               {form.formState.errors.year && (
@@ -180,9 +181,9 @@ export function MentorRegistration() {
           </div>
 
           <div className="space-y-3">
-            <Label className="text-sm sm:text-base">Domains of Expertise * (Select 1-5)</Label>
+            <Label className="text-sm sm:text-base">Areas of Support * (Select 1-5)</Label>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Choose the areas where you can guide and help mentees
+              Choose the areas where you can provide companionship and support to families
             </p>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
               {domains.map((domain) => (
@@ -222,7 +223,7 @@ export function MentorRegistration() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="maxMentees" className="text-sm sm:text-base">Maximum Mentees</Label>
+            <Label htmlFor="maxMentees" className="text-sm sm:text-base">Maximum Families to Support</Label>
             <Select
               value={form.watch("maxMentees")?.toString()}
               onValueChange={(value) => form.setValue("maxMentees", parseInt(value))}
@@ -231,15 +232,15 @@ export function MentorRegistration() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">1 Mentee</SelectItem>
-                <SelectItem value="2">2 Mentees</SelectItem>
-                <SelectItem value="3">3 Mentees</SelectItem>
-                <SelectItem value="4">4 Mentees</SelectItem>
-                <SelectItem value="5">5 Mentees</SelectItem>
+                <SelectItem value="1">1 Family</SelectItem>
+                <SelectItem value="2">2 Families</SelectItem>
+                <SelectItem value="3">3 Families</SelectItem>
+                <SelectItem value="4">4 Families</SelectItem>
+                <SelectItem value="5">5 Families</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              How many mentees can you effectively guide at once?
+              How many families can you effectively support at once?
             </p>
           </div>
 
@@ -248,12 +249,12 @@ export function MentorRegistration() {
             <Textarea
               id="bio"
               {...form.register("bio")}
-              placeholder="Tell potential mentees about your experience, achievements, and what you can help them with..."
+              placeholder="Tell families about your caregiving experience, background, and how you can provide emotional support..."
               rows={4}
               className="text-sm sm:text-base resize-none"
             />
             <p className="text-xs text-muted-foreground">
-              This will be visible to potential mentees when they browse mentors
+              This will be visible to families seeking companion support
             </p>
             {form.formState.errors.bio && (
               <p className="text-xs sm:text-sm text-red-500">{form.formState.errors.bio.message}</p>
@@ -265,7 +266,7 @@ export function MentorRegistration() {
             className="w-full bg-blue-600 hover:bg-blue-700 text-sm sm:text-base py-2 sm:py-3"
             disabled={isSubmitting || selectedDomains.length === 0}
           >
-            {isSubmitting ? "Registering..." : "Register as Mentor"}
+            {isSubmitting ? "Registering..." : "Register as Companion"}
           </Button>
 
           <div className="text-center text-xs sm:text-sm text-muted-foreground">

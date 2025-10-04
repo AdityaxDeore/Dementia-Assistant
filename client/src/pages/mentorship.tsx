@@ -17,18 +17,18 @@ export default function MentorshipPage() {
       <BackButton to="/dashboard" />
       <div className="text-center space-y-2 sm:space-y-4">
         <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-          <span className="text-indigo-600">Savangadi</span> <span className="text-slate-800">Program</span>
+          <span className="text-indigo-600">Companion</span> <span className="text-slate-800">Connection</span>
         </h1>
         <p className="text-lg text-slate-600 font-medium max-w-2xl mx-auto">
-          Connecting minds, building futures through meaningful mentorship
+          Connecting caregivers and families through meaningful companionship support
         </p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 text-xs sm:text-sm">
           <TabsTrigger value="overview" className="px-2 sm:px-4">Overview</TabsTrigger>
-          <TabsTrigger value="register-mentor" className="px-2 sm:px-4">Become Mentor</TabsTrigger>
-          <TabsTrigger value="register-mentee" className="px-2 sm:px-4">Find Mentor</TabsTrigger>
+          <TabsTrigger value="register-mentor" className="px-2 sm:px-4">Become Companion</TabsTrigger>
+          <TabsTrigger value="register-mentee" className="px-2 sm:px-4">Find Companion</TabsTrigger>
           <TabsTrigger value="matching" className="px-2 sm:px-4">Connections</TabsTrigger>
         </TabsList>
 
@@ -39,31 +39,31 @@ export default function MentorshipPage() {
                 <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 rounded-full flex items-center justify-center mb-2 sm:mb-4 shadow-lg">
                   <GraduationCap className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <CardTitle className="text-lg sm:text-xl text-slate-900 font-bold">Become a Mentor</CardTitle>
+                <CardTitle className="text-lg sm:text-xl text-slate-900 font-bold">Become a Companion</CardTitle>
                 <CardDescription className="text-sm sm:text-base text-slate-600">
-                  Share your knowledge and experience with junior students from your region
+                  Provide emotional support and friendship to families affected by dementia in your area
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 sm:space-y-4 pt-0">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Star className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm">Help 2-3 students per semester</span>
+                    <span className="text-xs sm:text-sm">Support 2-3 families per month</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm">Connect with students from your region</span>
+                    <span className="text-xs sm:text-sm">Connect with families in your local area</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm">Share expertise in your domain</span>
+                    <span className="text-xs sm:text-sm">Share caregiving experience and emotional support</span>
                   </div>
                 </div>
                 <Button 
                   onClick={() => setActiveTab("register-mentor")} 
                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm sm:text-base py-3 sm:py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  Register as Mentor
+                  Register as Companion
                 </Button>
               </CardContent>
             </Card>
@@ -73,31 +73,31 @@ export default function MentorshipPage() {
                 <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-purple-600 rounded-full flex items-center justify-center mb-2 sm:mb-4 shadow-lg">
                   <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <CardTitle className="text-lg sm:text-xl text-slate-900 font-bold">Find a Mentor</CardTitle>
+                <CardTitle className="text-lg sm:text-xl text-slate-900 font-bold">Find a Companion</CardTitle>
                 <CardDescription className="text-sm sm:text-base text-slate-600">
-                  Get guidance from senior students who understand your background and goals
+                  Connect with experienced caregivers who understand your dementia care journey
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 sm:space-y-4 pt-0">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Target className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm">Get personalized guidance and tasks</span>
+                    <span className="text-xs sm:text-sm">Get emotional support and practical guidance</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm">Connect with mentors from your region</span>
+                    <span className="text-xs sm:text-sm">Connect with companions from your local area</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm">Learn skills in your areas of interest</span>
+                    <span className="text-xs sm:text-sm">Learn caregiving strategies and coping techniques</span>
                   </div>
                 </div>
                 <Button 
                   onClick={() => setActiveTab("register-mentee")} 
                   className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm sm:text-base py-3 sm:py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  Find a Mentor
+                  Find a Companion
                 </Button>
               </CardContent>
             </Card>
@@ -118,7 +118,7 @@ export default function MentorshipPage() {
                   </div>
                   <h3 className="font-semibold text-sm sm:text-base">Register</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    Sign up as a mentor or mentee with your region and interests
+                    Sign up as a companion or someone seeking support with your location and caregiving experience
                   </p>
                 </div>
                 <div className="text-center space-y-2">
@@ -127,7 +127,7 @@ export default function MentorshipPage() {
                   </div>
                   <h3 className="font-semibold text-sm sm:text-base">Match</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    Get matched with compatible mentors/mentees from your region
+                    Get matched with compatible companions from your local area based on shared experiences
                   </p>
                 </div>
                 <div className="text-center space-y-2">
@@ -136,7 +136,7 @@ export default function MentorshipPage() {
                   </div>
                   <h3 className="font-semibold text-sm sm:text-base">Connect</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    Start your mentorship journey with tasks and regular check-ins
+                    Start your companionship journey with emotional support and regular check-ins
                   </p>
                 </div>
               </div>
