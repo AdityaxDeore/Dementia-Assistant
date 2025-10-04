@@ -260,20 +260,20 @@ export default function HomePage() {
             {/* Features Grid */}
             <div className="grid grid-cols-2 xxs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 xxs:gap-2 sm:gap-4 md:gap-6 max-w-6xl mx-auto mt-6 sm:mt-8 md:mt-12 px-4">
               <Card 
-                onClick={() => setLocation('/dashboard')}
+                onClick={() => setLocation('/assessment')}
                 className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
                 style={{ borderRadius: '16px' }}
               >
                 <CardContent className="p-0 relative">
-                  <div className="relative p-4 xxs:p-3 sm:p-5 md:p-6 bg-pink-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
+                  <div className="relative p-4 xxs:p-3 sm:p-5 md:p-6 bg-blue-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
                     {/* Background decoration */}
                     <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-700" />
                     <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6 group-hover:scale-125 transition-transform duration-700" />
                     
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
-                      <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                      <Brain className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Daily Care</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Voice Analysis</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
@@ -282,20 +282,20 @@ export default function HomePage() {
               </Card>
               
               <Card 
-                onClick={() => setLocation('/ai-buddy')}
+                onClick={() => setLocation('/diary')}
                 className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
                 style={{ borderRadius: '16px' }}
               >
                 <CardContent className="p-0 relative">
-                  <div className="relative p-4 sm:p-5 md:p-6 bg-gradient-to-br from-sky-400 to-blue-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
+                  <div className="relative p-4 sm:p-5 md:p-6 bg-gradient-to-br from-green-400 to-emerald-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
                     {/* Background decoration */}
                     <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-700" />
                     <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6 group-hover:scale-125 transition-transform duration-700" />
                     
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
-                      <Brain className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                      <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Cognitive Support</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Memory Diary</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
@@ -317,7 +317,7 @@ export default function HomePage() {
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
                       <Users className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Peer Community</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Caregiver Support</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
@@ -326,12 +326,12 @@ export default function HomePage() {
               </Card>
               
               <Card 
-                onClick={() => setLocation('/crisis')}
+                onClick={() => setLocation('/sos')}
                 className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden cursor-pointer"
                 style={{ borderRadius: '16px' }}
               >
                 <CardContent className="p-0 relative">
-                  <div className="relative p-4 sm:p-5 md:p-6 bg-gradient-to-br from-violet-400 to-purple-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
+                  <div className="relative p-4 sm:p-5 md:p-6 bg-gradient-to-br from-red-400 to-red-500 text-center transition-all duration-500 group-hover:scale-[1.01]">
                     {/* Background decoration */}
                     <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-8 translate-x-8 group-hover:scale-150 transition-transform duration-700" />
                     <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6 group-hover:scale-125 transition-transform duration-700" />
@@ -339,7 +339,7 @@ export default function HomePage() {
                     <div className="relative z-10 mx-auto w-fit p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
                       <Shield className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Safe Space</p>
+                    <p className="relative z-10 text-sm sm:text-base font-bold text-white leading-relaxed mt-3">Emergency SOS</p>
                     
                     {/* Shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />

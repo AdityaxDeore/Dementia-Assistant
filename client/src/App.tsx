@@ -34,6 +34,7 @@ import AudioSessionsPage from "@/pages/audio-sessions";
 import DiaryPage from "@/pages/diary";
 import MentorshipPage from "@/pages/mentorship";
 import AssessmentPage from "@/pages/assessment";
+import SOSPage from "@/pages/sos";
 import InteractiveMenuDemo from "@/pages/interactive-menu-demo";
 import GamesPage from "@/pages/games";
 import PetCareGamePage from "@/pages/petcare-game";
@@ -54,6 +55,7 @@ function RouterComponent() {
       <Route path="/anonymous-chat" component={AnonymousChatPage} />
       <Route path="/wellness" component={WellnessPage} />
       <Route path="/assessment" component={AssessmentPage} />
+      <Route path="/sos" component={SOSPage} />
       <Route path="/audio-sessions" component={AudioSessionsPage} />
       <Route path="/diary" component={DiaryPage} />
       <Route path="/goals" component={GoalsPage} />

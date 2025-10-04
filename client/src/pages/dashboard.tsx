@@ -4,50 +4,58 @@ import { WellnessDashboard } from "@/components/wellness-dashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/ui/back-button";
-import { MessageCircle, Users, BookOpen, Palette, PenTool, Headphones } from "lucide-react";
+import { MessageCircle, Users, BookOpen, Palette, PenTool, Headphones, Mic, Shield, Brain, Heart } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Dashboard() {
   const quickActions = [
     { 
-      title: "Cognitive Support", 
-      icon: MessageCircle, 
-      href: "/ai-buddy", 
+      title: "Voice Analysis", 
+      icon: Mic, 
+      href: "/assessment", 
       color: "text-white", 
       bg: "bg-blue-500",
-      description: "AI companion"
+      description: "Cognitive assessment"
     },
     { 
-      title: "Memory Journal", 
+      title: "Memory Diary", 
       icon: PenTool, 
       href: "/diary", 
       color: "text-white", 
       bg: "bg-green-500",
-      description: "Record memories"
+      description: "Daily memories & mood"
     },
     { 
-      title: "Caregiver Network", 
+      title: "Emergency SOS", 
+      icon: Shield, 
+      href: "/sos", 
+      color: "text-white", 
+      bg: "bg-red-500",
+      description: "Emergency assistance"
+    },
+    { 
+      title: "Cognitive Exercises", 
+      icon: Brain, 
+      href: "/games", 
+      color: "text-white", 
+      bg: "bg-purple-500",
+      description: "Brain training games"
+    },
+    { 
+      title: "Caregiver Connect", 
       icon: Users, 
       href: "/peer-support", 
       color: "text-white", 
-      bg: "bg-purple-500",
-      description: "Support community"
-    },
-    { 
-      title: "Memory Activities", 
-      icon: Headphones, 
-      href: "/audio-sessions", 
-      color: "text-white", 
       bg: "bg-orange-500",
-      description: "Cognitive exercises"
+      description: "Family & caregivers"
     },
     { 
-      title: "Care Resources", 
-      icon: BookOpen, 
-      href: "/resources", 
+      title: "Daily Wellness", 
+      icon: Heart, 
+      href: "/wellness", 
       color: "text-white", 
-      bg: "bg-indigo-500",
-      description: "Helpful guides"
+      bg: "bg-pink-500",
+      description: "Health tracking"
     },
     { 
       title: "Create", 
