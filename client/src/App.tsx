@@ -46,6 +46,7 @@ function RouterComponent() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/test" component={() => <div className="p-8 text-center"><h1 className="text-2xl">Test Page - App is Working!</h1><p>Router is functioning correctly.</p></div>} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/profile" component={ProfilePage} />
