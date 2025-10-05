@@ -34,6 +34,6 @@ export default defineConfig({
       deny: ["**/.*"],
     },
   },
-  // Add base path for GitHub Pages
-  base: "/Dementia-Assistant/",
+  // Use relative paths for GitHub Pages
+  base: "./",
 });
