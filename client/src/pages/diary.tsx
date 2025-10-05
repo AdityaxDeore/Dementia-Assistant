@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/ui/back-button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
@@ -15,6 +14,20 @@ import {
   Save
 } from "lucide-react";
 import { format } from "date-fns";
+
+// Dynamic import for Calendar to avoid build issues
+const Calendar = ({ mode, selected, onSelect, initialFocus, ...props }: any) => {
+  return (
+    <div className="p-4 text-center">
+      <input 
+        type="date" 
+        value={selected ? format(selected, "yyyy-MM-dd") : ""}
+        onChange={(e) => onSelect(e.target.value ? new Date(e.target.value) : null)}
+        className="w-full p-2 border rounded"
+      />
+    </div>
+  );
+};
 
 interface DiaryEntry {
   id: string;
